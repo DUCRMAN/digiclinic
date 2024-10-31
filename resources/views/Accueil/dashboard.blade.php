@@ -250,9 +250,9 @@
             <!-- Row ends -->
 
             <!-- Row starts -->
-            @if($user_role_id == 0)
+            @if($user_role_id == 1)
 
-            @elseif($user_role_id == 1)
+            @elseif($user_role_id == 0)
             <div class="row gx-3">
               <div class="col-xxl-6 col-sm-6">
                 <div class="card mb-3">
@@ -453,21 +453,44 @@
                            <form action="{{url('hospitaliser')}}" method="POST">
                                 {{csrf_field()}}
                            <input type="hidden" name="id_consultation" value="{{$v_consulted->id_consultation}}">
-                            <select id="myDropdown" class="form-select btn btn-outline-info" name="id_lit">
+                            <select id="myDropdown" class="form-select btn btn-outline" name="id_lit">
                               <option selected>Vers</option>
-                             <optgroup label="Chambre libre">
+                             <optgroup label="Chambre Ordinaire libre">
                              
                             <?php 
 
                               $all_lists=DB::table('tbl_lits')
                               ->join('tbl_chambre','tbl_lits.id_chambre','=','tbl_chambre.id_chambre')
                               ->where('tbl_lits.statut',0)
-                              ->where('id_centre',$centre_id) 
+                              ->where([
+                                      ['id_centre',$centre_id],
+                                      ['is_vip',0],
+                                      ]) 
                               ->select('tbl_chambre.*','tbl_lits.*')
                               ->get(); 
                               foreach ($all_lists as $v_lit){ ?>  
                               <option value="{{$v_lit->id_chambre}}">CH {{$v_lit->libelle_chambre}} - 
                               {{$v_lit->lit}}
+                              </option>
+                            <?php } ?>
+                             </optgroup>
+
+                             <optgroup label="Chambre VIP libre">
+                             
+                            <?php 
+
+                              $all_lists_vip=DB::table('tbl_lits')
+                              ->join('tbl_chambre','tbl_lits.id_chambre','=','tbl_chambre.id_chambre')
+                              ->where('tbl_lits.statut',0)
+                              ->where([
+                                      ['id_centre',$centre_id],
+                                      ['is_vip',1],
+                                      ]) 
+                              ->select('tbl_chambre.*','tbl_lits.*')
+                              ->get(); 
+                              foreach ($all_lists_vip as $v_lit_vip){ ?>  
+                              <option value="{{$v_lit_vip->id_chambre}}">CH {{$v_lit_vip->libelle_chambre}} - 
+                              {{$v_lit_vip->lit}}
                               </option>
                             <?php } ?>
                              </optgroup>
@@ -750,6 +773,33 @@
           </div>
         </div>
 
+        <div class="col-md-12 mb-3">
+        <label for="validationServer07">Type de chambre</label>
+          <select class="form-control" name="type_chambre">
+            <option value="H/F">Homme / Femme</option>
+            <option value="H">Homme</option>
+            <option value="F">Femme</option>
+          </select>
+          <div class="text-success small mt-1">
+            Looks good!
+          </div>
+        </div>
+        <label>Chambre VIP ?</label>
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="is_vip" id="inlineRadio2"
+                value="option2" checked="">
+              <label class="form-check-label" for="inlineRadio2">Non</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="is_vip" id="inlineRadio3"
+                value="option3" disabled="">
+              <label class="form-check-label" for="inlineRadio3">Oui</label>
+            </div>
+          </div>
+        </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -769,7 +819,7 @@
       $(document).ready(function() {
       $("#example").DataTable();
     });
-      $("select").change(function(){
+      $("select#myDropdown").change(function(){
       if(confirm('Cliquez OK pour hospitaliser le patient dans la chambre sélectionnée')){
           {this.form.submit()} 
       }

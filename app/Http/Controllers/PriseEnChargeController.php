@@ -339,6 +339,8 @@ class PriseEnChargeController extends Controller
     $this->AccueilAuthCheck();
                            
     $data['libelle_chambre']=$request->libelle_chambre; 
+    $data['type_chambre']=$request->type_chambre; 
+    $data['is_vip']=$request->is_vip; 
     $nbre_lits=$request->nbre_lit;
   
     $chambre_id = DB::table('tbl_chambre')->insertGetId($data);
