@@ -1,6 +1,9 @@
 @extends('layout')
-@section('admin_content')
-<?php  
+@section('title')
+Admin
+@endsection
+@section('user_content')
+<?php
  $user_role_id=Session::get('user_role_id');
  $user_id=Session::get('user_id');
  $centre_id=Session::get('centre_id');
@@ -28,15 +31,15 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                             <?php 
+                             <?php
                                    $nbr_prisenc=DB::table('tbl_prise_en_charge')
                                           ->where('last_consult_user_id',null)
                                           ->where('id_centre',$centre_id)
-                                          ->count();      
-                              ?>  
+                                          ->count();
+                              ?>
                               <h2 class="m-0 lh-1">{{$nbr_prisenc}}</h2>
 
-                        
+
                               <p class="m-0"> Prises en charges</p>
                             <?php  ?>
                             </div>
@@ -48,15 +51,15 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                            <?php 
+                            <?php
                                 $nbr_sendconsult=DB::table('tbl_prise_en_charge')
                                           ->where('last_consult_user_id','!=',null)
                                           ->where('id_centre',$centre_id)
-                                          ->count();      
-                            ?> 
+                                          ->count();
+                            ?>
                               <h2 class="m-0 lh-1">{{$nbr_sendconsult}}</h2>
-                                
-                        
+
+
                               <p class="m-0"> Envoyés en consultation</p>
                             <?php  ?>
                             </div>
@@ -69,15 +72,15 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                             <?php 
+                             <?php
                                    $nbr_conslt_imp=DB::table('tbl_caisse_prise_en_charge')
                                           ->where('frais_consultation',NULL)
                                           ->where('id_centre',$centre_id)
-                                          ->count();      
-                              ?>  
+                                          ->count();
+                              ?>
                               <h2 class="m-0 lh-1">{{$nbr_conslt_imp}}</h2>
 
-                        
+
                               <p class="m-0"> Consultations Impayées </p>
                             <?php  ?>
                             </div>
@@ -89,15 +92,15 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                            <?php 
+                            <?php
                                 $nbr_hosp_imp=DB::table('tbl_caisse_prise_en_charge')
                                           ->where('frais_hospitalisation',NULL)
                                           ->where('id_centre',$centre_id)
-                                          ->count();      
-                            ?> 
+                                          ->count();
+                            ?>
                               <h2 class="m-0 lh-1">{{$nbr_hosp_imp}}</h2>
-                                
-                        
+
+
                               <p class="m-0"> Hospitalisations Impayées </p>
                             <?php  ?>
                             </div>
@@ -111,14 +114,14 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                            <?php 
+                            <?php
                                 $nbr_analyses=DB::table('tbl_analyse')
                                           ->where('id_centre',$centre_id)
-                                          ->count();       
-                            ?> 
+                                          ->count();
+                            ?>
                               <h2 style="color:black;" class="m-0 lh-1">{{$nbr_analyses}}</h2>
-                                
-                        
+
+
                               <p style="color:black;" class="m-0"> Analyses </p>
                             <?php  ?>
                             </div>
@@ -132,19 +135,19 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                             <?php 
+                             <?php
                                    $nbr_patient_nt=DB::table('tbl_consultation')
                                           ->join('tbl_prise_en_charge','tbl_consultation.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')
                                           ->where('etat_traitement',0)
                                           ->where([
                                               ['tbl_consultation.user_id',$user_id],
                                               ['id_centre',$centre_id],
-                                          ])  
-                                          ->count();      
-                              ?>  
+                                          ])
+                                          ->count();
+                              ?>
                               <h2 class="m-0 lh-1">{{$nbr_patient_nt}}</h2>
 
-                        
+
                               <p class="m-0"> Patients non traité </p>
                             <?php  ?>
                             </div>
@@ -156,7 +159,7 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                            <?php 
+                            <?php
                                 $nbr_patient_t=DB::table('tbl_consultation')
                                   ->join('tbl_prise_en_charge','tbl_consultation.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')
                                   ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
@@ -164,10 +167,10 @@
                                         ['tbl_consultation.user_id',$user_id],
                                         ['tbl_prise_en_charge.id_centre',$centre_id],
                                         ['etat_hospitalisation',1],
-                                    ]) 
+                                    ])
                                   ->DISTINCT('tbl_prise_en_charge.patient_id')
-                                  ->count();     
-                            ?> 
+                                  ->count();
+                            ?>
                               <h2 class="m-0 lh-1">{{$nbr_patient_t}}</h2>
                               <p class="m-0"> Patients traités  </p>
                             <?php  ?>
@@ -182,18 +185,18 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                             <?php 
+                             <?php
                                    $nbr_analyse_nt=DB::table('tbl_analyse')
                                           ->where('statut_analyse',0)
                                           ->where([
                                               ['user_id',$user_id],
                                               ['id_centre',$centre_id],
-                                          ]) 
-                                          ->count();      
-                              ?>  
+                                          ])
+                                          ->count();
+                              ?>
                               <h2 class="m-0 lh-1">{{$nbr_analyse_nt}}</h2>
 
-                        
+
                               <p class="m-0"> Analyses en attente </p>
                             <?php  ?>
                             </div>
@@ -205,18 +208,18 @@
                             </div>
                             </a>
                             <div class="d-flex flex-column">
-                            <?php 
+                            <?php
                                 $nbr_analyse_t=DB::table('tbl_analyse')
                                           ->where('statut_analyse',1)
                                           ->where([
                                               ['user_id',$user_id],
                                               ['id_centre',$centre_id],
-                                          ]) 
-                                          ->count();     
-                            ?> 
+                                          ])
+                                          ->count();
+                            ?>
                               <h2 class="m-0 lh-1">{{$nbr_analyse_t}}</h2>
-                                
-                        
+
+
                               <p class="m-0"> Analyses traités traités  </p>
                             <?php  ?>
                             </div>
@@ -257,7 +260,7 @@
               <div class="col-xxl-6 col-sm-6">
                 <div class="card mb-3">
                   <div class="card-header">
-                    <h5 class="card-title">Hospitalisations 
+                    <h5 class="card-title">Hospitalisations
                     <a href="{{URL::to('/chambres')}}" class="float-right btn btn-warnig">
                       <span class="badge rounded-pill bg-success"><i class="ri-menu-line"></i></span>
                       <i class="ri-hotel-bed-line"></i>
@@ -274,7 +277,7 @@
                     <div id="carouselSurgeries" class="carousel slide carousel-fade" data-bs-ride="carousel">
                       <div class="carousel-inner">
 
-                      <?php  
+                      <?php
                         $rooms=DB::table('tbl_chambre')
                               ->where('id_centre',$centre_id)
                               ->get()
@@ -282,7 +285,7 @@
                       @foreach($rooms as $key => $v_room)
 
                       <?php
-                      
+
                         $nbre_lits=DB::table('tbl_lits')
                               ->join('tbl_chambre','tbl_lits.id_chambre','=','tbl_chambre.id_chambre')
                               ->where('tbl_lits.id_chambre',$v_room->id_chambre)
@@ -296,8 +299,8 @@
                               ->where([
                                     ['tbl_lits.statut',0],
                                     ['id_centre',$centre_id],
-                                ]) 
-                        
+                                ])
+
                               ->select('tbl_chambre.*','tbl_lits.*')
                               ->count();
                       ?>
@@ -308,11 +311,11 @@
                             <div class="g-col-12">
                               <div class="border rounded-2 p-3 mh-100">
                                 <div class="d-flex align-items-start">
-                                  <div class="icon-box lg rounded-3 
-                                  <?php 
+                                  <div class="icon-box lg rounded-3
+                                  <?php
                                   if($nbre_lits == $nbre_lits_libre)
-                                  { 
-                                    echo 'bg-success-subtle text-success'; 
+                                  {
+                                    echo 'bg-success-subtle text-success';
                                   }elseif ($nbre_lits_libre > 1) {
                                     echo 'bg-warning-subtle text-warning';
                                   }else{
@@ -325,12 +328,12 @@
                                     </div>
                                   </div>
                                   <div class="ms-3">
-                                    <h6 class="mb-1"><span class="badge border 
+                                    <h6 class="mb-1"><span class="badge border
 
-                                  <?php 
+                                  <?php
                                   if($nbre_lits == $nbre_lits_libre)
-                                  { 
-                                    echo 'border-success text-success'; 
+                                  {
+                                    echo 'border-success text-success';
                                   }elseif ($nbre_lits_libre > 1) {
                                     echo 'border-warning text-warning';
                                   }else{
@@ -339,30 +342,30 @@
                                   ?> ">
 
 
-                                  <?php 
+                                  <?php
                                   if($nbre_lits == $nbre_lits_libre)
-                                  { 
-                                    echo 'Libre'; 
+                                  {
+                                    echo 'Libre';
                                   }elseif ($nbre_lits_libre > 1) {
                                     echo 'Occupée';
                                   }else{
                                     echo 'Indisponible';
                                   }
                                   ?></span></h6>
-                                    
+
                                   <p class="mb-1">Lits dispo</p>
-                                  <span class="badge 
-                                  <?php 
+                                  <span class="badge
+                                  <?php
                                   if($nbre_lits == $nbre_lits_libre)
-                                  { 
-                                    echo 'bg-success'; 
+                                  {
+                                    echo 'bg-success';
                                   }elseif ($nbre_lits_libre > 1) {
                                     echo 'bg-warning';
                                   }else{
                                     echo 'bg-danger';
                                   }
                                   ?>">{{$nbre_lits_libre}} </span>
-                                  </div> 
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -392,62 +395,62 @@
                <div class="col-xxl-6 col-sm-6">
                 <div class="card mb-3">
                   <div class="card-header">
-                    <h5 class="card-title">Patients en attente d'hospitalisation 
+                    <h5 class="card-title">Patients en attente d'hospitalisation
                     <a href="{{URL::to('/prises-en-charges')}}" class="float-right btn btn-secondary">
                     <span class="badge rounded-pill bg-warning">  <i class="ri-stethoscope-line"></i></span></a>
                     </h5>
                   </div>
                   <div class="card-body">
-                   
+
                   <div class="g-col-12">
-                  <?php  
+                  <?php
                     $all_patient_h=DB::table('tbl_consultation')
-                    ->join('tbl_prise_en_charge','tbl_consultation.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')              
+                    ->join('tbl_prise_en_charge','tbl_consultation.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')
                     ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
                     ->where('is_hospitalisation',1)
                     ->where([
                           ['id_lit',null],
                           ['tbl_prise_en_charge.id_centre',$centre_id],
-                      ]) 
+                      ])
                     ->select('tbl_prise_en_charge.*','tbl_patient.*','tbl_consultation.*')
                     ->groupBy('tbl_prise_en_charge.patient_id')
                     ->orderBy('etat_consultation','DESC')
-                    ->get(); 
+                    ->get();
                   ?>
                   <div class="table-responsive">
                     <table class="table m-0 align-middle">
                     <thead>
                       <tr>
-                       
+
                         <th>Patient</th>
                         <th>Mal/Maux</th>
                         <th>Spécialiste actuel</th>
                         <th></th>
-                        
+
                       </tr>
                     </thead>
                     <tbody>
-                    @foreach($all_patient_h as $v_consulted)    
+                    @foreach($all_patient_h as $v_consulted)
                       <tr>
-                       
+
                         <td>{{$v_consulted->nom_patient}}
                         {{$v_consulted->prenom_patient}}</td>
                         <td>{{$v_consulted->maux}}</td>
-                      
-                        <?php 
+
+                        <?php
                         $all_special=DB::table('users')
                               ->join('personnel','users.email','=','personnel.email')
                               ->join('user_roles','users.user_role_id','=','user_roles.user_role_id')
                               ->join('tbl_consultation','users.user_id','=','tbl_consultation.user_id')
                               ->select('users.*','personnel.*','user_roles.*','tbl_consultation.*')
                               ->where('users.user_id',$v_consulted->last_consult_user_id)
-                              ->where('id_centre',$centre_id) 
+                              ->where('id_centre',$centre_id)
                               ->first();
-                        ?>   
+                        ?>
                         <td>
                           {{$all_special->designation}}. {{$all_special->prenom}} {{$all_special->nom}}
                         </td>
-        
+
                         <td>
 
                            <form action="{{url('hospitaliser')}}" method="POST">
@@ -456,8 +459,8 @@
                             <select id="myDropdown" class="form-select btn btn-outline" name="id_lit">
                               <option selected>Vers</option>
                              <optgroup label="Chambre Ordinaire libre">
-                             
-                            <?php 
+
+                            <?php
 
                               $all_lists=DB::table('tbl_lits')
                               ->join('tbl_chambre','tbl_lits.id_chambre','=','tbl_chambre.id_chambre')
@@ -465,19 +468,19 @@
                               ->where([
                                       ['id_centre',$centre_id],
                                       ['is_vip',0],
-                                      ]) 
+                                      ])
                               ->select('tbl_chambre.*','tbl_lits.*')
-                              ->get(); 
-                              foreach ($all_lists as $v_lit){ ?>  
-                              <option value="{{$v_lit->id_chambre}}">CH {{$v_lit->libelle_chambre}} - 
+                              ->get();
+                              foreach ($all_lists as $v_lit){ ?>
+                              <option value="{{$v_lit->id_chambre}}">CH {{$v_lit->libelle_chambre}} -
                               {{$v_lit->lit}}
                               </option>
                             <?php } ?>
                              </optgroup>
 
                              <optgroup label="Chambre VIP libre">
-                             
-                            <?php 
+
+                            <?php
 
                               $all_lists_vip=DB::table('tbl_lits')
                               ->join('tbl_chambre','tbl_lits.id_chambre','=','tbl_chambre.id_chambre')
@@ -485,24 +488,24 @@
                               ->where([
                                       ['id_centre',$centre_id],
                                       ['is_vip',1],
-                                      ]) 
+                                      ])
                               ->select('tbl_chambre.*','tbl_lits.*')
-                              ->get(); 
-                              foreach ($all_lists_vip as $v_lit_vip){ ?>  
-                              <option value="{{$v_lit_vip->id_chambre}}">CH {{$v_lit_vip->libelle_chambre}} - 
+                              ->get();
+                              foreach ($all_lists_vip as $v_lit_vip){ ?>
+                              <option value="{{$v_lit_vip->id_chambre}}">CH {{$v_lit_vip->libelle_chambre}} -
                               {{$v_lit_vip->lit}}
                               </option>
                             <?php } ?>
                              </optgroup>
                             </select>
-                          </form>                        
+                          </form>
                             </td>
                           <?php ?>
                           </tr>
                         @endforeach
                         </tbody>
                       </table>
-                      <?php ?>   
+                      <?php ?>
                      </div>
                     </div>
                   </div>
@@ -514,7 +517,7 @@
 
             @endif
 
-            
+
 
 
 
@@ -756,7 +759,7 @@
         </div>
         <div class="modal-body">
       <form onsubmit="confirm('Cliquer OK pour confirmer')" class="row" action="{{ url('/save-chambre') }}" method="POST">
-          {{csrf_field()}}  
+          {{csrf_field()}}
         <div class="col-md-12 mb-3">
         <label for="validationServer07">Numéro de chambre</label>
           <input id="" type="number" class="form-control border-success" id="validationServer07" name="libelle_chambre">
@@ -821,7 +824,7 @@
     });
       $("select#myDropdown").change(function(){
       if(confirm('Cliquez OK pour hospitaliser le patient dans la chambre sélectionnée')){
-          {this.form.submit()} 
+          {this.form.submit()}
       }
       else $("select option:selected").prop("selected", false);
     });
