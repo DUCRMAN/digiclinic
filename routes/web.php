@@ -35,13 +35,12 @@ use App\Http\Controllers\SrayonController;
 // Route::post('signup', [AdminController::class,('store')])->name('users.storeform');
 
 //Backend routes......................................................
-Route::get('/', [AuthenticatedSessionController::class,('create')]);
-Route::post('login', [AuthenticatedSessionController::class,('store')]);
-Route::get('register', [RegisteredController::class, 'create']);
-Route::post('register', [RegisteredController::class, 'store']);
+Route::get('/', [AuthenticatedSessionController::class,('create')])->name('login.user.form');
+Route::post('login', [AuthenticatedSessionController::class,('store')])->name('login.user');
+Route::get('create-new-user', [RegisteredController::class, 'create'])->name('create.user');
+Route::post('save-new-user', [RegisteredController::class, 'store'])->name('store.user');
 Route::get('dashboard', [AdminController::class, 'index']);
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
-
 //Prise en charge
 Route::get('/prises-en-charges', [PriseEnChargeController::class,('index')]);
 Route::get('/enregistrer-prise-en-charge', [PriseEnChargeController::class,('record_prisenc')]);
@@ -132,12 +131,3 @@ Route::middleware(['auth','medecin_generaliste'])->group(function () {
     Route::resource('departement',DepartementController::class);
     Route::resource('personnel', PersonnelController::class);
 });
-//  Route::middleware(['auth','medecin_generaliste'])->group(function () {
-//      Route::get('/medecin/specialiste/dashboard', [AdminController::class, 'index'])->name('medecin.specialiste.dashboard');
-//    });
-//  Route::middleware(['auth','caisse'])->group(function () {
-//      Route::get('/caisse/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-//    });
-//  Route::middleware(['auth','acceuil'])->group(function () {
-//      Route::get('/accueil/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-//    });

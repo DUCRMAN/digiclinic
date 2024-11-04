@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title')</title>
+    <title>@yield('title')| DigiClinic</title>
 
     <!-- Meta -->
     <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
@@ -86,10 +86,10 @@
         <!-- App brand starts -->
         <div class="app-brand ms-3">
           <a href="index.html" class="d-lg-block d-none">
-            <img src="{{asset('/frontend/images/logo.svg')}}" class="logo" alt="Medicare Admin Template">
+            <img src="{{asset('/frontend/images/logo.png')}}" class="logo" alt="Medicare Admin Template">
           </a>
           <a href="index.html" class="d-lg-none d-md-block">
-            <img src="{{asset('/frontend/images/logo-sm.svg')}}" class="logo" alt="Medicare Admin Template">
+            <img src="{{asset('/frontend/images/logo.png')}}" class="logo" alt="Medicare Admin Template">
           </a>
         </div>
         <!-- App brand ends -->
@@ -253,7 +253,7 @@
             <a class="dropdown-toggle header-icon" href="#!" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
               @if($user_role_id == 9)
-              <?php 
+              <?php
                           $nbre_ostock=DB::table('tbl_products')
                                     ->where('stock',0)
                                     ->count();
@@ -268,22 +268,22 @@
               <?php ?>
               @endif
                 <i class="ri-alarm-warning-line"></i>
-                 
+
               </a>
               <div class="dropdown-menu dropdown-menu-end dropdown-300">
-               
+
 
                 <h5 class="fw-semibold px-3 py-2 text-primary">Alerts</h5>
 
-              
+
 
                 <!-- Scroll starts -->
                 <div class="scroll300">
-                @if($user_role_id == 9)
+
                   <!-- Alert list starts -->
                   <div class="p-3">
 
-                  <?php 
+                  <?php
                         $low_stock=DB::table('tbl_products')
                                     ->where('stock','<=',5)
                                     ->where('stock','!=',0)
@@ -303,21 +303,19 @@
                         <p style="color:red" class="small m-0 opacity-50">Stock : {{$v_lstok->stock}}</p>
                       </div>
                     </div>
-                    @endforeach
-                    <?php ?>
-                      
-                      
-                    </div>
-                    <!-- Alert list ends -->
-                  @endif
+                  @endforeach
+                  <?php ?>
+
+
                   </div>
+                  <!-- Alert list ends -->
+
+                </div>
                 <!-- Scroll ends -->
 
                 <!-- View all button starts -->
                 <div class="d-grid m-3">
-                  @if($user_role_id == 9)
                   <a href="{{URL::to('etat-stock')}}" class="btn btn-primary">Imprimer l'état stock</a>
-                  @endif
                 </div>
                 <!-- View all button ends -->
 
@@ -419,13 +417,13 @@
 
         <!-- Sidebar wrapper starts -->
         <nav id="sidebar" class="sidebar-wrapper">
-        <?php  
+        <?php
         $email=Session::get('email');
         $user=DB::table('personnel')
               ->where('email',$email)
               ->first();
         ?>
-           
+
           <!-- Sidebar profile starts -->
           <div class="sidebar-profile">
             @if($user->sexe == 'F')
@@ -443,13 +441,13 @@
           <!-- Sidebar menu starts -->
           <div class="sidebarMenuScroll">
             <ul class="sidebar-menu">
+              @if($user_role_id == 0)
               <li class="active current-page">
                 <a href="{{URL::to('/dashboard')}}">
                   <i class="ri-home-6-line"></i>
                   <span class="menu-text">Mon tableau de bord</span>
                 </a>
               </li>
-              @if($user_role_id == 0)
                <li class="treeview">
                 <a href="#!">
                   <i class="ri-stethoscope-line"></i>
@@ -463,6 +461,12 @@
               </li>
 
               @elseif($user_role_id == 1)
+              <li class="active current-page">
+                <a href="{{URL::to('/dashboard')}}">
+                  <i class="ri-home-6-line"></i>
+                  <span class="menu-text">Mon tableau de bord</span>
+                </a>
+              </li>
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-money-dollar-circle-line"></i>
@@ -476,28 +480,9 @@
                     <a href="{{URL::to('caisse-hospitalisations')}}">Caisses hospitalisations</a>
                   </li>
 
-
-
-                  <li>
-                    <a href="#!">
-                      Pharmacie
-                      <i class="ri-arrow-right-s-line"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                    <li>
-                    <a href="{{URL::to('all-category')}}">Produits en Pharmacie</a>
-                    </li>
-                    <li>
-                      <a href="{{URL::to('/les-ventes')}}">Ventes à Caisse</a>
-                    </li>
-                    <li>
-                      <a href="{{URL::to('approvisionnement')}}">Appro Pharmacie</a>
-                    </li>
-                    </ul>
-                  </li>
                 </ul>
               </li>
-              @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 )
+              @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 4 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 )
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-stethoscope-line"></i>
@@ -512,6 +497,12 @@
 
 
               @elseif($user_role_id == 9)
+              <li class="active current-page">
+                <a href="{{URL::to('/dashboard')}}">
+                  <i class="ri-home-6-line"></i>
+                  <span class="menu-text">Mon tableau de bord</span>
+                </a>
+              </li>
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-dossier-line"></i>
@@ -531,25 +522,39 @@
 
                 </ul>
               </li>
-              @elseif($user_role_id == 4 )
-              <li class="treeview">
-                <a href="#!">
-                  <i class="ri-stethoscope-line"></i>
-                  <span class="menu-text">{{Session::get('role')}}</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="{{URL::to('gestion-analyses')}}">Gestion analyses</a>
-                  </li>
-                </ul>
-              </li>
               @else
 
               <!-- Admin sidebar -->
               <!-- Admin sidebar -->
               <!-- Admin sidebar -->
 
+              <li class="active current-page">
+                <a href="{{URL::to('/dashboard')}}">
+                  <i class="ri-home-6-line"></i>
+                  <span class="menu-text">Espace de l'hopital</span>
+                </a>
+              </li>
+              <li>
+                <a href="dashboard2.html">
+                  <i class="ri-microscope-line fs-4"></i>
+                  <span class="menu-text">Espace labo</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="#!">
+                  <i class="ri-stethoscope-line"></i>
+                  <span class="menu-text">Espace Médecins</span>
+                </a>
+                {{-- <ul class="treeview-menu">
+                  <li>
+                    <a href="{{url('generaliste.profil')}}">Mes informations personnelles</a>
+                  </li>
+                  <li>
+                    <a href="add-doctors.html">Modifier mes informations</a>
+                  </li>
 
+                </ul> --}}
+              </li>
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-nurse-line"></i>
@@ -557,15 +562,12 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{URL::to('personnel.index')}}">Liste du Peronnel</a>
+                    <a href="{{route('personnel.index')}}">Liste du Peronnel</a>
                   </li>
                   <li>
-                    <a href="{{URL::to('personnel.create')}}">Ajouter </a>
+                    <a href="{{route('personnel.create')}}">Ajouter </a>
                   </li>
-                  <li>
-                    <a href="edit-staff.html">Editer</a>
-                  </li>
-                </ul>
+                  </ul>
               </li>
               <li class="treeview">
                 <a href="#!">
@@ -574,30 +576,26 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{URL::to('services.index')}}">Répertoire des services</a>
+                    <a href="{{route('services.index')}}">Répertoire des services</a>
                   </li>
                   <li>
-                    <a href="{{URL::to('services.create')}}">Créer un nouveau service</a>
+                    <a href="{{route('services.create')}}">Créer un nouveau service</a>
                   </li>
-                  <li>
-                    <a href="{{url('services.edit')}}">Modifier un service</a>
-                  </li>
+
                 </ul>
               </li>
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-building-2-line"></i>
-                  <span class="menu-text">Departements</span>
+                  <i class="ri-login-circle-line"></i>
+                  <span class="menu-text">Comptes utilsateurs</span>
                 </a>
                 <ul class="treeview-menu">
+
                   <li>
-                    <a href="{{URL::to('departement.index')}}">Liste des departments</a>
+                    <a href="{{route('create.user')}}">Créer un nouveau compte</a>
                   </li>
-                  <li>
-                    <a href="{{URL::to('departement.create')}}">Ajouter un department</a>
-                  </li>
-                  <li>
-                    <a href="edit-department.html">Editer un department</a>
+                 <li>
+                    <a href="reset-password.html">Réinitialiser un mot de passe</a>
                   </li>
                 </ul>
               </li>
@@ -606,12 +604,11 @@
 
 
 
-
               <!-- Accueil sidebar -->
               <!-- Accueil sidebar -->
 
-             
-              <li class="treeview">
+
+              {{-- <li class="treeview">
                 <a href="#!">
                   <i class="ri-heart-pulse-line"></i>
                   <span class="menu-text">Les Patients</span>
@@ -625,9 +622,9 @@
                     <a href="{{URL::to('patient.create')}}">Nouveau patient</a>
                   </li>
                  </ul>
-              </li>
+              </li> --}}
 
-              <li class="treeview">
+              {{-- <li class="treeview">
                 <a href="#!">
                   <i class="ri-dossier-line"></i>
                   <span class="menu-text">Rendez-vous</span>
@@ -641,13 +638,13 @@
                   </li>
 
                 </ul>
-              </li>
-              <li>
+              </li> --}}
+              {{-- <li>
                 <a href="events.html">
                   <i class="ri-calendar-line"></i>
                   <span class="menu-text">Gestion d'evenements</span>
                 </a>
-              </li>
+              </li> --}}
 
 
               <!-- Doctor sidebar -->
@@ -657,25 +654,10 @@
               <!-- Doctor sidebar -->
 
 
-              <li class="treeview">
-                <a href="#!">
-                  <i class="ri-stethoscope-line"></i>
-                  <span class="menu-text">Médecin</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="{{url('generaliste.profil')}}">Mes informations personnelles</a>
-                  </li>
-                  <li>
-                    <a href="add-doctors.html">Modifier mes informations</a>
-                  </li>
-
-                </ul>
-              </li>
-              <li class="treeview">
+              {{-- <li class="treeview">
                 <a href="#!">
                   <i class="ri-heart-pulse-line"></i>
-                  <span class="menu-text">Mes Patients</span>
+                  <span class="menu-text">Espaces Patients</span>
                 </a>
                 <ul class="treeview-menu">
 
@@ -689,8 +671,8 @@
                     <a href="edit-patient.html">Demander une analyse</a>
                   </li>
                 </ul>
-              </li>
-              <li class="treeview">
+              </li> --}}
+              {{-- <li class="treeview">
                 <a href="#!">
                   <i class="ri-nurse-line"></i>
                   <span class="menu-text">Rendez-vous</span>
@@ -736,7 +718,7 @@
                   </li>
 
                 </ul>
-              </li>
+              </li> --}}
 
               <!-- General sidebar -->
               <!-- General sidebar -->
@@ -745,7 +727,7 @@
               <!-- General sidebar -->
               <!-- General sidebar -->
 
-              <li class="treeview">
+              {{-- <li class="treeview">
                 <a href="#!">
                   <i class="ri-stethoscope-line"></i>
                   <span class="menu-text">Médecin</span>
@@ -824,7 +806,7 @@
                   </li>
 
                 </ul>
-              </li>
+              </li> --}}
               @endif
 
 
@@ -835,8 +817,8 @@
 
           <!-- Sidebar contact starts -->
           <div class="sidebar-contact">
-            <p class="fw-light mb-1 text-nowrap text-truncate">Emergency Contact</p>
-            <h5 class="m-0 lh-1 text-nowrap text-truncate">0987654321</h5>
+            <p class="fw-light mb-1 text-nowrap text-truncate">Numéro Support</p>
+            <h5 class="m-0 lh-1 text-nowrap text-truncate">+229 90006005</h5>
             <i class="ri-phone-line"></i>
           </div>
           <!-- Sidebar contact ends -->
@@ -857,7 +839,7 @@
                 <a href="index.html">Home</a>
               </li>
               <li class="breadcrumb-item text-primary" aria-current="page"><a href="{{URL::to('/dashboard')}}">
-                Dashboard</a>
+                Tableau de bord</a>
               </li>
             </ol>
             <!-- Breadcrumb ends -->
@@ -880,16 +862,21 @@
           <!-- App Hero header ends -->
 
           <!-- App body starts -->
-                 
 
-                @yield('admin_content')
 
-               
+                @yield('user_content')
+                @yield('admin')
+                @yield('staff content')
+                @yield('add staff content')
+                @yield('service content')
+                @yield('add service content')
+
+
           <!-- App body ends -->
 
           <!-- App footer starts -->
           <div class="app-footer bg-white">
-            <span>© Medflex admin 2024</span>
+            <span>© DigiClinic 2024</span>
           </div>
           <!-- App footer ends -->
 
