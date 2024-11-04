@@ -584,6 +584,35 @@
 
                 </ul>
               </li>
+               <li class="treeview">
+                <a href="#!">
+                  <i class="ri-hotel-bed-line"></i>
+                  <span class="menu-text">Chambres</span>
+                </a>
+                <ul class="treeview-menu">
+                  {{-- <li>
+                    <a href="room-statistics.html">Statistics</a>
+                  </li> --}}
+                  <li>
+                    <a href="{{route('room.index')}}">Chambres par départements</a>
+                  </li>
+                  <li>
+                    <a href="rooms-allotted.html">Chambres occupées</a>
+                  </li>
+                  <li>
+                    <a href="available-rooms.html">Chambre disponible</a>
+                  </li>
+                  <li>
+                    <a href="book-room.html">Book Room</a>
+                  </li>
+                  <li>
+                    <a href="add-room.html">Ajout chambres</a>
+                  </li>
+                  <li>
+                    <a href="edit-room.html">Edit Room</a>
+                  </li>
+                </ul>
+              </li>
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-login-circle-line"></i>

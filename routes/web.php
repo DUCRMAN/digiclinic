@@ -1,20 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\RayonController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SrayonController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\PriseEnChargeController;
 use App\Http\Controllers\Auth\RegisteredController;
 use App\Http\Controllers\MedecinGeneralistController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\PriseEnChargeController;
-use App\Http\Controllers\ConsultationController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SalesController;
-use App\Http\Controllers\RayonController;
-use App\Http\Controllers\SrayonController;
 
 
 /*
@@ -56,7 +57,8 @@ Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
 //Chambre
 Route::post('save-chambre', [PriseEnChargeController::class,('save_chambre')]);
 Route::post('hospitaliser', [PriseEnChargeController::class,('hospitaliser')]);
-
+// Chambre
+Route::resource('room', RoomController::class);
 
 
 
