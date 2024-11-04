@@ -62,4 +62,14 @@ class RoomController extends Controller
     {
         //
     }
+
+    public function available()
+    {
+        return view('room.available-room');
+    }
+
+    public function allotted()
+    {
+        return view('room.allotted-room');
+    }
 }

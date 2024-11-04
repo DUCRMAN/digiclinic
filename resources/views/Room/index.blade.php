@@ -27,13 +27,13 @@
                           <thead>
                             <tr>
                               <th width="60px">&nbsp;</th>
-                              <th width="100px">Department</th>
+                              <th width="100px">Type de chambre</th>
                               <th width="100px">Total</th>
+                              <th width="100px">Nombre de lits </th>
                               <th width="100px">Occupées</th>
                               <th width="100px">Réservées</th>
                               <th width="100px">Disponibles</th>
                               <th width="100px">LIbérées</th>
-                              <th width="100px">Autres </th>
                               <th width="100px">Actions</th>
                             </tr>
                           </thead>
@@ -42,7 +42,7 @@
                               <td>
                                 <img src="{{asset('frontend/images/products/1.jpg')}}" alt="Bootstrap Themes" class="rounded-2 img-3x">
                               </td>
-                              <td>Cardiologie</td>
+                              <td>VIP</td>
                               <td>
                                 <span class="badge bg-primary text-white">25</span>
                               </td>
@@ -51,8 +51,8 @@
                                   9</span>
                               </td>
                               <td>
-                                <span class="badge border border-danger text-danger"><i class="ri-circle-fill"></i>
-                                  3</span>
+                                <a href="{{route('allotted-room')}}"><span class="badge border border-danger text-danger"><i class="ri-circle-fill"></i>
+                                  3</span></a>
                               </td>
                               <td>
                                 <span class="badge border border-info text-info"><i class="ri-circle-fill"></i>
@@ -67,14 +67,14 @@
                                   4</span>
                               </td>
                               <td>
-                                <a href="available-rooms.html" class="btn btn-primary">Voir les chambres</a>
+                                <a href="{{route('available-room')}}" class="btn btn-primary">Voir les détails</a>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <img src="{{asset('frontend/images/products/3.jpg')}}" alt="Bootstrap Themes" class="rounded-2 img-3x">
                               </td>
-                              <td>Orthopedics</td>
+                              <td>Ordinaire</td>
                               <td>
                                 <span class="badge bg-primary text-white">21</span>
                               </td>
@@ -83,8 +83,8 @@
                                   6</span>
                               </td>
                               <td>
-                                <span class="badge border border-danger text-danger"><i class="ri-circle-fill"></i>
-                                  5</span>
+                                <a href="{{route('allotted-room')}}"><span class="badge border border-danger text-danger"><i class="ri-circle-fill"></i>
+                                  5</span></a>
                               </td>
                               <td>
                                 <span class="badge border border-info text-info"><i class="ri-circle-fill"></i>
@@ -99,10 +99,10 @@
                                   3</span>
                               </td>
                               <td>
-                                <a href="available-rooms.html" class="btn btn-primary">Voir les chambres</a>
+                                <a href="{{route('available-room')}}" class="btn btn-primary">Voir les détails</a>
                               </td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                               <td>
                                 <img src="{{asset('frontend/images/products/4.jpg')}}" alt="Bootstrap Themes" class="rounded-2 img-3x">
                               </td>
@@ -131,7 +131,7 @@
                                   2</span>
                               </td>
                               <td>
-                                <a href="available-rooms.html" class="btn btn-primary">Voir les chambres</a>
+                                <a href="available-rooms.html" class="btn btn-primary">Voir les détails</a>
                               </td>
                             </tr>
                             <tr>
@@ -163,7 +163,7 @@
                                   7</span>
                               </td>
                               <td>
-                                <a href="available-rooms.html" class="btn btn-primary">Voir les chambres</a>
+                                <a href="available-rooms.html" class="btn btn-primary">Voir les détails</a>
                               </td>
                             </tr>
                             <tr>
@@ -195,9 +195,9 @@
                                   3</span>
                               </td>
                               <td>
-                                <a href="available-rooms.html" class="btn btn-primary">Voir les chambres</a>
+                                <a href="available-rooms.html" class="btn btn-primary">Voir les détails</a>
                               </td>
-                            </tr>
+                            </tr> --}}
                           </tbody>
                         </table>
                       </div>

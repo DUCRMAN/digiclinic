@@ -59,6 +59,8 @@ Route::post('save-chambre', [PriseEnChargeController::class,('save_chambre')]);
 Route::post('hospitaliser', [PriseEnChargeController::class,('hospitaliser')]);
 // Chambre
 Route::resource('room', RoomController::class);
+Route::get('available/room', [RoomController::class,('available')])->name('available-room');
+Route::get('allotted/room', [RoomController::class,('allotted')])->name('allotted-room');
 
 
 
