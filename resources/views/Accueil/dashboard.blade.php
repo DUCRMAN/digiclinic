@@ -13,7 +13,7 @@ Admin
             <!-- Row starts -->
             <div class="row gx-3">
               <div class="col-xxl-12 col-sm-12">
-                <div class="card mb-3 <?php if ($user_role_id == 0 || $user_role_id == 1) {
+                <div class="card mb-3 <?php if ($user_role_id == 0) {
                   echo "bg-2"; }else{ echo "bg-3"; } ; ?> ">
                   <div class="card-body">
                     <div class="mh-230">
@@ -41,7 +41,10 @@ Admin
 
 
                               <p class="m-0"> Prises en charges</p>
-                            <?php  ?>
+                              
+                            <?php  
+                            
+                            ?>
                             </div>
                           </div>
                           <div class="d-flex align-items-center">
@@ -220,10 +223,57 @@ Admin
                               <h2 class="m-0 lh-1">{{$nbr_analyse_t}}</h2>
 
 
-                              <p class="m-0"> Analyses traités traités  </p>
+                              <p class="m-0"> Analyses Effectuées  </p>
                             <?php  ?>
                             </div>
                           </div>
+                           @elseif($user_role_id == 10)
+
+                        <div class="mt-4 d-flex gap-3">
+                          <div class="d-flex align-items-center">
+                            <div class="icon-box lg bg-arctic rounded-3 me-3">
+                              <i class="ri-surgical-mask-line fs-4"></i>
+                            </div>
+                            <div class="d-flex flex-column">
+                              @php
+                                  $nbre_patie_jr=DB::table('tbl_analyse')
+                                              ->where('statut_analyse',1)
+                                              ->whereDate('created_at', '=',
+                                              date('Y-m-d'))
+                                              ->count()
+                              @endphp
+                              <h2 class="m-0 lh-1">{{$nbre_patie_jr}}</h2>
+                              <p class="m-0">Patients</p>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div class="icon-box lg bg-lime rounded-3 me-3">
+                              <i class="ri-lungs-line fs-4"></i>
+                            </div>
+                            <div class="d-flex flex-column">
+                              <h2 class="m-0 lh-1">3</h2>
+                              <p class="m-0">Opérations</p>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div class="icon-box lg bg-peach rounded-3 me-3">
+                              <i class="ri-walk-line fs-4"></i>
+                            </div>
+                            @php
+                                $patient_trait_jr=DB::table('tbl_consultation')
+                                          ->where('etat_traitement',1)
+                                          // ->where('user_id',$user_id)
+                                          ->whereDate('conslt_created_at','=',
+                                          date('Y-m-d'))
+                                          ->count();
+                            @endphp
+                            <div class="d-flex flex-column">
+                              <h2 class="m-0 lh-1">{{$patient_trait_jr}} </h2>
+                              <p class="m-0">Traité</p>
+                            </div>
+                          </div>
+                        </div>
+
 
                         @endif
 
@@ -234,34 +284,233 @@ Admin
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-xxl-3 col-sm-12">
-                <div class="card mb-3 bg-lime">
-                  <div class="card-body">
-                    <div class="mh-230 text-white">
-                      <h5>Activity</h5>
-                      <div class="text-body chart-height-md">
-                        <div id="docActivity"></div>
+             
+            </div>
+            <!-- Row ends -->
+
+            <!-- Row ends -->
+            @if ($user_role_id==10 )
+              <!-- Row starts -->
+              <div class="row gx-3">
+                <div class="col-xl-3 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="p-2 border border-success rounded-circle me-3">
+                          <div class="icon-box md bg-success-subtle rounded-5">
+                            <i class="ri-surgical-mask-line fs-4 text-success"></i>
+                          </div>
+                        </div>
+                        @php
+                            $nbr_patien_moi=DB::table('tbl_patient')
+                                          ->whereMonth('pcreated_at', '=',
+                                          date('m'))
+                                          ->whereYear('pcreated_at', '=',
+                                          date('Y'))
+                                          ->count();
+                        @endphp
+                        <div class="d-flex flex-column">
+                          <h2 class="lh-1">{{$nbr_patien_moi}}</h2>
+                          <p class="m-0">Nouveaux Patients</p>
+                        </div>
                       </div>
-                      <div class="text-center">
-                        <span class="badge bg-danger">60%</span> patients are higher<br>than last week.
+                      <div class="d-flex align-items-end justify-content-between mt-1">
+                        <a class="text-success" href="javascript:void(0);">
+                          <span>Tout voir</span>
+                          <i class="ri-arrow-right-line text-success ms-1"></i>
+                        </a>
+                        <div class="text-end">
+                          <p class="mb-0 text-success">+40%</p>
+                          <span class="badge bg-success-subtle text-success small">Ce mois</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div> -->
-            </div>
-            <!-- Row ends -->
+                <div class="col-xl-3 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="p-2 border border-primary rounded-circle me-3">
+                          <div class="icon-box md bg-primary-subtle rounded-5">
+                            <i class="ri-lungs-line fs-4 text-primary"></i>
+                          </div>
+                        </div>
+                        @php
+                            $patient_trait_moi=DB::table('tbl_consultation')
+                                        ->whereMonth('conslt_created_at', '=',
+                                        date('m'))
+                                        ->whereYear('conslt_created_at', '=',
+                                        date('Y'))
+                                        ->where('etat_traitement', 1)
+                                        ->count();
+                        @endphp
+                        <div class="d-flex flex-column">
+                          <h2 class="lh-1">{{$patient_trait_moi}} </h2>
+                          <p class="m-0">Patients traités</p>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-end justify-content-between mt-1">
+                        <a class="text-primary" href="javascript:void(0);">
+                          <span>Tout voir</span>
+                          <i class="ri-arrow-right-line ms-1"></i>
+                        </a>
+                        <div class="text-end">
+                          <p class="mb-0 text-primary">+30%</p>
+                          <span class="badge bg-primary-subtle text-primary small">this month</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="p-2 border border-danger rounded-circle me-3">
+                          <div class="icon-box md bg-danger-subtle rounded-5">
+                            <i class="ri-microscope-line fs-4 text-danger"></i>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <h2 class="lh-1">980</h2>
+                          <p class="m-0">Analyses effectuées</p>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-end justify-content-between mt-1">
+                        <a class="text-danger" href="javascript:void(0);">
+                          <span>Tout voir</span>
+                          <i class="ri-arrow-right-line ms-1"></i>
+                        </a>
+                        <div class="text-end">
+                          <p class="mb-0 text-danger">+60%</p>
+                          <span class="badge bg-danger-subtle text-danger small">this month</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="p-2 border border-warning rounded-circle me-3">
+                          <div class="icon-box md bg-warning-subtle rounded-5">
+                            <i class="ri-money-dollar-circle-line fs-4 text-warning"></i>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <h2 class="lh-1">$98000</h2>
+                          <p class="m-0">Total Earnings</p>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-end justify-content-between mt-1">
+                        <a class="text-warning" href="javascript:void(0);">
+                          <span>View All</span>
+                          <i class="ri-arrow-right-line ms-1"></i>
+                        </a>
+                        <div class="text-end">
+                          <p class="mb-0 text-warning">+20%</p>
+                          <span class="badge bg-warning-subtle text-warning small">this month</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Row ends -->
 
-            <!-- Row starts -->
-            @if($user_role_id == 1)
+              <!-- Row starts -->
+              <div class="row gx-3">
+                <div class="col-xl-2 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <div class="icon-box md rounded-5 bg-primary mb-3">
+                          <i class="ri-verified-badge-line fs-4 lh-1"></i>
+                        </div>
+                        <h6>Rendez-vous</h6>
+                        <h2 class="text-primary m-0">639</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-2 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <div class="icon-box md rounded-5 bg-primary mb-3">
+                          <i class="ri-stethoscope-line fs-4 lh-1"></i>
+                        </div>
+                        <h6>Docteurs</h6>
+                        <h2 class="text-primary m-0">83</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-2 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <div class="icon-box md rounded-5 bg-primary mb-3">
+                          <i class="ri-psychotherapy-line fs-4 lh-1"></i>
+                        </div>
+                        <h6>Personnel</h6>
+                        <h2 class="text-primary m-0">296</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-2 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <div class="icon-box md rounded-5 bg-primary mb-3">
+                          <i class="ri-lungs-line fs-4 lh-1"></i>
+                        </div>
+                        <h6>Operations</h6>
+                        <h2 class="text-primary m-0">49</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-2 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <div class="icon-box md rounded-5 bg-primary mb-3">
+                          <i class="ri-hotel-bed-line fs-4 lh-1"></i>
+                        </div>
+                        <h6>Hospitalisés</h6>
+                        <h2 class="text-primary m-0">372</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-2 col-sm-6 col-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <div class="icon-box md rounded-5 bg-primary mb-3">
+                          <i class="ri-walk-line fs-4 lh-1"></i>
+                        </div>
+                        <h6>Libérés</h6>
+                        <h2 class="text-primary m-0">253</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Row ends -->
 
-            @elseif($user_role_id == 0)
+             @elseif($user_role_id ==0)
+
             <div class="row gx-3">
               <div class="col-xxl-6 col-sm-6">
                 <div class="card mb-3">
                   <div class="card-header">
                     <h5 class="card-title">Hospitalisations
-                    <a href="{{URL::to('/chambres')}}" class="float-right btn btn-warnig">
+                    <a href="{{route('room.index')}}" class="float-right btn btn-warnig">
                       <span class="badge rounded-pill bg-success"><i class="ri-menu-line"></i></span>
                       <i class="ri-hotel-bed-line"></i>
                     </a>
@@ -390,8 +639,6 @@ Admin
                 </div>
               </div>
 
-
-
                <div class="col-xxl-6 col-sm-6">
                 <div class="card mb-3">
                   <div class="card-header">
@@ -512,10 +759,12 @@ Admin
                 </div>
               </div>
             </div>
+            @endif
+{{--              
             @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 4 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 )
             @elseif($user_role_id == 9)
 
-            @endif
+            @endif --}}
 
 
 
@@ -764,7 +1013,25 @@ Admin
         <label for="validationServer07">Numéro de chambre</label>
           <input id="" type="number" class="form-control border-success" id="validationServer07" name="libelle_chambre">
           <div class="text-success small mt-1">
-            Looks good!
+           
+          </div>
+        </div>
+
+          <div class="col-md-12 mb-3">
+        <label for="validationServer07">Services</label>
+          <select class="form-control" name="service">
+            @php
+                $all_services = DB::table('services')
+                              ->where('id_centre',$centre_id)
+                              ->get();
+            @endphp
+            <option value="">------</option>
+                @foreach($all_services as $serv_room)
+            <option value="{{ $serv_room->id }}"> {{ $serv_room->service }}</option>
+                 @endforeach
+          </select>
+          <div class="text-success small mt-1">
+            
           </div>
         </div>
 
@@ -772,7 +1039,7 @@ Admin
         <label for="validationServer07">Nombre de lits</label>
           <input id="" type="number" class="form-control border-success" id="validationServer07" name="nbre_lit">
           <div class="text-success small mt-1">
-            Looks good!
+          
           </div>
         </div>
 
@@ -784,7 +1051,7 @@ Admin
             <option value="F">Femme</option>
           </select>
           <div class="text-success small mt-1">
-            Looks good!
+            
           </div>
         </div>
         <label>Chambre VIP ?</label>

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
+use Alert;
+use Carbon\Carbon;
+use App\Http\Requests;
+use GuzzleHttp\Client;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use App\libraries\Configuration;
+use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Generator;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect; 
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use Session;
-use Alert;
-use Mail;
-use DB;
-use SimpleSoftwareIO\QrCode\Generator;
-use GuzzleHttp\Client;
-use App\libraries\Configuration;
 Use App\libraries\Api\SfeInvoiceApi;
 Use App\libraries\Api\SfeInfoApi;
 Use App\libraries\Model\InvoiceTypeEnum;

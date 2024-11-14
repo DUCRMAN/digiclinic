@@ -1,52 +1,15 @@
-@extends('layouts/app')
-@section('staff content')
+@extends('layout')
+@section('user_content')
+@section('title')
+Espace du personnel
+@endsection
+<?php  
+ $user_role_id=Session::get('user_role_id');
+ $user_id=Session::get('user_id');
+ $centre_id=Session::get('centre_id');
+?>
 
-
-      <!-- App header ends -->
-
-      <!-- Main container starts -->
-      <div class="main-container">
-
-        <!-- Sidebar wrapper starts -->
-       @include('layouts/partials/_sidebar')
-        <!-- Sidebar wrapper ends -->
-
-        <!-- App container starts -->
-        <div class="app-container">
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Staff List
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Today</button>
-                <button class="btn btn-sm">7d</button>
-                <button class="btn btn-sm">2w</button>
-                <button class="btn btn-sm">1m</button>
-                <button class="btn btn-sm">3m</button>
-                <button class="btn btn-sm">6m</button>
-                <button class="btn btn-sm">1y</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
-          <!-- App Hero header ends -->
-
-          <!-- App body starts -->
+            <!-- App body starts -->
           <div class="app-body">
 
             <!-- Row starts -->
@@ -74,14 +37,27 @@
                           </tr>
                         </thead>
                         <tbody>
+                        @php
+                          $personnels = DB::table('personnel')
+                                      ->get();
+                          $services = DB::table('services')
+                                      ->get();
+                        @endphp
                             @foreach ($personnels as $personnel)
 
 
                           <tr>
                             <td>{{$personnel->id}}</td>
+                            
                             <td>
-                              <img src="assets/images/user.png" class="img-shadow img-2x rounded-5 me-1"
-                                alt="Doctors Admin Template">
+                             
+                                  @if($personnel->sexe == 'F')
+                                  <img src="{{asset('frontend/F.png')}}" class="img-shadow img-2x rounded-5 me-1"
+                                    alt="Doctors Admin Template">
+                                  @else
+                                   <img src="{{asset('frontend/M.png')}}" class="img-shadow img-2x rounded-5 me-1"
+                                    alt="Doctors Admin Template">
+                                  @endif
                              {{$personnel->nom}} {{$personnel->prenom}}
 
                             </td>

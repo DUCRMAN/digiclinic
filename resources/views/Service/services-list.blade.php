@@ -1,46 +1,10 @@
-@extends('layouts.app')
-@section('main content')
-      <!-- Main container starts -->
-      <div class="main-container">
+@extends('layout')
+@section('service content')
+<?php  
+ $user_role_id=Session::get('user_role_id');
+ $user_id=Session::get('user_id');
+?>
 
-        <!-- Sidebar wrapper starts -->
-        @include('layouts/partials/_sidebar')
-        <!-- Sidebar wrapper ends -->
-
-        <!-- App container starts -->
-        <div class="app-container">
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Repertoire des services
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Today</button>
-                <button class="btn btn-sm">7d</button>
-                <button class="btn btn-sm">2w</button>
-                <button class="btn btn-sm">1m</button>
-                <button class="btn btn-sm">3m</button>
-                <button class="btn btn-sm">6m</button>
-                <button class="btn btn-sm">1y</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
-          <!-- App Hero header ends -->
 
           <!-- App body starts -->
           <div class="app-body">
@@ -80,7 +44,7 @@
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="card-title">Répertoire des services</h5>
 
-                    <a href="{{route('services.create')}}" class="btn btn-primary ms-auto">Ajouter un département</a>
+                    <a href="{{route('services.create')}}" class="btn btn-primary ms-auto">Créer un nouveau service</a>
                   </div>
                   <div class="card-body">
                     @if (session()->has('ServiceDeleted'))
@@ -95,39 +59,50 @@
                       <table id="basicExample" class="table m-0 align-middle">
                         <thead>
                           <tr>
-                            <th>Code Service</th>
-                            <th>Nom du Service</th>
-                            <th>Spécialité</th>
+                            <th>#</th>
+                            <th>Service</th>
+                            {{-- <th>Nombre de chambre</th> --}}
                             <th>Chef service</th>
                             <th>Liste des médécins</th>
                             <th>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                            @foreach ($services as $service)
+                          <tbody>
+                          @php
+                            
+                             $all_services = DB::table('services')
+                                          ->join('personnel', 'services.chef_service','=','personnel.id')
+                                          ->select('services.*','personnel.nom as chef_service_nom','personnel.prenom as chef_service_prenom')
+                                          ->get();             
+
+                          @endphp
+                            @foreach ($all_services as $service)
 
 
                           <tr>
-                            <td>{{$service->code_serve}}</td>
-                            <td>{{$service->libelle}}</td>
-                            <td>{{$service->specialite}}</td>
+                            <td>{{$service->id}}</td>
+                            <td>{{$service->service}}</td>
+                            
                             <td>
-                              <img src="assets/images/user.png" class="img-shadow img-2x rounded-5 me-1"
+                              <img src="{{asset('frontend/images/user.png')}}" class="img-shadow img-2x rounded-5 me-1"
                                 alt="Doctors Admin Template">
-                              @if($service->chef)
-                         Dr. {{ $service->chef->name }} {{ $service->chef->prenom }}
+                             
+                         {{-- Dr. {{ $service->chef_service_prenom }} {{ $service->chef_service_nom }} --}}
+                           <a href="{{ route('entitie.directeur.show',['id' => $service->chef_service,
+                            'nom' => $service->chef_service_nom, 
+                            'prenom' => $service->chef_service_prenom])  }}">  
+                            Dr. {{ $service->chef_service_nom }} {{ $service->chef_service_prenom }}</a> 
 
-
-                                @else
-
-                                Nommer un chef à ce service
-                        @endif
                             </td>
                             <td>
                               <div class="stacked-images">
-                                <img src="assets/images/user.png" alt="Medical Dashboard">
-                                <img src="assets/images/user2.png" alt="Medical Dashboard">
-                                <img src="assets/images/user3.png" alt="Medical Dashboard">
+                                <img src="{{asset('frontend/F.png')}}" alt="Medical Dashboard">
+                                <img src="{{asset('frontend/M.png')}}" alt="Medical Dashboard">
+                                <img src="{{asset('frontend/F.png')}}" alt="Medical Dashboard">
+                                @php
+                                    $doctor = DB::table('')
+                                @endphp
                                 <span class="plus bg-primary">+5</span>
                               </div>
                             </td>
@@ -154,7 +129,7 @@
                               </div>
                             </td>
                           </tr>
-@endforeach
+                      @endforeach
                         </tbody>
                       </table>
                     </div>

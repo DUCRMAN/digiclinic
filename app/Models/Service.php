@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Personnel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,17 +13,16 @@ class Service extends Model
     protected $table ='services';
 
     protected $fillable = [
-        'code_serve',
-        'libelle',
-        'telephone',
+        'nom',
         'email',
+        'telephone',
+        'nbre_chambre',
         'status',
-        'room_number',
-        'specialite',
-    'chief_service_id'    ];
+        'personnel_id'    
+    ];
 
     public function chef()
     {
-        return $this->belongsTo(User::class,  'chief_service_id');
+        return $this->belongsTo(Personnel::class,  'personnel_id');
     }
 }

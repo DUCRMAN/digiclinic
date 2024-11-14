@@ -1,49 +1,14 @@
-@extends('layouts/app')
+@extends('layout')
+@section('user_content')
+@section('title')
+Dossier médical
+@endsection
+<?php  
+ $user_role_id=Session::get('user_role_id');
+ $user_id=Session::get('user_id');
+ $centre_id=Session::get('centre_id');
+?>
 
-@section('Doctor content')
-
-
-      <!-- Main container starts -->
-      <div class="main-container">
-
-        <!-- Sidebar wrapper starts -->
-       @include('layouts/partials/_general-sidebar')
-        <!-- Sidebar wrapper ends -->
-
-        <!-- App container starts -->
-        <div class="app-container">
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Patients Dashboard
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Today</button>
-                <button class="btn btn-sm">7d</button>
-                <button class="btn btn-sm">2w</button>
-                <button class="btn btn-sm">1m</button>
-                <button class="btn btn-sm">3m</button>
-                <button class="btn btn-sm">6m</button>
-                <button class="btn btn-sm">1y</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
-          <!-- App Hero header ends -->
 
           <!-- App body starts -->
           <div class="app-body">
@@ -53,7 +18,7 @@
               <div class="col-sm-12">
                 <div class="card mb-3">
                   <div class="card-body">
-
+                 
                     <div class="d-flex ">
                       <!-- Stats starts -->
                       <div class="d-flex align-items-center flex-wrap gap-4">
@@ -62,8 +27,8 @@
                             <i class="ri-account-circle-line fs-3"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">Carole</h4>
-                            <p class="m-0">Patient Name</p>
+                            <h4 class="mb-1">{{ $patient_datas->nom_patient}} {{ $patient_datas->prenom_patient }}</h4>
+                            <p class="m-0">Nom du patient</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center">
@@ -71,8 +36,8 @@
                             <i class="ri-women-line fs-3"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">Female</h4>
-                            <p class="m-0">Gender</p>
+                            <h4 class="mb-1">{{ $patient_datas->sexe_patient }}</h4>
+                            <p class="m-0">Sexe</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center">
@@ -80,8 +45,13 @@
                             <i class="ri-arrow-right-up-line fs-3"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">68</h4>
-                            <p class="m-0">Patient Age</p>
+                            <h4 class="mb-1">{{ $patient_datas->datenais }}</h4>
+                            @if($patient_datas->sexe_patient == 'F')
+                              <p class="m-0">Née le </p>
+                            @else
+                              <p class="m-0">Né le </p>
+                            @endif
+                            
                           </div>
                         </div>
                         <div class="d-flex align-items-center">
@@ -89,8 +59,8 @@
                             <i class="ri-contrast-drop-2-line fs-3"></i>
                           </div>
                           <div>
-                            <h4 class="mb-1">O+</h4>
-                            <p class="m-0">Blood Type</p>
+                            <h4 class="mb-1">{{ $patient_datas->gsang }}</h4>
+                            <p class="m-0">Groupe sanguin</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center">
@@ -99,14 +69,19 @@
                           </div>
                           <div>
                             <h4 class="mb-1">Dr. David</h4>
-                            <p class="m-0">Consulting Doctor</p>
+                            <p class="m-0">Médécin traitant</p>
                           </div>
                         </div>
                       </div>
                       <!-- Stats ends -->
-
-                      <img src="assets/images/patient4.png" class="img-7x rounded-circle ms-auto"
+                      @if($patient_datas->sexe_patient == 'F')
+                        <img src="{{asset ('frontend/F.png') }}" class="img-7x rounded-circle ms-auto"
                         alt="Patient Admin Template">
+                      @else
+                         <img src="{{asset ('frontend/F.png') }}" class="img-7x rounded-circle ms-auto"
+                        alt="Patient Admin Template">
+                      @endif
+                      
                     </div>
                   </div>
                 </div>
@@ -124,8 +99,8 @@
                         <i class="ri-capsule-line fs-3"></i>
                       </div>
                       <div class="mt-3">
-                        <h5>BP Levels</h5>
-                        <p class="m-0 opacity-50">Recent five visits</p>
+                        <h5>Niveaux de pression artérielle</h5>
+                        <p class="m-0 opacity-50">3 dernières visites</p>
                       </div>
                     </div>
                     <div id="bpLevels"></div>
@@ -154,8 +129,8 @@
                         <i class="ri-contrast-drop-2-line fs-3"></i>
                       </div>
                       <div class="mt-3">
-                        <h5>Sugar Levels</h5>
-                        <p class="m-0 opacity-50">Recent five visits</p>
+                        <h5>Taux de sucre</h5>
+                        <p class="m-0 opacity-50">3 récentes visites</p>
                       </div>
                     </div>
                     <div id="sugarLevels"></div>
@@ -184,8 +159,8 @@
                         <i class="ri-heart-pulse-line fs-3"></i>
                       </div>
                       <div class="mt-3">
-                        <h5>Heart Rate</h5>
-                        <p class="m-0 opacity-50">Recent five visits</p>
+                        <h5>Fréquence cardiaque</h5>
+                        <p class="m-0 opacity-50">3 dernières visites</p>
                       </div>
                     </div>
                     <div id="heartRate"></div>
@@ -214,8 +189,8 @@
                         <i class="ri-flask-line fs-3"></i>
                       </div>
                       <div class="mt-3">
-                        <h5>Clolesterol</h5>
-                        <p class="m-0 opacity-50">Recent five visits</p>
+                        <h5>Le cholestérol</h5>
+                        <p class="m-0 opacity-50">3 dernières visites</p>
                       </div>
                     </div>
                     <div id="clolesterolLevels"></div>

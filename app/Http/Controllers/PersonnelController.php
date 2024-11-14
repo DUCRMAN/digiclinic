@@ -7,9 +7,12 @@ use App\Models\Personnel;
 use App\Rules\UniqueEmail;
 use App\Models\Departement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\DepartementGenerale;
 use App\Models\DepartementSpeciale;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class PersonnelController extends Controller
 {
@@ -18,20 +21,34 @@ class PersonnelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function UserAuthCheck()
+    {
+     $user_id=Session::get('user_id');
+     if ($user_id) {
+         return;
+         }
+         else 
+         {
+             return Redirect::to('/')->send();
+         }
+      }
+    public function AdminAuthCheck()
+    {
+        $user_role_id=Session::get('user_role_id');
+        if($user_role_id ==10){
+            return;
+        }
+        else
+        {
+            return Redirect::to('/')->send();
+        }
+    }  
     public function index()
     {
-        $user = Auth::user();
-        $personnels = Personnel::all();
-        $services = Service::all();
-
-        return view ('staff.staff',([
-         'name' => $user->name,
-        'prenom' => $user->prenom,
-        'role' => $user->role,
-        'departement' => $user->departement,
-        'services'=>$services,
-        'personnels'=>$personnels,
-        ]));
+        $this->UserAuthCheck();
+        $this->AdminAuthCheck();
+        
+        return view ('staff.staff');
     }
 
     /**
@@ -41,19 +58,10 @@ class PersonnelController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        $departementGenerale = DepartementGenerale::all();
-        $departementSpeciale = DepartementSpeciale::all();
-
-        $departements = array_merge($departementGenerale->toArray(),$departementSpeciale->toArray());
-
-        return view('staff.add-staff',[
-        'name' => $user->name,
-        'prenom' => $user->prenom,
-        'role' => $user->role,
-        'departement' => $user->departement,
-        'departements' =>$departements,
-        ]);
+        $this->UserAuthCheck();
+        $this->AdminAuthCheck();
+        
+       return view('staff.add-staff');
     }
 
     /**
@@ -64,7 +72,9 @@ class PersonnelController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        $this->AdminAuthCheck();
+        $this->UserAuthCheck();
+
 
         $request ->validate([
         'nom' => ['string','required'],
@@ -72,10 +82,10 @@ class PersonnelController extends Controller
         'birthdate'=> ['string','required'],
         'qualification'=> ['string','required'],
         'ville'=> ['string','required'],
-        'email'=> ['required', 'email', new UniqueEmail],
+        'email'=> ['required', 'email'],
         'adresse'=> ['string','required'],
         'service_id'=> ['string','nullable'],
-        'departement_id'=> ['string','nullable'],
+        
         'telephone'=> ['string','required'],
         'departement'=> ['string','required'],
         'sexe'=> ['string','required'],

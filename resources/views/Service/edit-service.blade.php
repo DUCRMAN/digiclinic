@@ -1,46 +1,10 @@
-@extends('layouts.app')
-@section('main content')
-      <!-- Main container starts -->
-      <div class="main-container">
+@extends('layout')
+@section('service content')
+<?php  
+ $user_role_id=Session::get('user_role_id');
+ $user_id=Session::get('user_id');
+?>
 
-        <!-- Sidebar wrapper starts -->
-        @include('layouts/partials/_sidebar')
-        <!-- Sidebar wrapper ends -->
-
-
-        <!-- App container starts -->
-        <div class="app-container">
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="#">Acceuil</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Modifier un service
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Today</button>
-                <button class="btn btn-sm">7d</button>
-                <button class="btn btn-sm">2w</button>
-                <button class="btn btn-sm">1m</button>
-                <button class="btn btn-sm">3m</button>
-                <button class="btn btn-sm">6m</button>
-                <button class="btn btn-sm">1y</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
           <!-- App Hero header ends -->
 
           <!-- App body starts -->
@@ -84,10 +48,7 @@
                           <form action="{{route('services.update', $service->id)}}" method="POST">
                              @method('PUT')
                             @csrf
-                        <div class="mb-3">
-                          <label class="form-label" for="code_service">Code du service</label>
-                          <input type="text" class="form-control" id="a1" name="code_serve" value="{{$service->code_serve}}" required>
-                        </div>
+                       
                       </div>
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">

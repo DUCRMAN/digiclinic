@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Redirect; 
 use Illuminate\Validation\ValidationException;
-use Session;
-use DB;
-use Alert;
 
 class PriseEnChargeController extends Controller
 {
@@ -340,9 +340,10 @@ class PriseEnChargeController extends Controller
                            
     $data['libelle_chambre']=$request->libelle_chambre; 
     $data['type_chambre']=$request->type_chambre; 
+    $data['service']=$request->id_services; 
     $data['is_vip']=$request->is_vip; 
     $nbre_lits=$request->nbre_lit;
-  
+  dd($data);
     $chambre_id = DB::table('tbl_chambre')->insertGetId($data);
 
     for ($i=0; $i < $nbre_lits ; $i++) { 
