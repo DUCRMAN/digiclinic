@@ -1,50 +1,10 @@
-@extends('layouts/app')
+@extends('layout')
 @section('add staff content')
+<?php
+$user_role_id=Session::get('user_role_id');
+$user_id=Session::get('user_id');
+?>
 
-
-      <!-- App header ends -->
-
-      <!-- Main container starts -->
-      <div class="main-container">
-
-        <!-- Sidebar wrapper starts -->
-       @include('layouts/partials/_sidebar')
-        <!-- Sidebar wrapper ends -->
-
-        <!-- App container starts -->
-        <div class="app-container">
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Add Staff
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Today</button>
-                <button class="btn btn-sm">7d</button>
-                <button class="btn btn-sm">2w</button>
-                <button class="btn btn-sm">1m</button>
-                <button class="btn btn-sm">3m</button>
-                <button class="btn btn-sm">6m</button>
-                <button class="btn btn-sm">1y</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
-          <!-- App Hero header ends -->
 
           <!-- App body starts -->
           <div class="app-body">
@@ -77,6 +37,17 @@
                           <h6 class="m-0">Details personnel</h6>
                         </div>
                       </div>
+                      <div class="col-xxl-1 col-lg-4 col-sm-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="a7">Titre <span class="text-danger">*</span></label>
+                          <select type="text" class="form-select" id="a7" placeholder="Entrez la désignation" name="qualification" required>
+                            <option value="Dr">Dr</option>
+                            <option value="Inf">Inf</option>
+                            <option value="C/se">C/se</option>
+                            <option value="Sge-Fm">Sge-Fme</option>
+                          </select>
+                        </div>
+                      </div>
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <form action="{{route('personnel.store')}}" method="POST">
                             @csrf
@@ -89,6 +60,30 @@
                         <div class="mb-3">
                           <label class="form-label" for="a2">Nom <span class="text-danger">*</span></label>
                           <input type="text" class="form-control" id="a2" placeholder="Entrez le nom"name="nom">
+                        </div>
+                      </div>
+                      <div class="col-xxl-3 col-lg-4 col-sm-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="selectGender1">Sexe <span
+                              class="text-danger">*</span></label>
+                          <div class="m-0">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexe" id="selectGender1"
+                                value="M">
+                              <label class="form-check-label" for="selectGender1">Masculin</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexe" id="selectGender2"
+                                value="F">
+                              <label class="form-check-label" for="selectGender2">Feminin</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xxl-2 col-lg-4 col-sm-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="a4">Date de naissance <span class="text-danger">*</span></label>
+                          <input type="date" class="form-control" id="a4" placeholder="Date de naissance" name="birthdate">
                         </div>
                       </div>
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -108,30 +103,8 @@
                                 </div>
                         @endif
                       </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="selectGender1">Sexe <span
-                              class="text-danger">*</span></label>
-                          <div class="m-0">
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="sexe" id="selectGender1"
-                                value="Masculin">
-                              <label class="form-check-label" for="selectGender1">Masculin</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="sexe" id="selectGender2"
-                                value="Feminin">
-                              <label class="form-check-label" for="selectGender2">Feminin</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a4">Date de naissance <span class="text-danger">*</span></label>
-                          <input type="date" class="form-control" id="a4" placeholder="Date de naissance" name="birthdate">
-                        </div>
-                      </div>
+                      
+                     
                       {{-- <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
                           <label class="form-label" for="a5">Qualification <span class="text-danger">*</span></label>
@@ -141,26 +114,33 @@
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
                           <label class="form-label" for="a6">Service d'acceuil <span class="text-danger">*</span></label>
-                          <select class="form-select" id="a6" name="departement_id">
-                            @foreach ($departements as $departement)
+                          <select class="form-select" id="a6" name="service_id">
+                            @php
+                                $s_acceuil = DB::table('user_roles')->get();
+                            @endphp
+                            @foreach ($s_acceuil as $service)
 
-                            <option value="{{$departement ['id']}} "> {{$departement ['libelle']}}</option>
+                            <option value="{{$service->user_role_id}} "> {{$service->designation}}</option>
                             @endforeach
                           </select>
                         </div>
                       </div>
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
-                          <label class="form-label" for="a7">Designation <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="a7" placeholder="Entrez la désignation" name="qualification">
+                          <label class="form-label" for="a6">Fonction <span class="text-danger">*</span></label>
+                          <select class="form-select" id="a6" name="specialite">
+                            @php
+                                $s_acceuil = DB::table('user_roles')->get();
+                            @endphp
+                            @foreach ($s_acceuil as $service)
+
+                            <option value="{{$service->user_role_id}} "> {{$service->designation}}</option>
+                            @endforeach
+                          </select>
                         </div>
                       </div>
-                      <div class="col-sm-12">
-                        <div class="mb-3">
-                          <label class="form-label" for="a8">Addresse <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="a8" placeholder="Entrez l'addresse" rows="2" name="adresse"></textarea>
-                        </div>
-                      </div>
+                     
+
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
                           <label class="form-label" for="departement">Département <span class="text-danger">*</span></label>
@@ -205,6 +185,12 @@
                                  <option value=""></option>
                              </select>
 
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="mb-3">
+                          <label class="form-label" for="a8">Addresse <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="a8" placeholder="Entrez l'addresse" rows="2" name="adresse" required></textarea>
                         </div>
                       </div>
                       <div class="col-sm-12">

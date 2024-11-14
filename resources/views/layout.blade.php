@@ -148,6 +148,7 @@
               <!-- Scroll starts -->
               <div class="scroll300">
 
+
                 <!-- Activity List Starts -->
                 <div class="p-3">
                   <ul class="p-0 activity-list2">
@@ -597,7 +598,7 @@
                     <a href="{{route('room.index')}}">Chambres par départements</a>
                   </li>
                   <li>
-                    <a href="rooms-allotted.html">Chambres occupées</a>
+                    <a href="{{route('allotted-room')}}">Chambres occupées</a>
                   </li>
                   <li>
                     <a href="available-rooms.html">Chambre disponible</a>
@@ -606,11 +607,41 @@
                     <a href="book-room.html">Book Room</a>
                   </li>
                   <li>
-                    <a href="add-room.html">Ajout chambres</a>
+                    <a href="{{ route('room.create')}}">Ajout chambres</a>
                   </li>
                   <li>
                     <a href="edit-room.html">Edit Room</a>
                   </li>
+                </ul>
+              </li>
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-building-2-line"></i>
+                  <span class="menu-text">Espace entités</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="{{route('entities.add')}}">Créer une entité</a>
+                  </li>
+                  <li>
+                    <a href="{{route('entities.index')}}">Entités disponibles</a>
+                  </li>
+
+                </ul>
+              </li>
+               <li class="treeview">
+                <a href="#!">
+                  <i class="ri-building-2-line"></i>
+                  <span class="menu-text">Espace centres</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="{{route('centers.add')}}">Créer un centre</a>
+                  </li>
+                  <li>
+                    <a href="{{route('centers.index')}}">Centres disponibles</a>
+                  </li>
+
                 </ul>
               </li>
               <li class="treeview">
@@ -947,6 +978,9 @@
 <script src="{{asset('frontend/vendor/apex/custom/department/department-list.js')}}"> </script>
 <script src="{{asset('frontend/vendor/apex/custom/department/employees.js')}}"> </script>
 <script src="{{asset('frontend/vendor/apex/custom/graphs/pie.js')}}"></script>
+<script src="{{asset('frontend/vendor/apex/custom/rooms/admissions.js')}}"></script>
+
+
 
 <!-- Calendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

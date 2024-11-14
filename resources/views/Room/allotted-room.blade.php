@@ -26,14 +26,14 @@
                         <table class="table truncate align-middle m-0">
                           <thead>
                             <tr>
-                              <th width="100px">Department</th>
-                              <th width="60px">Room No</th>
-                              <th width="60px">Bed No</th>
+                              <th width="100px">Services</th>
+                              <th width="60px">N° Chambre</th>
+                              <th width="60px">N° Lit</th>
                               <th width="100px">Patient</th>
-                              <th width="100px">Admit Date</th>
+                              <th width="100px">Date admission</th>
                               <th width="100px">Age</th>
-                              <th width="100px">Gender</th>
-                              <th width="100px">Room Type</th>
+                              <th width="100px">Sexe</th>
+                              <th width="100px">Type de chambre</th>
                               <th width="100px">Actions</th>
                             </tr>
                           </thead>

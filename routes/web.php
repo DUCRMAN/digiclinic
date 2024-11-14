@@ -59,8 +59,29 @@ Route::post('save-chambre', [PriseEnChargeController::class,('save_chambre')]);
 Route::post('hospitaliser', [PriseEnChargeController::class,('hospitaliser')]);
 // Chambre
 Route::resource('room', RoomController::class);
+Route::get('allotted/room', [RoomController::class,('allottedRoom')])->name('allotted-room');
 Route::get('available/room', [RoomController::class,('available')])->name('available-room');
 Route::get('allotted/room', [RoomController::class,('allotted')])->name('allotted-room');
+
+// Service
+
+Route::resource('services',ServiceController::class);
+
+// Entités
+Route::get('entities/index', [ServiceController::class,('entitieIndex')])->name('entities.index');
+Route::get('entities/add/entitie', [ServiceController::class,('entitieCreate')])->name('entities.add');
+Route::post('entities/store/entitie', [ServiceController::class,('entitieStore')])->name('entities.store');
+Route::get('/directeur/entitie/{id}/{nom}-{prenom}', [ServiceController::class, 'entitieShowDirecteur'])->name('entitie.directeur.show');
+
+//Centres
+Route::get('centers/index', [ServiceController::class,('centerIndex')])->name('centers.index');
+Route::get('centers/add/center', [ServiceController::class,('centerCreate')])->name('centers.add');
+Route::post('centers/store/center', [ServiceController::class,('centerStore')])->name('centers.store');
+Route::get('/directeur/center/{id}/{nom}-{prenom}', [ServiceController::class, 'centerShowDirecteur'])->name('center.directeur.show');
+
+
+
+
 
 
 
@@ -123,15 +144,6 @@ Route::post('/post-appro/',[SalesController::class, 'post_caisse']);
 
 
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
-Route::middleware(['auth','medecin_generaliste'])->group(function () {
-    //  Route::get('/generaliste/dashboard', [MedecinGeneralistController::class, 'index'])->name('medecin.generaliste.dashboard');
-    //  Route::get('/generaliste/profile', [MedecinGeneralistController::class, 'profil'])->name('generaliste.profil');
-    //  Route::get('/generaliste/patient/liste', [MedecinGeneralistController::class, 'ListePatient'])->name('generaliste.patient.liste');
-    //  Route::get('/generaliste/patient/details', [MedecinGeneralistController::class, 'patient'])->name('generaliste.patient.details');
-    //  Route::get('/generaliste/patient/waiting', [MedecinGeneralistController::class, 'WaitingPatient'])->name('generaliste.patient.waiting');
-
-    Route::resource('admin',AdminController::class);
-    Route::resource('services',ServiceController::class);
-    Route::resource('departement',DepartementController::class);
-    Route::resource('personnel', PersonnelController::class);
-});
+Route::resource('admin',AdminController::class);
+Route::resource('departement',DepartementController::class);
+Route::resource('personnel', PersonnelController::class);
