@@ -14,7 +14,7 @@ class RayonController extends Controller
     public function PharmacieAuthCheck()
    {
        $user_role_id=Session::get('user_role_id');
-        if ($user_role_id == 9) {
+        if ($user_role_id == 1) {
         return;
         }
         else 

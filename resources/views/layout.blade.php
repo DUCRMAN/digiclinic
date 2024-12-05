@@ -471,7 +471,7 @@
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-money-dollar-circle-line"></i>
-                  <span class="menu-text">{{Session::get('role')}}</span>
+                  <span class="menu-text">{{Session::get('role')}} </span>
                 </a>
                 <ul class="treeview-menu">
                   <li>
@@ -479,6 +479,26 @@
                   </li>
                   <li>
                     <a href="{{URL::to('caisse-hospitalisations')}}">Caisses hospitalisations</a>
+                  </li>
+
+                </ul>
+              </li>
+
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-dossier-line"></i>
+                  <span class="menu-text">Pharmacie</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="{{URL::to('/les-ventes')}}">Ventes à Caisse</a>
+                  </li>
+                  <li>
+                    <a href="{{URL::to('all-category')}}">Produits en Pharmacie</a>
+                  </li>
+
+                  <li>
+                    <a href="{{URL::to('approvisionnement')}}">Appro Pharmacie</a>
                   </li>
 
                 </ul>
@@ -941,6 +961,7 @@
 
                 @yield('user_content')
                 @yield('admin')
+                @yield('admin_content')
                 @yield('staff content')
                 @yield('add staff content')
                 @yield('service content')

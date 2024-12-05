@@ -1,5 +1,5 @@
 @extends('layout')
-@section('admin_content')
+@section('admin')
 <?php  
  $user_role_id=Session::get('user_role_id');
  $user_id=Session::get('user_id');

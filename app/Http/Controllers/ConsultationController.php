@@ -42,7 +42,7 @@ class ConsultationController extends Controller
     public function SpecialisteAuthCheck()
    {
     $user_role_id=Session::get('user_role_id');
-    if ($user_role_id != 0 && $user_role_id != 1 && $user_role_id != 9) {
+    if ($user_role_id != 0 && $user_role_id != 1 && $user_role_id != 1) {
         return;
         }
         else 
