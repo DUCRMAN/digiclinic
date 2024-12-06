@@ -144,7 +144,6 @@ class ConsultationController extends Controller
                 ));;
     }
 
-
     public function gestion_analyses()
     {
         $this->SpecialisteAuthCheck();
@@ -183,6 +182,26 @@ class ConsultationController extends Controller
 
 
 
+     public function traitement_analyse($id_analyse,$patient_id)
+    {
+        $this->SpecialisteAuthCheck();
+        $user_id=Session::get('user_id');
+    
+
+        $all_details=DB::table('tbl_analyse')
+                ->join('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id')
+                ->where('tbl_analyse.patient_id',$patient_id)
+                ->select('tbl_analyse.*','tbl_patient.*')
+                ->orderBy('created_at','DESC')
+                ->get();
+        
+        return view('Consult.traitement_analyse')->with(array(
+                    'all_details'=>$all_details,                         
+                    'id_analyse'=>$id_analyse,                         
+                ));;
+    }
+
+
      public function traitement_patient($id_consultation,$patient_id)
     {
         $this->SpecialisteAuthCheck();
@@ -199,6 +218,28 @@ class ConsultationController extends Controller
         return view('Consult.traitement_patient')->with(array(
                     'all_details'=>$all_details,                         
                     'id_consultation'=>$id_consultation,                         
+                ));;
+    }
+
+
+     public function traitement_urgent_patient($id_prise_en_charge,$patient_id)
+    {
+        $this->SpecialisteAuthCheck();
+        $this->UserAuthCheck();
+        $this->AccueilAuthCheck();
+        $user_id=Session::get('user_id');
+    
+
+        $all_details=DB::table('tbl_prise_en_charge')
+                ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                ->where('tbl_prise_en_charge.patient_id',$patient_id)
+                ->select('tbl_prise_en_charge.*','tbl_patient.*')
+                ->orderBy('created_at','DESC')
+                ->get();
+        
+        return view('prise_enc.add_prise_enc_step2')->with(array(
+                    'all_details'=>$all_details,                         
+                    'id_prise_en_charge'=>$id_prise_en_charge,                         
                 ));;
     }
 

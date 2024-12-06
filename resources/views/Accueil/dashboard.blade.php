@@ -691,7 +691,7 @@ Admin
                               ->join('tbl_consultation','users.user_id','=','tbl_consultation.user_id')
                               ->select('users.*','personnel.*','user_roles.*','tbl_consultation.*')
                               ->where('users.user_id',$v_consulted->last_consult_user_id)
-                              ->where('id_centre',$centre_id)
+                              ->where('users.id_centre',$centre_id)
                               ->first();
                         ?>
                         <td>

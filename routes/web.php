@@ -53,6 +53,9 @@ Route::get('/caisse-hospitalisations', [PriseEnChargeController::class,('caisse_
 Route::get('/caisse-analyses', [PriseEnChargeController::class,('caisse_analyses')]);
 Route::get('get-analyse/{id}',[PriseEnChargeController::class, 'get_analyse']);
 Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
+Route::post('/save-step1', [PriseEnChargeController::class, 'saveStep1'])->name('save.step1');
+Route::get('/save-step2', [PriseEnChargeController::class, 'showStep2Form'])->name('save.step2');
+Route::post('/save-step2', [PriseEnChargeController::class, 'saveStep2'])->name('save.step2');
 
 // Patient
 Route::resource('patient', PatientController::class);
@@ -93,8 +96,14 @@ Route::get('consultations', [ConsultationController::class,('consultation')]);
 Route::get('traitement-patient/{id_consultation}/{patient_id}', [ConsultationController::class,('traitement_patient')]);
 Route::post('save-traitement', [ConsultationController::class,('save_traitement')]);
 
+// Urgence
+Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [ConsultationController::class,('traitement_urgent_patient')]);
+
+
 //Analyses
 Route::get('gestion-analyses', [ConsultationController::class,('gestion_analyses')]);
+Route::get('traitement-analyse/{id_analyse}/{patient_id}', [ConsultationController::class,('traitement_analyse')]);
+
 
 //Pharmacie
 Route::get('/all-category',[CategoryController::class, 'all_category']);

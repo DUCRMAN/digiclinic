@@ -121,8 +121,8 @@
                     <div class="col-md-12">
                     <div class="form-floating">
                     <select id="myDropdown" class=" drop form-select btn btn-outline-" name="specialiste">
-                        <option selected>Affecter à</option>
-                       <optgroup label="Spécialistes">
+                        <option selected>Envoyer au</option>
+                       <optgroup label="Laboratoi">
                        
                       <?php 
 
@@ -132,7 +132,7 @@
                         ->where('is_consult',2)
                         ->get(); 
                         foreach ($all_specialiste as $v_specialist){ ?>  
-                        <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}.
+                        <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}.
                         {{$v_specialist->prenom}}
                         {{$v_specialist->nom}}</option>
                       <?php } ?>

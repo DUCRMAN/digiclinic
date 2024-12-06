@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -86,12 +87,19 @@ class PriseEnChargeController extends Controller
                   ->orderBy('etat_consultation','DESC')
                   ->get();
 
+        $all_patient_u = DB::table('tbl_prise_en_charge')
+                   ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                    ->where('nom_patient', '')
+                    ->orderBy('pcreated_at')
+                    ->get();
+
 
 
         return view('prise_enc.all_prise_enc')->with(array(
                     'all_prisenc'=>$all_prisenc,             
                     'all_consult'=>$all_consult,             
                     'all_patient_h'=>$all_patient_h,             
+                    'all_patient_u'=>$all_patient_u,             
                 ));
     }
 
@@ -206,6 +214,7 @@ class PriseEnChargeController extends Controller
             $data['contact_urgence']=$request->contact_urgence; 
             $data['datenais']=$request->datenais; 
             $data['adresse']=$request->adresse; 
+            
                 $get_patient=DB::table('tbl_patient')->where('telephone',$tel)->first();
 
                   if ($get_patient){
@@ -238,8 +247,133 @@ class PriseEnChargeController extends Controller
                 
 
     }
+    public function saveStep1(Request $request)
+    {
+        $this->UserAuthCheck(); 
+        $this->AccueilAuthCheck();
+    
+        $request->validate([
+            'maux' => 'required|string',
+            'observation' => 'required|string',
+            'sexe_patient' => 'required|in:F,M',
+        ]);
 
+        $user_id=Session::get('user_id'); // Récupérer l'ID de l'utilisateur connecté
+        $userCentre = DB::table('users')
+            ->join('tbl_centre', 'users.id_centre', '=', 'tbl_centre.id_centre') // Jointure avec la table des centres
+            ->where('users.user_id', $user_id)
+            ->select('users.user_id', 'users.id_centre', 'users.user_role_id', 'tbl_centre.nom_centre') // Colonnes nécessaires
+            ->first();
+    
+        if (!$userCentre) {
+            return back()->with('error', 'Erreur : Impossible de récupérer le centre de l’utilisateur.');
+        }
+    
+       
+    // Extraire les trois premières lettres du deuxième mot du centre
+    $centreWords = explode(' ', $userCentre->nom_centre); // Séparer les mots du nom du centre
+    $centreAbbreviation = isset($centreWords[1]) 
+        ? strtoupper(substr($centreWords[1], 0, 3)) // Trois premières lettres du deuxième mot
+        : strtoupper(substr($centreWords[0], 0, 3)); // Si un seul mot, prendre les trois premières lettres du premier
 
+    // Générer un numéro de dossier avec la nouvelle nomenclature
+    $dateTime = Carbon::now('Africa/Lagos')->format('Y/m/d/Hi'); // Format AAAA/MM/JJ/HH/mm
+    $numeroDossier = $centreAbbreviation . '/' . str_replace('/', '/', $dateTime); // Fusionner avec la nomenclature
+
+        $patientData = [
+            'sexe_patient' => $request->sexe_patient,
+            'dossier_numero' => $numeroDossier,
+            'pcreated_at' => now(),
+            'pupdated_at' => now(),
+        ];
+        // dd($patientData);
+        $patient_id = DB::table('tbl_patient')->insertGetId($patientData);
+       
+        $priseEnChargeData = [
+        'patient_id' => $patient_id, // Clé étrangère associant la prise en charge au patient
+        'maux' => $request->maux,
+        'observation' => $request->observation,
+        'user_id' => $userCentre->user_id, // ID de l'utilisateur connecté
+        'id_centre' => $userCentre->id_centre, // Centre associé à l'utilisateur
+        'user_role_id' => $userCentre->user_role_id, // Rôle utilisateur
+        'created_at' => now(),
+        'updated_at' => now(),
+        ];
+    
+    //   dd($priseEnChargeData);
+        DB::table('tbl_prise_en_charge')->insert($priseEnChargeData);
+    
+      if ($request->has('next')) {
+        session(['patient_id' => $patient_id]);
+            return redirect()->route('save.step2');
+        }
+        Alert::success('Info', 'Données enregistrées avec succès. Vous pourrez compléter les informations ultérieurement.');
+         return Redirect::to ('/prises-en-charges');
+    }
+
+    public function showStep2Form()
+    {
+        $this->UserAuthCheck();
+        $this->AccueilAuthCheck();
+        return view('prise_enc.add_prise_enc_step2');
+    }
+
+       public function saveStep2(Request $request)
+    {
+        $this->UserAuthCheck(); 
+        $this->AccueilAuthCheck();
+    
+       
+        $request->validate([
+            'email_patient' => 'nullable|email',
+            'adresse' => 'required|string',
+            'datenais' => 'required|date',
+            'smatrimonial'=>'required|string',
+            'nationalite'=>'required|string',
+            'gsang'=>'required|string',
+            'nom_patient'=>'required|string',
+            'prenom_patient'=>'required|string',
+            'nip'=>'required|integer',
+            'contact_urgence'=>'required|integer',
+            'telephone'=>'required|integer',
+            'temp'=>'required|integer',
+
+        ]);
+    
+       $patientId = session('patient_id');
+    
+        if (!$patientId) {
+            return redirect()->route('save.step1')->with('error', 'Impossible de compléter les informations. Veuillez recommencer.');
+        }
+    
+        DB::table('tbl_patient')
+            ->where('patient_id', $patientId)
+            ->update([
+                'email_patient' => $request->email_patient,
+                'adresse' => $request->adresse,
+                'datenais' => $request->datenais,
+                'smatrimonial' => $request->smatrimonial,
+                'nationalite' => $request->nationalite,
+                'gsang'=>$request->gsang,
+                'telephone'=>$request->telephone,
+                'nom_patient'=>$request->nom_patient,
+                'prenom_patient'=>$request->prenom_patient,
+                'nip'=>$request->nip,
+                'contact_urgence'=>$request->contact_urgence,
+                    ]);
+                    DB::table('tbl_prise_en_charge')->updateOrInsert(
+                        ['patient_id' => $patientId], // Condition : vérifier si patient_id existe
+                        [
+                            'temp' => $request->temp,   // Mettre à jour ou insérer la température
+                            'updated_at' => now(),
+                        ]
+                    );
+    
+        session()->forget('patient_id');
+        Alert::success('Info', 'Données enregistrées avec succès.');
+        return Redirect::to ('/prises-en-charges');
+    }
+    
     public function caisse_conslt()
     {
         $this->UserAuthCheck();
@@ -343,7 +477,7 @@ class PriseEnChargeController extends Controller
     $data['service']=$request->id_services; 
     $data['is_vip']=$request->is_vip; 
     $nbre_lits=$request->nbre_lit;
-  dd($data);
+//   dd($data);
     $chambre_id = DB::table('tbl_chambre')->insertGetId($data);
 
     for ($i=0; $i < $nbre_lits ; $i++) { 
