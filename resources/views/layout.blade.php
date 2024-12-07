@@ -511,7 +511,8 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{URL::to('consultations')}}">Consultations</a>
+                    <a href="{{URL::to('gestion-analyses')}}">Analyses Générales</a>
+                    <a href="{{URL::to('consultations')}}">Analyses internes</a>
                   </li>
                 </ul>
               </li>

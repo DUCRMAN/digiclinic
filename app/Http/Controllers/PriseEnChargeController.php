@@ -173,7 +173,7 @@ class PriseEnChargeController extends Controller
 
         
         Alert::success('Info', 'Analyse enregistré dans le système.');
-           return Redirect::to ('/prises-en-charges');
+           return Redirect::to ('/caisse-analyses');
 
         
     }

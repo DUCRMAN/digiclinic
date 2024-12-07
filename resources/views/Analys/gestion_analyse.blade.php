@@ -124,7 +124,7 @@
                                         </tr>
                                       </thead>
                                       <tbody>
-                                      @foreach($all_analyse_nt as $v_consult)    
+                                      @foreach($all_analyse_t as $v_consult)    
                                         <tr>
                                           <td>
                                           </td>
