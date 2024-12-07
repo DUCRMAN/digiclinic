@@ -101,23 +101,23 @@
                                           ->where('users.user_id','!=',$user_id)
                                           ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
-                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
+                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
                                           {{$v_specialist->prenom}}
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
                                          </optgroup>
-                                           <optgroup label="Laboratoire">
+                                           <optgroup label="Spécialistes">
                                          
                                         <?php 
 
                                           $all_specialiste=DB::table('user_roles')
                                           ->join('users','user_roles.user_role_id','=','users.user_role_id')
                                           ->join('personnel','users.email','=','personnel.email')
-                                          ->where('is_consult',2)
+                                          ->where('is_consult',1)
                                           ->where('users.user_id','!=',$user_id)
                                           ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
-                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
+                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
                                           {{$v_specialist->prenom}}
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>

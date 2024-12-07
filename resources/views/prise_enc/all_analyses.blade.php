@@ -122,7 +122,7 @@
                     <div class="form-floating">
                     <select id="myDropdown" class=" drop form-select btn btn-outline-" name="specialiste">
                         <option selected>Envoyer au</option>
-                       <optgroup label="Laboratoi">
+                       <optgroup label="Laboratoire">
                        
                       <?php 
 

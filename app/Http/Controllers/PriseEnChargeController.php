@@ -374,6 +374,74 @@ class PriseEnChargeController extends Controller
         return Redirect::to ('/prises-en-charges');
     }
     
+    public function patientUpdate(Request $request, $patient_id)
+    {
+        $this->UserAuthCheck(); 
+        $this->AccueilAuthCheck();
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'dossier_numero'=>'required|string',
+            'email_patient' => 'required|email',
+            'adresse' => 'required|string',
+            'sexe_patient' => 'required|string',
+            'maux' => 'required|string',
+            'observation' => 'required|string',
+            'datenais' => 'required|date',
+            'smatrimonial'=>'required|string',
+            'nationalite'=>'required|string',
+            'gsang'=>'required|string',
+            'nom_patient'=>'required|string',
+            'prenom_patient'=>'required|string',
+            'nip'=>'required|integer',
+            'contact_urgence'=>'required|string',
+            'telephone'=>'required|string',
+            'temp'=>'required|integer',
+        ]);
+// dd($validatedData);
+$patientExists = DB::table('tbl_patient')
+->where('patient_id', $patient_id)
+->exists();
+
+$consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $patient_id)->exists();
+// dd($patientExists, $consultationExists);
+       
+            DB::transaction(function () use ($validatedData, $patient_id) {
+                // Mettre à jour les informations dans la table tbl_patient
+                DB::table('tbl_patient')
+                ->where('patient_id', $patient_id)
+                ->update([
+                    'dossier_numero' => $validatedData['dossier_numero'],
+                    'nom_patient' => $validatedData['nom_patient'],
+                    'prenom_patient' => $validatedData['prenom_patient'],
+                    'email_patient' => $validatedData['email_patient'],
+                    'adresse' => $validatedData['adresse'],
+                    'nip' => $validatedData['nip'],
+                    'telephone' => $validatedData['telephone'],
+                    'contact_urgence' => $validatedData['contact_urgence'],
+                    'sexe_patient' => $validatedData['sexe_patient'],
+                    'datenais' => $validatedData['datenais'],
+                    'smatrimonial' => $validatedData['smatrimonial'],
+                    'nationalite' => $validatedData['nationalite'],
+                    'gsang' => $validatedData['gsang'],
+
+                    'pupdated_at' => now(),
+                ]);
+                DB::table('tbl_prise_en_charge')
+                ->where('patient_id', $patient_id)
+                ->update([
+                    'maux' => $validatedData['maux'],
+                    'observation' => $validatedData['observation'],
+                    'temp' => $validatedData['temp'],
+                    'updated_at' => now(),
+                ]);
+                });
+
+            Alert::success('Info', 'Les Informations mises à jours avec succès');
+        return Redirect::to ('/prises-en-charges');
+
+        
+
+    }
     public function caisse_conslt()
     {
         $this->UserAuthCheck();

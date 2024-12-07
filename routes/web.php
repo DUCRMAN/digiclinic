@@ -56,6 +56,7 @@ Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
 Route::post('/save-step1', [PriseEnChargeController::class, 'saveStep1'])->name('save.step1');
 Route::get('/save-step2', [PriseEnChargeController::class, 'showStep2Form'])->name('save.step2');
 Route::post('/save-step2', [PriseEnChargeController::class, 'saveStep2'])->name('save.step2');
+Route::post('complements-information/{patient_id}', [PriseEnChargeController::class,'patientUpdate'])->name('update.patient');
 
 // Patient
 Route::resource('patient', PatientController::class);

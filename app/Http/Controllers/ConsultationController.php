@@ -42,7 +42,7 @@ class ConsultationController extends Controller
     public function SpecialisteAuthCheck()
    {
     $user_role_id=Session::get('user_role_id');
-    if ($user_role_id != 0 && $user_role_id != 1 && $user_role_id != 1) {
+    if ($user_role_id != 1) {
         return;
         }
         else 
@@ -235,12 +235,9 @@ class ConsultationController extends Controller
                 ->where('tbl_prise_en_charge.patient_id',$patient_id)
                 ->select('tbl_prise_en_charge.*','tbl_patient.*')
                 ->orderBy('created_at','DESC')
-                ->get();
+                ->first();
         
-        return view('prise_enc.add_prise_enc_step2')->with(array(
-                    'all_details'=>$all_details,                         
-                    'id_prise_en_charge'=>$id_prise_en_charge,                         
-                ));;
+        return view('prise_enc.update_prise_enc', compact('all_details', 'id_prise_en_charge'));
     }
 
 

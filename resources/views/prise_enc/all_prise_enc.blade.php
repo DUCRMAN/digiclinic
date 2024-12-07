@@ -63,7 +63,6 @@
                                               <th width="100px">Sexe </th>
                                               <th width="100px">nip/numero</th>
                                               <th width="100px">Adresse</th>
-                                              <th width="100px">G Sanguin</th>
                                               <th width="100px">Naissance</th>
                                               </th>
                                               <th width="100px">
@@ -97,7 +96,7 @@
                                               <td><h4><span class="badge bg-success">{{$v_prisenc->sexe_patient}}</span></h4></td>
                                               <td>{{$v_prisenc->telephone}}</td>
                                               <td>{{$v_prisenc->adresse}}</td>
-                                              <td><h4><span class="badge bg-primary">{{$v_prisenc->gsang}}</span></h4></td>
+                                             
                                               <td>
                                                 {{$v_prisenc->datenais}}
                                               </td>
@@ -108,7 +107,7 @@
                                               <form action="{{url('send-consult')}}" method="POST">
                                                   {{csrf_field()}}
                                               <input type="hidden" name="id_prise_en_charge" value="{{$v_prisenc->id_prise_en_charge}}">
-                                              <select id="myDropdown" class="form-select btn btn-outline-danger" name="specialiste">
+                                              <select id="myDropdown" class="form-select btn btn-outline-success" name="specialiste">
                                                 <option selected>Urgence</option>
                                                <optgroup label="Spécialistes">
                                                
@@ -288,7 +287,7 @@
                               <div class="card-body">
                                 <div class="table-outer">
                                   <div class="table-responsive">
-                                    <table class="table table-striped truncate m-0">
+                                    <table class="table table-striped truncate m-0" id="example2">
                                       <thead>
                                         <tr>
                                           <th></th>
@@ -456,6 +455,7 @@
     <script>
       $(document).ready(function() {
       $("#example").DataTable();
+      $("#example2").DataTable();
     });
       $("select").change(function(){
       if(confirm('Cliquez OK pour envoyer le patient vers le spécialiste')){
@@ -464,6 +464,6 @@
       else $("select option:selected").prop("selected", false);
     });
     </script>
-    </script>
+    
     @endsection
 @endsection
