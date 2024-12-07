@@ -356,7 +356,11 @@ function myFunction() {
         <div class="modal-content">
             
             <div class="modal-header">
+<<<<<<< HEAD
                 <h5 class="modal-title" id="exampleModalLabel">Supprimer le FPR du tableau</h5>
+=======
+                <h5 class="modal-title" id="exampleModalLabel">Supprimer du tableau</h5>
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

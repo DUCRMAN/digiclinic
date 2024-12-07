@@ -32,10 +32,13 @@
                             aria-controls="twoAAA" aria-selected="false">Patients en consultation</a>
                         </li>
                         <li class="nav-item" role="presentation">
+<<<<<<< HEAD
                           <a class="nav-link" id="tab-fourAAA" data-bs-toggle="tab" href="#fourAAA" role="tab"
                             aria-controls="twoAAA" aria-selected="false">En urgence</a>
                         </li>
                         <li class="nav-item" role="presentation">
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                           <a class="nav-link" id="tab-threeAAA" data-bs-toggle="tab" href="#threeAAA" role="tab"
                             aria-controls="threeAAA" aria-selected="false">En observation</a>
                         </li>
@@ -57,12 +60,20 @@
                                           <thead>
                                             <tr>
                                               <th width="30px">&nbsp;</th>
+<<<<<<< HEAD
                                               <th width="30px">N° Dossier</th>
                                               <th width="60px">Patient</th>
                                               <th width="100px">Mal/Maux </th>
                                               <th width="100px">Sexe </th>
                                               <th width="100px">nip/numero</th>
                                               <th width="100px">Adresse</th>
+=======
+                                              <th width="60px">Patient</th>
+                                              <th width="100px">Mal/Maux </th>
+                                              <th width="100px">nip/numero</th>
+                                              <th width="100px">Adresse</th>
+                                              <th width="100px">G Sanguin</th>
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                               <th width="100px">Naissance</th>
                                               </th>
                                               <th width="100px">
@@ -74,7 +85,10 @@
                                           <tbody>
                                            @foreach($all_prisenc as $v_prisenc) 
                                             <tr>
+<<<<<<< HEAD
                                            
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                               <td>
                                                 <a href="#" class="me-1 icon-box sm bg-light rounded-circle">
                                                 @if($v_prisenc->sexe_patient == 'F')
@@ -84,19 +98,28 @@
                                                 @endif
                                                 </a>
                                               </td>
+<<<<<<< HEAD
                                                <td>
                                                 {{$v_prisenc->dossier_numero}}
                                                 
                                               </td>
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                               <td>
                                                 {{$v_prisenc->prenom_patient}}
                                                 {{$v_prisenc->nom_patient}}
                                               </td>
                                               <td><h4><span class="badge bg-danger">{{$v_prisenc->maux}}</span></h4></td>
+<<<<<<< HEAD
                                               <td><h4><span class="badge bg-success">{{$v_prisenc->sexe_patient}}</span></h4></td>
                                               <td>{{$v_prisenc->telephone}}</td>
                                               <td>{{$v_prisenc->adresse}}</td>
                                              
+=======
+                                              <td>{{$v_prisenc->telephone}}</td>
+                                              <td>{{$v_prisenc->adresse}}</td>
+                                              <td><h4><span class="badge bg-primary">O+</span></h4></td>
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                               <td>
                                                 {{$v_prisenc->datenais}}
                                               </td>
@@ -107,7 +130,11 @@
                                               <form action="{{url('send-consult')}}" method="POST">
                                                   {{csrf_field()}}
                                               <input type="hidden" name="id_prise_en_charge" value="{{$v_prisenc->id_prise_en_charge}}">
+<<<<<<< HEAD
                                               <select id="myDropdown" class="form-select btn btn-outline-success" name="specialiste">
+=======
+                                              <select id="myDropdown" class="form-select btn btn-outline-danger" name="specialiste">
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                                 <option selected>Urgence</option>
                                                <optgroup label="Spécialistes">
                                                
@@ -120,6 +147,7 @@
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
+<<<<<<< HEAD
                                                 <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
@@ -155,6 +183,9 @@
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
                                                 <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
+=======
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
                                               <?php } ?>
@@ -178,7 +209,11 @@
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
+<<<<<<< HEAD
                                                 <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}.
+=======
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}.
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
                                               <?php } ?>
@@ -222,7 +257,10 @@
                                           <th>Contact à appeller</th>
                                           <th>Spécialiste actuel</th>
                                           <th>Date consultation</th>
+<<<<<<< HEAD
                                           <th>Acttion</th>
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                           
                                         </tr>
                                       </thead>
@@ -257,6 +295,7 @@
                                             {{$all_specialiste->conslt_created_at}}
                                             @endif
                                           </td>
+<<<<<<< HEAD
                                          
                                           <td>
                                               
@@ -337,6 +376,8 @@
                                               <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-urgent-patient'.'/'.$p_urgence->id_prise_en_charge.'/'.$p_urgence->patient_id)}}">
                                               <i class="ri-file-edit-fill"></i></a>                    
                                               </td>
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                         <?php ?>
                                         </tr>
                                       @endforeach
@@ -373,8 +414,13 @@
                                           <th>Situation matrimonial</th>
                                           <th>Contact à appeller</th>
                                           <th>Spécialiste actuel</th>
+<<<<<<< HEAD
                                           <th>Date Mise en Observation</th>
                                           <th>Action</th>
+=======
+                                          <th>Date consultation</th>
+                                          <th></th>
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                           
                                         </tr>
                                       </thead>
@@ -455,7 +501,10 @@
     <script>
       $(document).ready(function() {
       $("#example").DataTable();
+<<<<<<< HEAD
       $("#example2").DataTable();
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
     });
       $("select").change(function(){
       if(confirm('Cliquez OK pour envoyer le patient vers le spécialiste')){
@@ -464,6 +513,10 @@
       else $("select option:selected").prop("selected", false);
     });
     </script>
+<<<<<<< HEAD
     
+=======
+    </script>
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
     @endsection
 @endsection

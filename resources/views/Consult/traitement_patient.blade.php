@@ -106,6 +106,7 @@
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
                                          </optgroup>
+<<<<<<< HEAD
                                            <optgroup label="Spécialistes">
                                          
                                         <?php 
@@ -122,6 +123,8 @@
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
                                          </optgroup>
+=======
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
 
                                         </select>
                                   </div>

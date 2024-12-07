@@ -181,7 +181,7 @@ class PriseEnChargeController extends Controller
 
         
         Alert::success('Info', 'Analyse enregistré dans le système.');
-           return Redirect::to ('/prises-en-charges');
+           return Redirect::to ('/caisse-analyses');
 
         
     }
@@ -214,7 +214,6 @@ class PriseEnChargeController extends Controller
             $data['contact_urgence']=$request->contact_urgence; 
             $data['datenais']=$request->datenais; 
             $data['adresse']=$request->adresse; 
-            
                 $get_patient=DB::table('tbl_patient')->where('telephone',$tel)->first();
 
                   if ($get_patient){
@@ -442,6 +441,8 @@ $consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $pat
         
 
     }
+
+
     public function caisse_conslt()
     {
         $this->UserAuthCheck();
@@ -546,6 +547,7 @@ $consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $pat
     $data['is_vip']=$request->is_vip; 
     $nbre_lits=$request->nbre_lit;
 //   dd($data);
+  dd($data);
     $chambre_id = DB::table('tbl_chambre')->insertGetId($data);
 
     for ($i=0; $i < $nbre_lits ; $i++) { 

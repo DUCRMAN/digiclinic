@@ -37,6 +37,22 @@ class SalesController extends Controller
    }
 
 
+<<<<<<< HEAD
+=======
+   public function LaboAuthCheck()
+   {
+       $user_role_id=Session::get('user_role_id');
+        if ($user_role_id == 4) {
+        return;
+        }
+        else 
+        {
+            return Redirect::to('/')->send();
+        }
+   }
+
+
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
     public function index(Request $request)
         {   
             $this->PharmacieAuthCheck(); 
@@ -597,4 +613,121 @@ class SalesController extends Controller
 
 
 
+<<<<<<< HEAD
+=======
+
+     public function get_reactif(Request $request, $user_id, $id_analyse)
+    {
+        $this->LaboAuthCheck();
+         
+
+        $tabreactif=DB::table('tbl_cart_reactif')
+                 ->join('tbl_reactif','tbl_reactif.reactif_id','=','tbl_cart_reactif.reactif_id')
+                 ->select('tbl_cart_reactif.*','tbl_reactif.*')
+                 ->where('user_id',$user_id)
+                 ->where('id_analyse',$id_analyse)
+                 ->get();
+
+        $total_reactif=DB::table('tbl_cart_reactif')
+                 ->join('tbl_reactif','tbl_reactif.reactif_id','=','tbl_cart_reactif.reactif_id')
+                 ->select('tbl_cart_reactif.*','tbl_reactif.*')
+                 ->where('user_id',$user_id)
+                 ->where('id_analyse',$id_analyse)
+                 ->count();
+
+
+         return response()->json([
+            'tabreactif'=>$tabreactif,
+            'total_reactif'=>$total_reactif,
+        ]);
+
+    }
+
+
+    public function store_tabreactif(Request $request)
+    {
+        $this->LaboAuthCheck();
+        $validator = Validator::make($request->all(), [
+           
+            'qty'=> 'required',
+           
+        ],[
+            
+            'qty.required' => 'Veuillez renseigner la quantité',
+           
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=>400,
+                'errors'=>$validator->messages()
+            ]);
+
+        }else{
+
+            $qty=$request->qty;
+            $product_info=DB::table('tbl_reactif')
+                    ->where('reactif_id',$request->product_id)
+                    ->first();
+            $stock=$product_info->stock;  
+
+            if ($qty>$stock) {
+                return response()->json([
+                'status'=>400,
+                'error'=>'La quantité de ce réactif n\'est pas disponible.'
+            ]);
+            
+            }
+
+
+            $data=array();
+            $data['reactif_id']=$request->product_id;
+            
+            $data['qty']=$request->qty;
+
+            $data['id_analyse']=$request->id_analyse;
+           
+            $data['user_id']=$request->user_id; 
+            
+            $data['id_centre']=$request->centre_id; 
+
+            DB::table('tbl_cart_reactif')
+                ->insert($data);
+            return response()->json([
+                'status'=>200,
+                'message'=>'Ajout au panier. Vérifier dans le tableau'
+            ]);
+        }
+
+    }
+
+
+    public function delete_tabreactif($id)
+    {
+        $this->LaboAuthCheck();
+        $delete =DB::table('tbl_cart_reactif')
+             ->where('reactif_id',$id)
+             ->delete(); 
+
+       if($delete)
+        {
+           
+            return response()->json([
+                'status'=>200,
+                'message'=>'Suppression effectuée avec succès.'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'=>404,
+                'message'=>'Pas de correspondance.'
+            ]);
+        }
+               
+    }
+
+
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
 }

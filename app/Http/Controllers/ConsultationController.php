@@ -182,20 +182,23 @@ class ConsultationController extends Controller
 
 
 
-     public function traitement_analyse($id_analyse,$patient_id)
+         public function traitement_analyse($id_analyse,$patient_id)
     {
         $this->SpecialisteAuthCheck();
         $user_id=Session::get('user_id');
     
 
-        $all_details=DB::table('tbl_analyse')
-                ->join('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id')
-                ->where('tbl_analyse.patient_id',$patient_id)
-                ->select('tbl_analyse.*','tbl_patient.*')
-                ->orderBy('created_at','DESC')
+        $all_details=DB::table('tbl_analyse')       
+                ->leftjoin('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id') 
+                ->leftjoin('tbl_type_analyse','tbl_analyse.id_type_analyse','=','tbl_type_analyse.id_type_analyse')
+                ->leftjoin('tbl_prise_en_charge','tbl_patient.patient_id','=','tbl_prise_en_charge.patient_id')              
+                ->leftjoin('tbl_consultation','tbl_prise_en_charge.id_prise_en_charge','=','tbl_consultation.id_prise_en_charge')   
+                ->where('tbl_patient.patient_id',$patient_id)
+                ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*','tbl_consultation.*','tbl_prise_en_charge.*')
+                ->orderBy('tbl_analyse.created_at','DESC')
                 ->get();
         
-        return view('Consult.traitement_analyse')->with(array(
+        return view('Analys.traitement_analyse')->with(array(
                     'all_details'=>$all_details,                         
                     'id_analyse'=>$id_analyse,                         
                 ));;

@@ -124,7 +124,11 @@
                                         </tr>
                                       </thead>
                                       <tbody>
+<<<<<<< HEAD
                                       @foreach($all_analyse_nt as $v_consult)    
+=======
+                                      @foreach($all_analyse_t as $v_consult)    
+>>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                         <tr>
                                           <td>
                                           </td>
