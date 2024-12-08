@@ -148,19 +148,22 @@ class ConsultationController extends Controller
     {
         $this->SpecialisteAuthCheck();
         $user_id=Session::get('user_id');
+        
         $centre_id=Session::get('centre_id');
         $all_analyse_nt=DB::table('tbl_analyse')       
-                ->join('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id') 
-                ->join('tbl_type_analyse','tbl_analyse.id_type_analyse','=','tbl_type_analyse.id_type_analyse')
-                ->where('statut_analyse',0)
+                ->leftjoin('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id') 
+                ->leftjoin('tbl_type_analyse','tbl_analyse.id_type_analyse','=','tbl_type_analyse.id_type_analyse')
+               
                 ->where([
                       ['user_id',$user_id],
                       ['tbl_analyse.id_centre',$centre_id],
                   ]) 
+                 ->where('statut_analyse',0)
                
                 ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
                 ->orderBy('created_at','DESC')
                 ->get(); 
+       
 
         $all_analyse_t=DB::table('tbl_analyse')       
                 ->join('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id')
@@ -180,9 +183,7 @@ class ConsultationController extends Controller
                 ));;
     }
 
-
-
-         public function traitement_analyse($id_analyse,$patient_id)
+    public function traitement_analyse($id_analyse,$patient_id)
     {
         $this->SpecialisteAuthCheck();
         $user_id=Session::get('user_id');
@@ -203,9 +204,8 @@ class ConsultationController extends Controller
                     'id_analyse'=>$id_analyse,                         
                 ));;
     }
-
-
-     public function traitement_patient($id_consultation,$patient_id)
+    
+    public function traitement_patient($id_consultation,$patient_id)
     {
         $this->SpecialisteAuthCheck();
         $user_id=Session::get('user_id');
@@ -224,26 +224,75 @@ class ConsultationController extends Controller
                 ));;
     }
 
-
-     public function traitement_urgent_patient($id_prise_en_charge,$patient_id)
+    public function save_analyse_traitement (Request $request)
     {
-        $this->SpecialisteAuthCheck();
-        $this->UserAuthCheck();
-        $this->AccueilAuthCheck();
-        $user_id=Session::get('user_id');
-    
 
-        $all_details=DB::table('tbl_prise_en_charge')
-                ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
-                ->where('tbl_prise_en_charge.patient_id',$patient_id)
-                ->select('tbl_prise_en_charge.*','tbl_patient.*')
-                ->orderBy('created_at','DESC')
-                ->first();
+        $user_id = $request->user_id;
+        $id_centre = $request->id_centre;
+        $analyse_resultat = $request->analyse_resultat;
+        $id_analyse = $request->id_analyse;
         
-        return view('prise_enc.update_prise_enc', compact('all_details', 'id_prise_en_charge'));
+
+        $dataA=array();
+        $dataA['user_id']=$user_id;
+        $dataA['id_centre']=$id_centre;
+        $dataA['analyse_resultat']=$analyse_resultat;
+        $dataA['statut_analyse']=1;
+
+        $file=$request->file('analyse_fichier');
+        if ($file) {
+                $file_name=$file->getClientOriginalName();
+                $ext=strtolower($file->getClientOriginalExtension());
+                $file_full_name=$file_name;
+                $upload_path= "Uploads/Analyses/";
+                $file_url=$upload_path.$file_full_name;
+                
+                $success=$file->move($upload_path,$file_full_name);
+                if ($success) {
+            $dataA['analyse_fichier']=$file_url;
+                    }
+                }      
+            DB::table('tbl_analyse')
+                ->where('id_analyse',$id_analyse)
+                ->update($dataA);
+
+
+        $get_tabreactif=DB::table('tbl_cart_reactif')
+                 ->join('tbl_reactif','tbl_reactif.reactif_id','=','tbl_cart_reactif.reactif_id')
+                 ->select('tbl_cart_reactif.*','tbl_reactif.*')
+                 ->where('user_id',$user_id)
+                 ->get();
+
+        $oddata=array();
+
+          foreach ($get_tabreactif as $v_content) 
+          {
+            
+            $oddata['user_id']=$user_id;
+            $oddata['reactif_id']=$v_content->reactif_id;
+            $oddata['id_analyse']=$v_content->id_analyse;
+            $oddata['qty']=$v_content->qty;
+            $oddata['id_centre']=$v_content->id_centre;
+            $oddata['date_used']=$v_content->date;
+
+            DB::table('tbl_reactif_used')
+               ->insert($oddata);
+
+            $product= DB::table('tbl_reactif')
+                    ->where('reactif_id','=',$v_content->reactif_id)
+                    ->decrement('stock', $v_content->qty);
+
+          }
+
+          DB::table('tbl_cart_reactif')
+             ->where('user_id',$user_id)
+             ->delete();
+        
+        Alert::success('Info Analyse', 'Analyse effectué');
+        return Redirect::to('gestion-analyses');
+
+
     }
-
-
 
     public function save_traitement(Request $request)
     {
@@ -260,8 +309,7 @@ class ConsultationController extends Controller
         $diagnostic=$request->diagnostic;
 
         $file=$request->file('fichier_joint');
-        
-
+    
         
         if ($etat_hospitalisation == 0 && $user_id > 0) {
         $get_user_role=DB::table('users')
@@ -350,16 +398,5 @@ class ConsultationController extends Controller
                return Redirect::to ('/consultations');
 
         }
-            
-       
-                
-
     }
-
-
-
-
-        
-
-
 }

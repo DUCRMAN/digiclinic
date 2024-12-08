@@ -39,15 +39,8 @@
           @endif
 
         <div class="auth-wrapper part-two">
-<<<<<<< HEAD
      
             <form method="POST" action="{{ route('store.user') }}">
-=======
-        
-
-
-            <form method="POST" action="{{ url('register') }}">
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                 @csrf
 
           @if($message)
@@ -84,11 +77,7 @@
                                                       ->get();
 
                                             foreach ($all_role as $v_role){ ?>  
-<<<<<<< HEAD
                                             <option class="form-control"  value="{{$v_role->user_role_id}}">{{$v_role->title}}</option>
-=======
-                                            <option class="form-control"  value="{{$v_role->user_role_id}}">{{$v_role->designation}}</option>
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                                     
                                 
                   <?php } ?>

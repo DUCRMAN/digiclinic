@@ -121,13 +121,8 @@
                     <div class="col-md-12">
                     <div class="form-floating">
                     <select id="myDropdown" class=" drop form-select btn btn-outline-" name="specialiste">
-<<<<<<< HEAD
                         <option selected>Envoyer au</option>
                        <optgroup label="Laboratoire">
-=======
-                        <option selected>Affecter à</option>
-                       <optgroup label="Spécialistes">
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                        
                       <?php 
 
@@ -137,11 +132,7 @@
                         ->where('is_consult',2)
                         ->get(); 
                         foreach ($all_specialiste as $v_specialist){ ?>  
-<<<<<<< HEAD
                         <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}.
-=======
-                        <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}.
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                         {{$v_specialist->prenom}}
                         {{$v_specialist->nom}}</option>
                       <?php } ?>
@@ -154,10 +145,7 @@
                 </div>
               </div>
              </div>
-            </div>
-           <!-- Row ends -->
-
-    <div class="app-body">
+            
      <!-- Row starts -->
       <div class="row gx-3">
         <div class="col-sm-12">
@@ -271,7 +259,7 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                @foreach($all_analyse_t as $v_analyse) 
+                                @foreach($all_analyse_t as $v_analys) 
                                 <tr>
                                   <td>
                                         @if($v_analys->sexe_patient == 'F')

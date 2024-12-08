@@ -37,8 +37,6 @@ class SalesController extends Controller
    }
 
 
-<<<<<<< HEAD
-=======
    public function LaboAuthCheck()
    {
        $user_role_id=Session::get('user_role_id');
@@ -52,7 +50,6 @@ class SalesController extends Controller
    }
 
 
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
     public function index(Request $request)
         {   
             $this->PharmacieAuthCheck(); 
@@ -511,6 +508,26 @@ class SalesController extends Controller
                 ));         
 
     }
+    // Labo
+    public function etat_stock_labo(){
+        $this->PharmacieAuthCheck();
+        $out_stock=DB::table('tbl_products')
+            ->where('stock',0)
+            ->get();
+
+        $low_stock=DB::table('tbl_products')
+            ->where('stock','<=',5)
+            ->where('stock','!=',0)
+            ->get();
+
+
+        return view ('Pharmacie.etat_stock')
+                ->with(array(
+                    'out_stock'=>$out_stock,               
+                    'low_stock'=>$low_stock,               
+                ));         
+
+    }
 
 
 
@@ -613,8 +630,6 @@ class SalesController extends Controller
 
 
 
-<<<<<<< HEAD
-=======
 
      public function get_reactif(Request $request, $user_id, $id_analyse)
     {
@@ -729,5 +744,4 @@ class SalesController extends Controller
     }
 
 
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
 }

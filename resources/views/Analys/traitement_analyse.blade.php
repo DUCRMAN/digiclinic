@@ -110,21 +110,6 @@
       </div>
       @endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             @if($patient->statut_analyse == 0)
            <div class="tab-content" id="customTabContent">
             <div class="tab-pane fade show active" id="oneAAAA" role="tabpanel">
@@ -220,8 +205,7 @@
 					              <label for="validationServer07">Quantité</label>
 					              <input id="input-qty" type="number" class="form-control border-success" id="validationServer07" name="qty" required>
 					              <div class="text-success small mt-1">
-					                Looks good!
-					              </div>
+					                					              </div>
 					            </div>
 
 
@@ -236,8 +220,8 @@
 
 												
 								<div class="form-actions">
-								   <button type="button" class="btn btn-primary add_student">Save</button>
-								  <button type="reset" class="btn">Cancel</button>
+								   <button type="button" class="btn btn-primary add_student">Ajouter</button>
+								  <button type="reset" class="btn">Annuler</button>
 								</div>
 							 
 							</form>   
@@ -314,28 +298,6 @@
                       
 
                       @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         <div class="tab-pane fade" id="twoAAAA" role="tabpanel">
                           <div class="row">
@@ -543,16 +505,16 @@
         <div class="modal-content">
             
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Supprimer du tableau</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Retirer du tableau</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h4>Confirmer la Supression ?</h4>
+                <h4>Le réactif sera retiré pour l'analyse <span class="badge bg-danger"> {{$patient->libelle_analyse}} </span> </h4> 
                 <input type="hidden" id="deleteing_id">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary delete_student">Yes Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary delete_student">Oui retirer</button>
             </div>
         </div>
     </div>
@@ -584,7 +546,7 @@
                             <td>' + item.qty + '</td>\
                             <td>' + item.id_analyse + '</td>\
                             <td>\
-                            <button type="button" value="' + item.reactif_id + '" class="btn btn-danger deletebtn btn-sm">Delete</button></td>\
+                            <button type="button" value="' + item.reactif_id + '" class="btn btn-danger deletebtn btn-sm">Retirer</button></td>\
                         \</tr>');
                     });
                   $('span#reactifTot').html("");
@@ -612,10 +574,10 @@
 
             $.ajax({
                 type: "GET",
-                url: "delete-tabreactif/"+id,
+                url: "/delete-tabreactif/"+id,
                 dataType: "json",
                 success: function (response) {
-                    // console.log(response);
+                     console.log(response);
                    
                        
                         $('#success_message').addClass('alert alert-success');
@@ -662,13 +624,13 @@
                         $('#save_msgList').html("");
                         $('#save_msgList').addClass('alert alert-danger');
                         $('#save_msgList').text(response.error);
-                        $('.add_student').text('Save');
+                        $('.add_student').text('Ajouter');
                     } else {
                         $('#save_msgList').html("");
                         $('#success_message').addClass('alert alert-success');
                         $('#success_message').text(response.message);
                         $('#AddStudentForm').find('input').val();
-                        $('.add_student').text('Save');
+                        $('.add_student').text('Ajouter');
                         fetchtabreactif();
                     }
                    

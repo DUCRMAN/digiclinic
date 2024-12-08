@@ -67,7 +67,6 @@
 			    <a class="btn btn-warning btn-pill" href="#" onClick="THEFUNCTION(this.selectedIndex);">Nouveau Patient</a>
 			    </div>
 
-<<<<<<< HEAD
                   <div class="card-body" style="display:none; "id="enlever">
 			    <div class="card-body" id="step2E">
           
@@ -80,14 +79,6 @@
                         <input type="text" name="dossier_numero" class="form-control" id="validationCustom05" readonly />
                        
                       </div>
-=======
-
-
-                  <div class="card-body" style="display:none; "id="enlever">
-                    <form class="row g-3 needs-validation" action="{{ url('/save-prisenc') }}" method="POST">
-            				{{csrf_field()}}
-                    <input type="hidden" name="centre_id" value="{{$centre_id}}">
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
             		      <div class="col-md-4">
                         <label for="validationCustom05" class="form-label">Mal/Maux du patient*</label>
                         <input type="text" name="maux" class="form-control" id="validationCustom05" required />
@@ -96,17 +87,6 @@
                         </div>
                       </div>
 
-<<<<<<< HEAD
-=======
-                      <div class="col-md-2">
-                        <label for="validationCustom05" class="form-label">Température*</label>
-                        <input type="number" min="27" name="temp" class="form-control" id="validationCustom05" required />
-                        <div class="invalid-feedback">
-                          Entrez la température.
-                        </div>
-                      </div>
-
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                       <div class="col-md-6">
                         <label for="validationCustom05" class="form-label">Observation</label>
                         <input type="text" name="observation" value="Néant" class="form-control" id="validationCustom05" required />
@@ -114,7 +94,6 @@
                           Entrez des observations sur le patient.
                         </div>
                       </div>
-<<<<<<< HEAD
                       <div class="col-md-6 col-sm-12 col-12">
 		                <div class="card mb-3">
 		                  <div class="card-body">
@@ -167,8 +146,6 @@
                       </div>
 
                       
-=======
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
         <div class="row g-3 needs-validation">
           <div class="col-md-6">
             <label for="phone1">Télephone du patient</label><br>
@@ -252,46 +229,6 @@
                         </div>
                       </div>
 
-<<<<<<< HEAD
-=======
-
-                      <div class="col-md-6 col-sm-12 col-12">
-		                <div class="card mb-3">
-		                  <div class="card-body">
-		                    <div class="form-check was-validated">
-		                      <input type="radio" class="form-check-input" id="validationFormCheck3" name="sexe_patient"
-		                        required="" value="F">
-		                      <label class="form-check-label" for="validationFormCheck3">Féminin</label>
-		                    </div>
-		                  </div>
-		                </div>
-		              </div>
-		              <div class="col-md-6 col-sm-12 col-12">
-		                <div class="card mb-3">
-		                  <div class="card-body">
-		                    <div class="form-check was-validated">
-		                      <input type="radio" class="form-check-input" id="validationFormCheck4" name="sexe_patient" value="M">
-		                      <label class="form-check-label" for="validationFormCheck4">Masculin</label>
-		                    </div>
-		                  </div>
-		                </div>
-		              </div>
-
-		              
-
-		              <!--  <div class="col-12">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required />
-                          <label class="form-check-label" for="invalidCheck">
-                            Agree to terms and conditions
-                          </label>
-                          <div class="invalid-feedback">
-                            You must agree before submitting.
-                          </div>
-                        </div>
-                      </div> -->
-
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                       <div class="col-12">
                         <button class="btn btn-primary" type="submit">
                           Valider
@@ -300,10 +237,7 @@
                       </div>
                     </form>
                   </div>
-<<<<<<< HEAD
                   {{-- Fin seconde partie du formulaire --}}
-=======
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                 </div>
               </div>
             </div>
@@ -382,7 +316,6 @@
        
           }
       }
-<<<<<<< HEAD
           function MYFUNCTION(i)
      {
           var enlever = document.getElementById('step2');
@@ -418,7 +351,5 @@
       })
       .catch(error => console.error('Error:', error));
   });
-=======
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
 </script>
 @endsection

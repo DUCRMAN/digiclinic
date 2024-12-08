@@ -257,11 +257,11 @@ class PriseEnChargeController extends Controller
             'sexe_patient' => 'required|in:F,M',
         ]);
 
-        $user_id=Session::get('user_id'); // Récupérer l'ID de l'utilisateur connecté
+        $user_id=Session::get('user_id'); 
         $userCentre = DB::table('users')
-            ->join('tbl_centre', 'users.id_centre', '=', 'tbl_centre.id_centre') // Jointure avec la table des centres
+            ->join('tbl_centre', 'users.id_centre', '=', 'tbl_centre.id_centre') 
             ->where('users.user_id', $user_id)
-            ->select('users.user_id', 'users.id_centre', 'users.user_role_id', 'tbl_centre.nom_centre') // Colonnes nécessaires
+            ->select('users.user_id', 'users.id_centre', 'users.user_role_id', 'tbl_centre.nom_centre') 
             ->first();
     
         if (!$userCentre) {
@@ -272,13 +272,11 @@ class PriseEnChargeController extends Controller
     // Extraire les trois premières lettres du deuxième mot du centre
     $centreWords = explode(' ', $userCentre->nom_centre); // Séparer les mots du nom du centre
     $centreAbbreviation = isset($centreWords[1]) 
-        ? strtoupper(substr($centreWords[1], 0, 3)) // Trois premières lettres du deuxième mot
-        : strtoupper(substr($centreWords[0], 0, 3)); // Si un seul mot, prendre les trois premières lettres du premier
+        ? strtoupper(substr($centreWords[1], 0, 3)) 
+        : strtoupper(substr($centreWords[0], 0, 3)); 
 
-    // Générer un numéro de dossier avec la nouvelle nomenclature
-    $dateTime = Carbon::now('Africa/Lagos')->format('Y/m/d/Hi'); // Format AAAA/MM/JJ/HH/mm
-    $numeroDossier = $centreAbbreviation . '/' . str_replace('/', '/', $dateTime); // Fusionner avec la nomenclature
-
+    $dateTime = Carbon::now('Africa/Lagos')->format('Y/m/d/Hi'); 
+    $numeroDossier = $centreAbbreviation . '/' . str_replace('/', '/', $dateTime); 
         $patientData = [
             'sexe_patient' => $request->sexe_patient,
             'dossier_numero' => $numeroDossier,
@@ -289,12 +287,12 @@ class PriseEnChargeController extends Controller
         $patient_id = DB::table('tbl_patient')->insertGetId($patientData);
        
         $priseEnChargeData = [
-        'patient_id' => $patient_id, // Clé étrangère associant la prise en charge au patient
+        'patient_id' => $patient_id, 
         'maux' => $request->maux,
         'observation' => $request->observation,
-        'user_id' => $userCentre->user_id, // ID de l'utilisateur connecté
-        'id_centre' => $userCentre->id_centre, // Centre associé à l'utilisateur
-        'user_role_id' => $userCentre->user_role_id, // Rôle utilisateur
+        'user_id' => $userCentre->user_id, 
+        'id_centre' => $userCentre->id_centre, 
+        'user_role_id' => $userCentre->user_role_id, 
         'created_at' => now(),
         'updated_at' => now(),
         ];

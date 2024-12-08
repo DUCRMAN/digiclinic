@@ -76,20 +76,12 @@ $user_id=Session::get('user_id');
                           <div class="m-0">
                             <div class="form-check form-check-inline">
                               <input class="form-check-input" type="radio" name="status" id="status"
-<<<<<<< HEAD
                                >
-=======
-                                value="1">
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                               <label class="form-check-label" for="status">Oui</label>
                             </div>
                             <div class="form-check form-check-inline">
                               <input class="form-check-input" type="radio" name="status" id="status"
-<<<<<<< HEAD
                                 >
-=======
-                                value="0">
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                               <label class="form-check-label" for="status">Non</label>
                             </div>
                           </div>

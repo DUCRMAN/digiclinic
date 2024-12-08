@@ -104,6 +104,10 @@ Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [Consu
 //Analyses
 Route::get('gestion-analyses', [ConsultationController::class,('gestion_analyses')]);
 Route::get('traitement-analyse/{id_analyse}/{patient_id}', [ConsultationController::class,('traitement_analyse')]);
+Route::get('get-reactif/{user_id}/{id_analyse}', [SalesController::class, 'get_reactif']);
+Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
+Route::get('delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
+Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
 
 
 //Pharmacie

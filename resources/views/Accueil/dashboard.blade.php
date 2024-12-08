@@ -363,6 +363,7 @@ Admin
                     </div>
                   </div>
                 </div>
+                @elseif ($user_role_id == 10 || $user_role_id == 4)
                 <div class="col-xl-3 col-sm-6 col-12">
                   <div class="card mb-3">
                     <div class="card-body">
@@ -384,12 +385,13 @@ Admin
                         </a>
                         <div class="text-end">
                           <p class="mb-0 text-danger">+60%</p>
-                          <span class="badge bg-danger-subtle text-danger small">this month</span>
+                          <span class="badge bg-danger-subtle text-danger small">Ce mois</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                @elseif($user_role_id == 10)
                 <div class="col-xl-3 col-sm-6 col-12">
                   <div class="card mb-3">
                     <div class="card-body">
@@ -691,11 +693,7 @@ Admin
                               ->join('tbl_consultation','users.user_id','=','tbl_consultation.user_id')
                               ->select('users.*','personnel.*','user_roles.*','tbl_consultation.*')
                               ->where('users.user_id',$v_consulted->last_consult_user_id)
-<<<<<<< HEAD
                               ->where('users.id_centre',$centre_id)
-=======
-                              ->where('id_centre',$centre_id)
->>>>>>> dce8b8f07c046481e7dfa6b85125c0dfb5d04f36
                               ->first();
                         ?>
                         <td>
@@ -769,17 +767,10 @@ Admin
             @elseif($user_role_id == 9)
 
             @endif --}}
-
-
-
-
-
-
-
-            </div>
+      </div>
             <!-- Row ends -->
             <!-- Row starts -->
-      <div class="row gx-3">
+      {{-- <div class="row gx-3">
         <div class="col-sm-12">
           <div class="card mb-3">
             <div class="card-header">
@@ -994,7 +985,7 @@ Admin
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
       <!-- Row ends -->
     </div>
   <!-- App body ends -->
