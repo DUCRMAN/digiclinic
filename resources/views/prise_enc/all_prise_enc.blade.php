@@ -120,20 +120,20 @@
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
-                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}} 
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
                                               <?php } ?>
                                                </optgroup>
                                                
-                                               <optgroup label="Analyse">
+                                               <optgroup label="Analyse / Scanner">
                                                
                                               <?php 
 
                                                 $all_specialiste=DB::table('user_roles')
                                                 ->join('users','user_roles.user_role_id','=','users.user_role_id')
                                                 ->join('personnel','users.email','=','personnel.email')
-                                                ->where('is_consult',2)
+                                                ->where('is_consult',3)
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
@@ -143,14 +143,14 @@
                                               <?php } ?>
                                                </optgroup>
                                                
-                                               <optgroup label="Scanner">
+                                               <optgroup label="Consultation">
                                                
                                               <?php 
 
                                                 $all_specialiste=DB::table('user_roles')
                                                 ->join('users','user_roles.user_role_id','=','users.user_role_id')
                                                 ->join('personnel','users.email','=','personnel.email')
-                                                ->where('is_consult',3)
+                                                ->whereIn('is_consult',[1, 4])
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
@@ -260,7 +260,7 @@
                                          
                                           <td>
                                               
-                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-patient')}}">
+                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="#">
                                               <i class="ri-file-edit-fill"></i></a>                    
                                               </td>
                                         <?php ?>
