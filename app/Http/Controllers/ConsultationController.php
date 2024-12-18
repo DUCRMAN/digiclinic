@@ -429,7 +429,6 @@ class ConsultationController extends Controller
         
         }
     }
-<<<<<<< HEAD
 
 
     public function get_ordo($ordo_id)
@@ -509,6 +508,5 @@ class ConsultationController extends Controller
         
 
 
-=======
->>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
+
 }
