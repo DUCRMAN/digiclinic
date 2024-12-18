@@ -44,6 +44,8 @@ Route::post('save-new-user', [RegisteredController::class, 'store'])->name('stor
 Route::get('dashboard', [AdminController::class, 'index']);
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
 //Prise en charge
+Route::get('/all-prestations', [PriseEnChargeController::class, 'prestation']);
+Route::get('/add-form', [PriseEnChargeController::class, 'addForm']);
 Route::get('/prises-en-charges', [PriseEnChargeController::class,('index')]);
 Route::get('/enregistrer-prise-en-charge', [PriseEnChargeController::class,('record_prisenc')]);
 Route::post('/save-prisenc', [PriseEnChargeController::class,('save_prisenc')]);

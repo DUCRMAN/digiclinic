@@ -475,6 +475,9 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
+                    <a href="{{URL::to('all-prestations')}}">Liste des prestations</a>
+                  </li>
+                  <li>
                     <a href="{{URL::to('caisse-consultations')}}">Caisses consultations</a>
                   </li>
                   <li>
@@ -482,6 +485,9 @@
                   </li>
                   <li>
                     <a href="{{ URL::to('caisse-analyses') }}">Caisses Analyses</a>
+                </li>
+                  <li>
+                    <a href="{{ URL::to('caisse-analyses') }}">Liste des Analyses</a>
                 </li>
 
                 </ul>
@@ -530,9 +536,9 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                  <a href="{{URL::to('gestion-analyses')}}">Gestion des analyse</a>
-                    {{-- <a href="{{URL::to('consultations')}}">Analyses internes</a> --}}
-                    <a href="{{URL::to('consultations')}}">Stock </a>
+                  <a href="{{URL::to('gestion-analyses')}}">Analyses Générales</a>
+                    <a href="{{URL::to('consultations')}}">Analyses internes</a>
+                    <a href="#">Stock </a>
                   </li>
                 </ul>
               </li>
@@ -1082,6 +1088,7 @@
 <!-- DataTables.js -->
 <link href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.min.css" rel="stylesheet">
 @yield('Datatable')
+@yield('DataTable2')
 <script src="https://cdn.datatables.net/2.1.5/js/dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.23.0/slimselect.min.js"></script>
 @stack('js')

@@ -131,7 +131,21 @@ class PriseEnChargeController extends Controller
                 ));
           
     }
+    public function prestation()
+    {
+        $this->CaisseAuthCheck();
+       
+        
+        return view('prise_enc/all_prestations');
+    }
 
+    public function addForm()
+    {
+        $this->CaisseAuthCheck();
+       
+        
+        return view('prise_enc/add_form');
+    }
 
     public function get_analyse(Request $request, $id)
     {

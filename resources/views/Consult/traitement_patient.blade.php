@@ -3,6 +3,8 @@
 <?php  
  $user_role_id=Session::get('user_role_id');
  $user_id=Session::get('user_id');
+ $centre_id=Session::get('centre_id');
+
 ?>
 
 <!-- App body starts -->
@@ -22,14 +24,14 @@
                   <div class="card-body">
                     <div class="custom-tabs-container">
                       <ul class="nav nav-tabs justify-content-end" id="customTab5" role="tablist">
-                      @if($patient->etat_hospitalisation == 0)
+                      {{-- @if($patient->etat_hospitalisation == 0) --}}
                         <li class="nav-item" role="presentation">
                           <a class="nav-link active" id="tab-oneAAAA" data-bs-toggle="tab" href="#oneAAAA" role="tab"
                             aria-controls="oneAAAA" aria-selected="true">
                             <span class="badge bg-primary">Prise en charge</span>
                           </a>
                         </li>
-                      @endif
+                      {{-- @endif --}}
                         <li class="nav-item" role="presentation">
                           <a class="nav-link" id="tab-twoAAAA" data-bs-toggle="tab" href="#twoAAAA" role="tab"
                             aria-controls="twoAAAA" aria-selected="false">
@@ -43,7 +45,7 @@
                           </a>
                         </li> -->
                       </ul>
-                      @if($patient->etat_hospitalisation == 0)
+                      {{-- @if($patient->etat_hospitalisation == 0) --}}
                       <div class="tab-content" id="customTabContent">
                         <div class="tab-pane fade show active" id="oneAAAA" role="tabpanel">
                         <div class="card-body">
@@ -68,7 +70,7 @@
                                     <label for="validationServer0">Observation</label>
                                     <input type="text" class="form-control border-success" id="validationServer0" placeholder="libellé" name="observation" >
                                     <div class="text-success small mt-1">
-                                      Facultatif!
+                                      
                                     </div>
                                   </div>
                                 
@@ -106,16 +108,16 @@
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
                                          </optgroup>
-                                           <optgroup label="Spécialistes">
+                                           <optgroup label="Envoyer pour analyses">
                                          
                                         <?php 
 
-                                          $all_specialiste=DB::table('user_roles')
-                                          ->join('users','user_roles.user_role_id','=','users.user_role_id')
-                                          ->join('personnel','users.email','=','personnel.email')
-                                          ->where('is_consult',1)
-                                          ->where('users.user_id','!=',$user_id)
-                                          ->get(); 
+                                           $all_specialiste=DB::table('user_roles')
+                                                ->join('users','user_roles.user_role_id','=','users.user_role_id')
+                                                ->join('personnel','users.email','=','personnel.email')
+                                                ->where('is_consult',3)
+                                                ->where('personnel.id_centre',$centre_id)
+                                                ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
                                           <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
                                           {{$v_specialist->prenom}}
@@ -154,7 +156,7 @@
                         </div>
            
                         </div>
-                        @endif
+                        {{-- @endif --}}
                         <div class="tab-pane fade" id="twoAAAA" role="tabpanel">
                           <div class="row">
                           <div class="col-xl-6 col-sm-6">
