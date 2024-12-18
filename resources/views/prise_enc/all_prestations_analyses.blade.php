@@ -48,7 +48,9 @@ Repertoire patient
                             <td> {{$all_analyses->libelle_analyse}}</td>
                             <td>{{$all_analyses->prix_analyse}}  FCFA</td>
                             <td>{{$all_analyses->prix_analyse_assure}}  FCFA</td>
-                            
+                            @if ($user_role_id == 11)
+                                
+                           
                             <td>
                               <div class="d-inline-flex gap-1">
                                 <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
@@ -61,6 +63,7 @@ Repertoire patient
                                 </a>
                                 </div>
                             </td>
+                            @endif
                           </tr>
                           @endforeach
                         </tbody>

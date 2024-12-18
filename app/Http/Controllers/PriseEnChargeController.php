@@ -41,6 +41,18 @@ class PriseEnChargeController extends Controller
         }
 
     }
+    public function ChefAuthCheck()
+   {
+    $user_role_id=Session::get('user_role_id');
+    if ($user_role_id == 11) {
+        return;
+        }
+        else 
+        {
+            return Redirect::to('/')->send();
+        }
+
+    }
 
     public function AccueilAuthCheck()
    {
@@ -134,6 +146,7 @@ class PriseEnChargeController extends Controller
     public function prestation()
     {
         $this->CaisseAuthCheck();
+        $this->ChefAuthCheck();
        
         
         return view('prise_enc/all_prestations');
@@ -142,6 +155,7 @@ class PriseEnChargeController extends Controller
     public function addPrestation()
     {
         $this->CaisseAuthCheck();
+        $this->ChefAuthCheck();
        
         
         return view('prise_enc/add_prestation_form');
@@ -150,6 +164,7 @@ class PriseEnChargeController extends Controller
     public function savePrestation(Request $request)
     {
         $this->CaisseAuthCheck();
+        $this->ChefAuthCheck();
         // $user = Auth::user();
         $user_role_id=Session::get('user_role_id');
         $centre_id=Session::get('centre_id');
@@ -178,6 +193,7 @@ class PriseEnChargeController extends Controller
     public function analyse()
     {
         $this->CaisseAuthCheck();
+        $this->ChefAuthCheck();
        
         
         return view('prise_enc/all_prestations_analyses');
@@ -186,8 +202,9 @@ class PriseEnChargeController extends Controller
     public function addAnalyse()
     {
         $this->CaisseAuthCheck();
+        $this->ChefAuthCheck();
        
-        
+
         return view('prise_enc/add_analyse_form');
     }
 
