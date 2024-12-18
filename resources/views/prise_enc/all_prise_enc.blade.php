@@ -32,6 +32,10 @@
                             aria-controls="twoAAA" aria-selected="false">Patients en consultation</a>
                         </li>
                         <li class="nav-item" role="presentation">
+                          <a class="nav-link" id="tab-fourAAA" data-bs-toggle="tab" href="#fourAAA" role="tab"
+                            aria-controls="twoAAA" aria-selected="false">En urgence</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
                           <a class="nav-link" id="tab-threeAAA" data-bs-toggle="tab" href="#threeAAA" role="tab"
                             aria-controls="threeAAA" aria-selected="false">En observation</a>
                         </li>
@@ -53,11 +57,12 @@
                                           <thead>
                                             <tr>
                                               <th width="30px">&nbsp;</th>
+                                              <th width="30px">N° Dossier</th>
                                               <th width="60px">Patient</th>
                                               <th width="100px">Mal/Maux </th>
+                                              <th width="100px">Sexe </th>
                                               <th width="100px">nip/numero</th>
                                               <th width="100px">Adresse</th>
-                                              <th width="100px">G Sanguin</th>
                                               <th width="100px">Naissance</th>
                                               </th>
                                               <th width="100px">
@@ -69,6 +74,7 @@
                                           <tbody>
                                            @foreach($all_prisenc as $v_prisenc) 
                                             <tr>
+                                           
                                               <td>
                                                 <a href="#" class="me-1 icon-box sm bg-light rounded-circle">
                                                 @if($v_prisenc->sexe_patient == 'F')
@@ -78,14 +84,19 @@
                                                 @endif
                                                 </a>
                                               </td>
+                                               <td>
+                                                {{$v_prisenc->dossier_numero}}
+                                                
+                                              </td>
                                               <td>
                                                 {{$v_prisenc->prenom_patient}}
                                                 {{$v_prisenc->nom_patient}}
                                               </td>
                                               <td><h4><span class="badge bg-danger">{{$v_prisenc->maux}}</span></h4></td>
+                                              <td><h4><span class="badge bg-success">{{$v_prisenc->sexe_patient}}</span></h4></td>
                                               <td>{{$v_prisenc->telephone}}</td>
                                               <td>{{$v_prisenc->adresse}}</td>
-                                              <td><h4><span class="badge bg-primary">O+</span></h4></td>
+                                             
                                               <td>
                                                 {{$v_prisenc->datenais}}
                                               </td>
@@ -96,7 +107,7 @@
                                               <form action="{{url('send-consult')}}" method="POST">
                                                   {{csrf_field()}}
                                               <input type="hidden" name="id_prise_en_charge" value="{{$v_prisenc->id_prise_en_charge}}">
-                                              <select id="myDropdown" class="form-select btn btn-outline-danger" name="specialiste">
+                                              <select id="myDropdown" class="form-select btn btn-outline-success" name="specialiste">
                                                 <option selected>Urgence</option>
                                                <optgroup label="Spécialistes">
                                                
@@ -109,7 +120,41 @@
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
-                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}} 
+                                                {{$v_specialist->prenom}}
+                                                {{$v_specialist->nom}}</option>
+                                              <?php } ?>
+                                               </optgroup>
+                                               
+                                               <optgroup label="Analyse / Scanner">
+                                               
+                                              <?php 
+
+                                                $all_specialiste=DB::table('user_roles')
+                                                ->join('users','user_roles.user_role_id','=','users.user_role_id')
+                                                ->join('personnel','users.email','=','personnel.email')
+                                                ->where('is_consult',3)
+                                                ->where('personnel.id_centre',$centre_id)
+                                                ->get(); 
+                                                foreach ($all_specialiste as $v_specialist){ ?>  
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
+                                                {{$v_specialist->prenom}}
+                                                {{$v_specialist->nom}}</option>
+                                              <?php } ?>
+                                               </optgroup>
+                                               
+                                               <optgroup label="Consultation">
+                                               
+                                              <?php 
+
+                                                $all_specialiste=DB::table('user_roles')
+                                                ->join('users','user_roles.user_role_id','=','users.user_role_id')
+                                                ->join('personnel','users.email','=','personnel.email')
+                                                ->whereIn('is_consult',[1, 4])
+                                                ->where('personnel.id_centre',$centre_id)
+                                                ->get(); 
+                                                foreach ($all_specialiste as $v_specialist){ ?>  
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
                                               <?php } ?>
@@ -133,7 +178,7 @@
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
-                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}.
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}.
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
                                               <?php } ?>
@@ -177,6 +222,7 @@
                                           <th>Contact à appeller</th>
                                           <th>Spécialiste actuel</th>
                                           <th>Date consultation</th>
+                                          <th>Acttion</th>
                                           
                                         </tr>
                                       </thead>
@@ -211,6 +257,86 @@
                                             {{$all_specialiste->conslt_created_at}}
                                             @endif
                                           </td>
+                                         
+                                          <td>
+                                              
+                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="#">
+                                              <i class="ri-file-edit-fill"></i></a>                    
+                                              </td>
+                                        <?php ?>
+                                        </tr>
+                                      @endforeach
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          <!-- Row ends -->
+                        </div>
+                        <div class="tab-pane fade" id="fourAAA" role="tabpanel">
+                          <!-- Row starts -->
+                          <div class="row gx-3">
+                          <div class="col-sm-12">
+                            <div class="card mb-3">
+                              <div class="card-header">
+                                <h5 class="card-title">Patients admis en urgence</h5>
+                              </div>
+                              <div class="card-body">
+                                <div class="table-outer">
+                                  <div class="table-responsive">
+                                    <table class="table table-striped truncate m-0" id="example2">
+                                      <thead>
+                                        <tr>
+                                          <th></th>
+                                          <th>N° Dossier</th>
+                                          <th>Patient</th>
+                                          <th>Mal/Maux</th>
+                                          <th>Spécialiste actuel</th>
+                                          <th>Date d'admission</th>
+                                          <th>Acttion</th>
+                                          
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                      @foreach($all_patient_u as $p_urgence)    
+                                        <tr>
+                                          <td></td>
+                                          <td>{{$p_urgence->dossier_numero}}</td>
+                                          <td>{{$p_urgence->nom_patient}}
+                                          {{$p_urgence->prenom_patient}}</td>
+                                          <td>{{$p_urgence->maux}}</td>
+                                         
+                                          
+                                          <?php 
+                                          $all_specialiste=DB::table('users')
+                                                ->join('personnel','users.email','=','personnel.email')
+                                                ->join('user_roles','users.user_role_id','=','user_roles.user_role_id')
+                                                ->join('tbl_consultation','users.user_id','=','tbl_consultation.user_id')
+                                                ->select('users.*','personnel.*','user_roles.*','tbl_consultation.*')
+                                                ->where('users.user_id',$v_consult->last_consult_user_id)
+                                                ->first();
+
+
+                                          ?>   
+                                          <td>
+                                            @if($all_specialiste != NULL)
+                                            {{$all_specialiste->designation}}. {{$all_specialiste->prenom}} {{$all_specialiste->nom}}
+                                            @endif
+                                          </td>
+                                          <td>
+                                            @if($all_specialiste != NULL)
+                                            {{$all_specialiste->conslt_created_at}}
+                                            @endif
+                                          </td>
+                                         
+                                          <td>
+                                              
+                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-urgent-patient'.'/'.$p_urgence->id_prise_en_charge.'/'.$p_urgence->patient_id)}}">
+                                              <i class="ri-file-edit-fill"></i></a>                    
+                                              </td>
                                         <?php ?>
                                         </tr>
                                       @endforeach
@@ -247,8 +373,8 @@
                                           <th>Situation matrimonial</th>
                                           <th>Contact à appeller</th>
                                           <th>Spécialiste actuel</th>
-                                          <th>Date consultation</th>
-                                          <th></th>
+                                          <th>Date Mise en Observation</th>
+                                          <th>Action</th>
                                           
                                         </tr>
                                       </thead>
@@ -329,6 +455,7 @@
     <script>
       $(document).ready(function() {
       $("#example").DataTable();
+      $("#example2").DataTable();
     });
       $("select").change(function(){
       if(confirm('Cliquez OK pour envoyer le patient vers le spécialiste')){
@@ -337,6 +464,6 @@
       else $("select option:selected").prop("selected", false);
     });
     </script>
-    </script>
+    
     @endsection
 @endsection

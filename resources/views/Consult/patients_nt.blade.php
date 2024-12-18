@@ -83,7 +83,7 @@
                                               <td><h4><span class="badge bg-danger">{{$v_prisenc->maux}}</span></h4></td>
                                               <td>{{$v_prisenc->telephone}}</td>
                                               <td>{{$v_prisenc->adresse}}</td>
-                                              <td><h4><span class="badge bg-primary">O+</span></h4></td>
+                                              <td><h4><span class="badge bg-primary">{{$v_prisenc->gsang}}</span></h4></td>
                                               <td>
                                                 {{$v_prisenc->datenais}}
                                               </td>

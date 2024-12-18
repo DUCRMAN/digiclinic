@@ -76,12 +76,12 @@ $user_id=Session::get('user_id');
                           <div class="m-0">
                             <div class="form-check form-check-inline">
                               <input class="form-check-input" type="radio" name="status" id="status"
-                                value="1">
+                               >
                               <label class="form-check-label" for="status">Oui</label>
                             </div>
                             <div class="form-check form-check-inline">
                               <input class="form-check-input" type="radio" name="status" id="status"
-                                value="0">
+                                >
                               <label class="form-check-label" for="status">Non</label>
                             </div>
                           </div>

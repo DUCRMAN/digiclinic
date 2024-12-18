@@ -91,7 +91,7 @@ class PersonnelController extends Controller
         'sexe'=> ['string','required'],
         ]);
 
-        //dd($request->all());
+        // dd($request->all());
         Personnel::create($request->all());
 
         return redirect()->back()->with('PersonnalAdded', 'Informations sauvegardées avec succès');

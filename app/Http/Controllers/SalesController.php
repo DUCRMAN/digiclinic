@@ -508,6 +508,26 @@ class SalesController extends Controller
                 ));         
 
     }
+    // Labo
+    public function etat_stock_labo(){
+        $this->PharmacieAuthCheck();
+        $out_stock=DB::table('tbl_products')
+            ->where('stock',0)
+            ->get();
+
+        $low_stock=DB::table('tbl_products')
+            ->where('stock','<=',5)
+            ->where('stock','!=',0)
+            ->get();
+
+
+        return view ('Pharmacie.etat_stock')
+                ->with(array(
+                    'out_stock'=>$out_stock,               
+                    'low_stock'=>$low_stock,               
+                ));         
+
+    }
 
 
 

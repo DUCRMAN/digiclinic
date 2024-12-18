@@ -1,5 +1,5 @@
 @extends('layout')
-@section('add user content')
+@section('staff content')
 <?php
 $user_role_id=Session::get('user_role_id');
 $user_id=Session::get('user_id');
@@ -40,6 +40,8 @@ $centre_id=Session::get('centre_id');
                       </div>
                       <div class="col-xxl-1 col-lg-4 col-sm-6">
                         <div class="mb-3">
+                        <form action="{{route('personnel.store')}}" method="POST">
+                            @csrf
                           <label class="form-label" for="a7">Titre <span class="text-danger">*</span></label>
                           <select type="text" class="form-select" id="a7" placeholder="Entrez la désignation" name="qualification" required>
                             <option value="Dr">Dr</option>
@@ -49,9 +51,8 @@ $centre_id=Session::get('centre_id');
                           </select>
                         </div>
                       </div>
+                        
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <form action="{{route('personnel.store')}}" method="POST">
-                            @csrf
                         <div class="mb-3">
                           <label class="form-label" for="a1">Prénom (s)<span class="text-danger">*</span></label>
                           <input type="text" class="form-control" id="a1" placeholder="Entrez le prénom" name="prenom">
@@ -135,7 +136,7 @@ $centre_id=Session::get('centre_id');
                             @endphp
                             @foreach ($s_acceuil as $service)
 
-                            <option value="{{$service->user_role_id}} "> {{$service->designation}}</option>
+                            <option value="{{$service->user_role_id}} "> {{$service->title}}</option>
                             @endforeach
                           </select>
                         </div>

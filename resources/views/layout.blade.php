@@ -480,6 +480,9 @@
                   <li>
                     <a href="{{URL::to('caisse-hospitalisations')}}">Caisses hospitalisations</a>
                   </li>
+                  <li>
+                    <a href="{{ URL::to('caisse-analyses') }}">Caisses Analyses</a>
+                </li>
 
                 </ul>
               </li>
@@ -503,6 +506,7 @@
 
                 </ul>
               </li>
+<<<<<<< HEAD
               @elseif($user_role_id == 2 || $user_role_id == 3  || $user_role_id == 7 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 8 )
 
               <li class="treeview">
@@ -519,6 +523,10 @@
 
 
               @elseif($user_role_id == 4)
+=======
+              @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 )
+              {{-- @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 4 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 ) --}}
+>>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-stethoscope-line"></i>
@@ -526,11 +534,31 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{URL::to('gestion-analyses')}}">Analyses Générales</a>
-                    <a href="{{URL::to('consultations')}}">Analyses internes</a>
+                    <a href="{{URL::to('consultations')}}">Consultations</a>
+                    {{-- <a href="{{URL::to('gestion-analyses')}}">Analyses Générales</a>
+                    <a href="{{URL::to('consultations')}}">Analyses internes</a> --}}
                   </li>
                 </ul>
               </li>
+<<<<<<< HEAD
+=======
+
+@elseif($user_role_id == 4)
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-microscope-line"></i>
+                  <span class="menu-text">{{Session::get('role')}}</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                  <a href="{{URL::to('gestion-analyses')}}">Analyses Générales</a>
+                    <a href="{{URL::to('consultations')}}">Analyses internes</a>
+                    <a href="#">Stock </a>
+                  </li>
+                </ul>
+              </li>
+
+>>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
               @elseif($user_role_id == 9)
               <li class="active current-page">
                 <a href="{{URL::to('/dashboard')}}">

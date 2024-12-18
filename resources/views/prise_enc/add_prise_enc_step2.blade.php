@@ -17,127 +17,14 @@
                 </div>
 
 			    <div class="card-body" id="enleverE">
-			       	<form class="row" action="{{ url('/save-prisenc') }}" method="POST">
-			            {{csrf_field()}}
-              <input type="hidden" name="centre_id" value="{{$centre_id}}">
-			        <div class="col-md-12 mb-3">
-							<label class="classItems" for="selectError1"> Patients </label>
-							<div class="controls col-12">
-							<select class="form-control form-select" id="patient_id" name="patient_id" data-target="#service" data-source="get-detail/id">
-					  	<?php 
-              $all_patients=DB::table('tbl_patient')
-                ->orderBy('patient_id','ASC')  
-                ->get(); 
-              foreach ($all_patients as $v_patient){ ?>  
-							<option value="{{$v_patient->patient_id}}">{{$v_patient->prenom_patient}} {{$v_patient->nom_patient}} -- {{$v_patient->nip}} -- {{$v_patient->telephone}}</option>
-					 	<?php } ?>
-							  </select>
-							</div>
-					</div> 
-
-					 <div class="col-md-4 mb-3">
-							<label class="classItems" for="selectError1"> Mal/Maux du patient </label>
-							<div class="controls col-12">
-                          <input type="text" name="maux" class="form-control" id="validationCustomUsername"
-                            aria-describedby="inputGroupPrepend" required />
-                          </div>
-					</div> 
-
-          <div class="col-md-2 mb-3">
-              <label class="classItems" for="selectError1"> Température </label>
-              <div class="controls col-12">
-                          <input type="number" min="27" name="temp" class="form-control" id="validationCustomUsername"
-                            aria-describedby="inputGroupPrepend" required />
-                          </div>
-          </div> 
-
-					<div class="col-md-6 mb-3">
-							<label class="classItems" for="selectError1"> Observation </label>
-							<div class="controls col-12">
-                          <input type="text" name="observation" value="Néant" class="form-control" id="validationCustom05" required />
-                          </div>
-					</div> 
-				<div class="col-md-10 mb-3">
-			      <button type="submit" class="btn btn-success btn-pill col-md-4">
-			            Poursuivre 
-			      </button> 
-			    </div>      
-			    </form>
-			    <br>
-			    <a class="btn btn-warning btn-pill" href="#" onClick="THEFUNCTION(this.selectedIndex);">Nouveau Patient</a>
-			    </div>
-
-                  <div class="card-body" style="display:none; "id="enlever">
-			    <div class="card-body" id="step2E">
-          
-                    <form class="row g-3 needs-validation" method="POST" action="{{ route('save.step1') }}">
-            				{{csrf_field()}}
-                    <input type="hidden" name="centre_id" value="{{$centre_id}}">
-                    <div></div>
-            		      <div class="col-md-2">
-                        <label for="validationCustom05" class="form-label">N°de dossier</label>
-                        <input type="text" name="dossier_numero" class="form-control" id="validationCustom05" readonly />
-                       
-                      </div>
-            		      <div class="col-md-4">
-                        <label for="validationCustom05" class="form-label">Mal/Maux du patient*</label>
-                        <input type="text" name="maux" class="form-control" id="validationCustom05" required />
-                        <div class="invalid-feedback">
-                          Entrez les maux du patient.
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
-                        <label for="validationCustom05" class="form-label">Observation</label>
-                        <input type="text" name="observation" value="Néant" class="form-control" id="validationCustom05" required />
-                        <div class="invalid-feedback">
-                          Entrez des observations sur le patient.
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-sm-12 col-12">
-		                <div class="card mb-3">
-		                  <div class="card-body">
-		                    <div class="form-check was-validated">
-		                      <input type="radio" class="form-check-input" id="validationFormCheck3" name="sexe_patient"
-		                        required="" value="F">
-		                      <label class="form-check-label" for="validationFormCheck3">Féminin</label>
-		                    </div>
-		                  </div>
-		                </div>
-		              </div>
-		              <div class="col-md-6 col-sm-12 col-12">
-		                <div class="card mb-3">
-		                  <div class="card-body">
-		                    <div class="form-check was-validated">
-		                      <input type="radio" class="form-check-input" id="validationFormCheck4" name="sexe_patient" value="M">
-		                      <label class="form-check-label" for="validationFormCheck4">Masculin</label>
-		                    </div>
-		                  </div>
-		                </div>
-		              </div>
-                      
-       
-                      <div class="col-12">
-                        <button class="btn btn-primary" name="save" type="submit">
-                          Enregistrer
-                        </button>
-                        <button class="btn btn-secondary" name="next" type="submit">
-                          Compléter les informations
-                        </button>
-			                   {{-- <a class="btn btn-warning btn-pill" id="nextButton" href="#" onClick="MYFUNCTION(this.selectedIndex);">Complément d'informations</a> --}}
-
-                        <a  class="btn btn-danger btn-pill" href="javascript:window.location.reload(history.go(-1))">Revenir à la sélection</a>
-                      </div>
-                    </form>
-                  </div>
+			       
+			
                   {{-- Début seconde partie du formulaire --}}
-                   <div class="card-body" style="display:none; "id="step2">
+                   <div class="card-body" style="display:block; "id="step2">
                     <form class="row g-3 needs-validation" id="step2Form" method="POST" action="{{ route('save.step2') }}">
             				{{csrf_field()}}
                     <input type="hidden" name="centre_id" value="{{$centre_id}}">
-                   
-
-                      <div class="col-md-2">
+                          <div class="col-md-2">
                         <label for="validationCustom05" class="form-label">Température*</label>
                         <input type="number" min="27" name="temp" class="form-control" id="validationCustom05" required />
                         <div class="invalid-feedback">
@@ -171,12 +58,12 @@
             		  <div class="col-md-4">
                       <label for="validationCustom01" class="form-label">Nom</label>
                         <input type="text" name="nom_patient" class="form-control" id="validationCustom01" value="Mark"/>
-                        <div class="valid-feedback"></div>
+                        <div class="valid-feedback">Looks good!</div>
                       </div>
                       <div class="col-md-4">
                         <label for="validationCustom02" class="form-label">Prénom</label>
                         <input type="text" name="prenom_patient" class="form-control" id="validationCustom02" value="Otto"/>
-                        <div class="valid-feedback"></div>
+                        <div class="valid-feedback">Looks good!</div>
                       </div>
                       <div class="col-md-4">
                         <label for="validationCustomUsername" class="form-label">Email</label>
@@ -233,7 +120,7 @@
                         <button class="btn btn-primary" type="submit">
                           Valider
                         </button>
-                        <a  class="btn btn-danger btn-pill" href="javascript:window.location.reload(history.go(-1))">Revenir à la sélection</a>
+                        {{-- <a  class="btn btn-danger btn-pill" href="javascript:window.location.reload(history.go(-1))">Revenir à la sélection</a> --}}
                       </div>
                     </form>
                   </div>

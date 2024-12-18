@@ -42,7 +42,7 @@ class ConsultationController extends Controller
     public function SpecialisteAuthCheck()
    {
     $user_role_id=Session::get('user_role_id');
-    if ($user_role_id != 0 && $user_role_id != 1) {
+    if ($user_role_id != 1) {
         return;
         }
         else 
@@ -144,7 +144,6 @@ class ConsultationController extends Controller
                 ));;
     }
 
-
     public function gestion_analyses()
     {
         $this->SpecialisteAuthCheck();
@@ -184,8 +183,6 @@ class ConsultationController extends Controller
                 ));;
     }
 
-
-
     public function traitement_analyse($id_analyse,$patient_id)
     {
         $this->SpecialisteAuthCheck();
@@ -207,10 +204,8 @@ class ConsultationController extends Controller
                     'id_analyse'=>$id_analyse,                         
                 ));;
     }
-
-
-
-     public function traitement_patient($id_consultation,$patient_id)
+    
+    public function traitement_patient($id_consultation,$patient_id)
     {
         $this->SpecialisteAuthCheck();
         $user_id=Session::get('user_id');
@@ -231,10 +226,6 @@ class ConsultationController extends Controller
                     'id_consultation'=>$id_consultation,                         
                 ));;
     }
-
-
-
-
 
     public function save_analyse_traitement (Request $request)
     {
@@ -306,9 +297,6 @@ class ConsultationController extends Controller
 
     }
 
-
-
-
     public function save_traitement(Request $request)
     {
         $this->UserAuthCheck(); 
@@ -324,8 +312,7 @@ class ConsultationController extends Controller
         $diagnostic=$request->diagnostic;
 
         $file=$request->file('fichier_joint');
-        
-
+    
         
         if ($etat_hospitalisation == 0 && $user_id > 0) {
         $get_user_role=DB::table('users')
@@ -441,11 +428,8 @@ class ConsultationController extends Controller
 
         
         }
-            
-       
-                
-
     }
+<<<<<<< HEAD
 
 
     public function get_ordo($ordo_id)
@@ -525,4 +509,6 @@ class ConsultationController extends Controller
         
 
 
+=======
+>>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
 }

@@ -3,8 +3,6 @@
 <?php  
  $user_role_id=Session::get('user_role_id');
  $user_id=Session::get('user_id');
- $centre_id=Session::get('centre_id');
-
 ?>
 
 <!-- App body starts -->
@@ -17,30 +15,21 @@
                 <div class="card">
                   <div class="card-header">
                     <h5 class="card-title">Gestion de la prise en charge de <span style="color: green;"> {{$patient->prenom_patient}} {{$patient->nom_patient}}</span><br>
-                      <span class="badge bg-danger">{{$patient->maux}}</span> A l'arrivée : <span class="badge bg-primary">{{$patient->temp}} °C</span>  @if($patient->new_temp)Actuellement : <span class="badge bg-primary">{{$patient->new_temp}} °C</span>@endif <span class="badge bg-secondary">{{$patient->observation}}</span>
+                      <span class="badge bg-danger">{{$patient->maux}}</span> <span class="badge bg-primary">{{$patient->temp}} °C</span> <span class="badge bg-secondary">{{$patient->observation}}</span>
 
                     </h5>
-                   
-                    <button type="button" class="btn btn-light float-right" data-bs-toggle="modal"
-                      data-bs-target="#constance">Modifier constances</button>
-
-                    <button type="button" class="btn btn-light float-right" data-bs-toggle="modal"
-                      data-bs-target="#presc">Délivrer une ordonnance
-                    </button>
-                    
-
                   </div>
                   <div class="card-body">
                     <div class="custom-tabs-container">
                       <ul class="nav nav-tabs justify-content-end" id="customTab5" role="tablist">
-                      {{-- @if($patient->etat_hospitalisation == 0) --}}
+                      @if($patient->etat_hospitalisation == 0)
                         <li class="nav-item" role="presentation">
                           <a class="nav-link active" id="tab-oneAAAA" data-bs-toggle="tab" href="#oneAAAA" role="tab"
                             aria-controls="oneAAAA" aria-selected="true">
                             <span class="badge bg-primary">Prise en charge</span>
                           </a>
                         </li>
-                      {{-- @endif --}}
+                      @endif
                         <li class="nav-item" role="presentation">
                           <a class="nav-link" id="tab-twoAAAA" data-bs-toggle="tab" href="#twoAAAA" role="tab"
                             aria-controls="twoAAAA" aria-selected="false">
@@ -54,7 +43,7 @@
                           </a>
                         </li> -->
                       </ul>
-                      {{-- @if($patient->etat_hospitalisation == 0) --}}
+                      @if($patient->etat_hospitalisation == 0)
                       <div class="tab-content" id="customTabContent">
                         <div class="tab-pane fade show active" id="oneAAAA" role="tabpanel">
                         <div class="card-body">
@@ -79,7 +68,7 @@
                                     <label for="validationServer0">Observation</label>
                                     <input type="text" class="form-control border-success" id="validationServer0" placeholder="libellé" name="observation" >
                                     <div class="text-success small mt-1">
-                                      
+                                      Facultatif!
                                     </div>
                                   </div>
                                 
@@ -112,23 +101,23 @@
                                           ->where('users.user_id','!=',$user_id)
                                           ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
-                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
+                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
                                           {{$v_specialist->prenom}}
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
                                          </optgroup>
-                                           <optgroup label="Envoyer pour analyses">
+                                           <optgroup label="Laboratoire">
                                          
                                         <?php 
 
-                                           $all_specialiste=DB::table('user_roles')
-                                                ->join('users','user_roles.user_role_id','=','users.user_role_id')
-                                                ->join('personnel','users.email','=','personnel.email')
-                                                ->where('is_consult',3)
-                                                ->where('personnel.id_centre',$centre_id)
-                                                ->get(); 
+                                          $all_specialiste=DB::table('user_roles')
+                                          ->join('users','user_roles.user_role_id','=','users.user_role_id')
+                                          ->join('personnel','users.email','=','personnel.email')
+                                          ->where('is_consult',2)
+                                          ->where('users.user_id','!=',$user_id)
+                                          ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
-                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
+                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
                                           {{$v_specialist->prenom}}
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
@@ -165,7 +154,7 @@
                         </div>
            
                         </div>
-                        {{-- @endif --}}
+                        @endif
                         <div class="tab-pane fade" id="twoAAAA" role="tabpanel">
                           <div class="row">
                           <div class="col-xl-6 col-sm-6">
@@ -223,12 +212,6 @@
                           <strong>{{$v_consult->observation}} </strong>
                         </p>
 
-                        @if($patient->new_temp)
-                        <p class="mb-3">
-                          <em>Température relevée : {{$patient->new_temp}} °C  </em>
-                        </p>
-                        @endif
-
                         <div class="d-flex gap-2">
                          
                          @if($v_consult->fichier_joint)
@@ -268,27 +251,21 @@
                               <div class="card-body">
                                 <div class="scroll350">
                                   <div class="activity-feed">
-                                    @if($v_detail->date_ordo)
                                     @foreach($all_details as $v_detail)
+
+             
                                     <div class="feed-item">
                                       
-                                      <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans() }}">{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans()}} <span class="badge bg-danger">{{$v_detail->maux}}</span></span>
-
+                                      <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans() }}">{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans()}} <span class="badge bg-danger">{{$v_detail->maux}}</span></span> 
 
                                       <div class="mb-1">
-                                        <a href="{{URL::to('ordonnance/'.$v_detail->id_ordo_traitement)}}"><span class="text-primary">
-                                        {!!$v_detail->ordonnance_consultation!!}</span></a>
-                                      </div> 
+                                        <span class="text-primary">{!!$v_detail->ordonnance!!}</span>
+                                      </div>
+                                      
+                                      
                                      <?php  ?>
                                     </div>
                                     @endforeach
-                                    @endif
-                                    <!--  <h5 class="card-title">Ordonnance de fin de traitement</h5>
-                                    <div class="feed-item">
-                                      <div class="mb-1">
-                                        <a href="{{URL::to('ordonnance-final/'.$v_detail->id_prise_en_charge)}}"><span class="text-primary">{!!$v_detail->ordonnance!!}</span></a>
-                                      </div>
-                                    </div> -->
                                   </div>
                                 </div>
                               </div>
@@ -368,96 +345,4 @@
     });
     </script>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="modal fade" id="presc" data-bs-backdrop="static" data-bs-keyboard="false"
-                      tabindex="-1" aria-labelledby="prescLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Prescrire une ordonnance</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modall" aria-label="Annuler"></button>
-            </div>
-            <form action="{{ url('/make-ordonnance') }}" method="POST">
-                            {{csrf_field()}}
-            <div class="modal-body">
-            <h4>Veuillez renseignez votre ordonnance</h4>
-            <br>
-            <input type="hidden" name="id_consultation" value="{{$id_consultation}}">
-            <input type="hidden" name="id_prise_en_charge" value="{{$patient->id_prise_en_charge}}">
-
-            <div class="control-group hidden-phone">
-                <label class="control-label" for="textarea2">Contenu de l'ordonnance</label>
-                <br>
-
-                <textarea rows="10" cols="10" class="form-control" name="ordonnance_consultation"></textarea>
-               
-            </div>
-            </div>
-             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  Fermer
-                </button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-                  Oui, confirmer
-                </button>
-              </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-
-
-<div class="modal fade" id="constance" data-bs-backdrop="static" data-bs-keyboard="false"
-                      tabindex="-1" aria-labelledby="prescLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modifier les contantes du patient</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modall" aria-label="Annuler"></button>
-            </div>
-            <form action="{{ url('/modifier-constante') }}" method="POST">
-                            {{csrf_field()}}
-            <div class="modal-body">
-            <h4>Veuillez renseignez les nouvelles constantes</h4>
-            <br>
-            <input type="hidden" name="id_consultation" value="{{$id_consultation}}">
-           
-
-            <div class="control-group hidden-phone">
-                <label class="control-label" for="textarea2">Nouvelle température</label>
-
-                <input type="number" value="36" class="form-control" name="new_temp">
-            </div>
-            </div>
-             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  Fermer
-                </button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-                  Oui, confirmer
-                </button>
-              </div>
-            </form>
-        </div>
-    </div>
-</div>
 @endsection
-
-
-
-
