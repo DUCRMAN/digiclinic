@@ -53,16 +53,9 @@ Route::get('/caisse-hospitalisations', [PriseEnChargeController::class,('caisse_
 Route::get('/caisse-analyses', [PriseEnChargeController::class,('caisse_analyses')]);
 Route::get('get-analyse/{id}',[PriseEnChargeController::class, 'get_analyse']);
 Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
-<<<<<<< HEAD
 Route::post('/make-ordonnance', [ConsultationController::class,('make_ordonance')]);
 Route::get('/ordonnance/{ordo_id}', [ConsultationController::class,('get_ordo')]);
 
-=======
-Route::post('/save-step1', [PriseEnChargeController::class, 'saveStep1'])->name('save.step1');
-Route::get('/save-step2', [PriseEnChargeController::class, 'showStep2Form'])->name('save.step2');
-Route::post('/save-step2', [PriseEnChargeController::class, 'saveStep2'])->name('save.step2');
-Route::post('complements-information/{patient_id}', [PriseEnChargeController::class,'patientUpdate'])->name('update.patient');
->>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
 
 // Patient
 Route::resource('patient', PatientController::class);
@@ -104,10 +97,6 @@ Route::get('traitement-patient/{id_consultation}/{patient_id}', [ConsultationCon
 Route::post('save-traitement', [ConsultationController::class,('save_traitement')]);
 Route::post('modifier-constante', [ConsultationController::class,('update_constante')]);
 
-// Urgence
-Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [ConsultationController::class,('traitement_urgent_patient')]);
-
-
 //Analyses
 Route::get('gestion-analyses', [ConsultationController::class,('gestion_analyses')]);
 Route::get('traitement-analyse/{id_analyse}/{patient_id}', [ConsultationController::class,('traitement_analyse')]);
@@ -115,6 +104,11 @@ Route::get('get-reactif/{user_id}/{id_analyse}', [SalesController::class, 'get_r
 Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
 Route::get('/2/delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
 Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
+
+
+
+
+
 
 
 //Pharmacie
