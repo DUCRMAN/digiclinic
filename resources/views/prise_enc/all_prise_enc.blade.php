@@ -120,7 +120,7 @@
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
-                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}
+                                                <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}} 
                                                 {{$v_specialist->prenom}}
                                                 {{$v_specialist->nom}}</option>
                                               <?php } ?>

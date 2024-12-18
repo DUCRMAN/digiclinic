@@ -17,8 +17,8 @@ Repertoire patient
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title">Répertoire des prestations</h5>
-                    <a href="{{url('add-form')}}" class="btn btn-primary ms-auto">Ajouter une prestation</a>
+                    <h5 class="card-title">Répertoire des analyses</h5>
+                    <a href="{{URL::to('add-analyse')}}" class="btn btn-primary ms-auto">Ajouter une analyse</a>
                   </div>
                   <div class="card-body">
 
@@ -28,24 +28,26 @@ Repertoire patient
                         <thead>
                           <tr>
                             <th>N°.</th>
-                            <th>Type de prestation</th>
-                            <th>Coût de la prestation</th>
+                            <th>Type d'analyse</th>
+                            <th>Coût de l'analyse</th>
+                            <th>Coût de l'analyse assuré</th>
                            <th>Actions</th>
                           </tr>
                         </thead>
                         @php
                              $centre_id=Session::get('centre_id');
-                             $prestation=DB::table('tbl_prestation')->get();
+                             $analyse=DB::table('tbl_type_analyse')->get();
                         @endphp
                         <tbody>
-                          @foreach ($prestation as $all_prestation)
+                          @foreach ($analyse as $all_analyses)
                               
                          
                           <tr>
-                            <td>{{$all_prestation->prestation_id}} °)</td>
+                            <td>{{$all_analyses->id_type_analyse}} °) </td>
                          
-                            <td>{{$all_prestation->nom_prestation}}</td>
-                            <td>{{$all_prestation->prix_prestation}}  FCFA</td>
+                            <td> {{$all_analyses->libelle_analyse}}</td>
+                            <td>{{$all_analyses->prix_analyse}}  FCFA</td>
+                            <td>{{$all_analyses->prix_analyse_assure}}  FCFA</td>
                             
                             <td>
                               <div class="d-inline-flex gap-1">
@@ -53,7 +55,7 @@ Repertoire patient
                                   data-bs-target="#delRow">
                                   <i class="ri-delete-bin-line"></i>
                                 </button>
-                                <a href="edit-patient.html" class="btn btn-outline-success btn-sm"
+                                <a href="{{URL::to('edit-analyse-form/'.$all_analyses->id_type_analyse)}}" class="btn btn-outline-success btn-sm"
                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Modifier la prestation">
                                   <i class="ri-edit-box-line"></i>
                                 </a>

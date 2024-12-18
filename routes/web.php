@@ -45,7 +45,13 @@ Route::get('dashboard', [AdminController::class, 'index']);
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
 //Prise en charge
 Route::get('/all-prestations', [PriseEnChargeController::class, 'prestation']);
-Route::get('/add-form', [PriseEnChargeController::class, 'addForm']);
+Route::get('/all-analyses', [PriseEnChargeController::class, 'analyse']);
+Route::get('/add-form', [PriseEnChargeController::class, 'addPrestation']);
+Route::get('/edit-analyse-form/{id_type_analyse}', [PriseEnChargeController::class, 'editAnalyse']);
+Route::post('/update-analyse-form/{id_type_analyse}', [PriseEnChargeController::class, 'updateAnalyse']);
+Route::get('/add-analyse', [PriseEnChargeController::class, 'addAnalyse']);
+Route::post('/add-form', [PriseEnChargeController::class, 'savePrestation'])->name('add.prestation');
+Route::post('/add-analyse', [PriseEnChargeController::class, 'saveAnalyse'])->name('save.analyse');
 Route::get('/prises-en-charges', [PriseEnChargeController::class,('index')]);
 Route::get('/enregistrer-prise-en-charge', [PriseEnChargeController::class,('record_prisenc')]);
 Route::post('/save-prisenc', [PriseEnChargeController::class,('save_prisenc')]);
@@ -55,10 +61,9 @@ Route::get('/caisse-hospitalisations', [PriseEnChargeController::class,('caisse_
 Route::get('/caisse-analyses', [PriseEnChargeController::class,('caisse_analyses')]);
 Route::get('get-analyse/{id}',[PriseEnChargeController::class, 'get_analyse']);
 Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
-Route::post('/save-step1', [PriseEnChargeController::class, 'saveStep1'])->name('save.step1');
-Route::get('/save-step2', [PriseEnChargeController::class, 'showStep2Form'])->name('save.step2');
-Route::post('/save-step2', [PriseEnChargeController::class, 'saveStep2'])->name('save.step2');
-Route::post('complements-information/{patient_id}', [PriseEnChargeController::class,'patientUpdate'])->name('update.patient');
+Route::post('/make-ordonnance', [ConsultationController::class,('make_ordonance')]);
+Route::get('/ordonnance/{ordo_id}', [ConsultationController::class,('get_ordo')]);
+
 
 // Patient
 Route::resource('patient', PatientController::class);
@@ -98,18 +103,20 @@ Route::post('send-consult', [ConsultationController::class,('send_consult')]);
 Route::get('consultations', [ConsultationController::class,('consultation')]);
 Route::get('traitement-patient/{id_consultation}/{patient_id}', [ConsultationController::class,('traitement_patient')]);
 Route::post('save-traitement', [ConsultationController::class,('save_traitement')]);
-
-// Urgence
-Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [ConsultationController::class,('traitement_urgent_patient')]);
-
+Route::post('modifier-constante', [ConsultationController::class,('update_constante')]);
 
 //Analyses
 Route::get('gestion-analyses', [ConsultationController::class,('gestion_analyses')]);
 Route::get('traitement-analyse/{id_analyse}/{patient_id}', [ConsultationController::class,('traitement_analyse')]);
 Route::get('get-reactif/{user_id}/{id_analyse}', [SalesController::class, 'get_reactif']);
 Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
-Route::get('delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
+Route::get('/2/delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
 Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
+
+
+
+
+
 
 
 //Pharmacie

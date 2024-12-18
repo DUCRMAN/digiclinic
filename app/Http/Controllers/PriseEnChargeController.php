@@ -139,12 +139,124 @@ class PriseEnChargeController extends Controller
         return view('prise_enc/all_prestations');
     }
 
-    public function addForm()
+    public function addPrestation()
     {
         $this->CaisseAuthCheck();
        
         
-        return view('prise_enc/add_form');
+        return view('prise_enc/add_prestation_form');
+    }
+
+    public function savePrestation(Request $request)
+    {
+        $this->CaisseAuthCheck();
+        // $user = Auth::user();
+        $user_role_id=Session::get('user_role_id');
+        $centre_id=Session::get('centre_id');
+      
+
+        $request->validate([
+           'nom_prestation'=>'required|string',
+           'prix_prestation'=>'required|integer',
+           'user_role_id'   => 'required|integer|in:' . Session::get('user_role_id'),
+           'centre_id'      => 'required|integer|in:' . Session::get('centre_id'),
+          
+        ]);
+       
+        DB::table('tbl_prestation')->insert([
+            'nom_prestation' => $request->input('nom_prestation'),
+            'prix_prestation' => $request->input('prix_prestation'),
+            'user_role_id'   => $user_role_id,
+            'centre_id'      => $centre_id,
+            'created_at'     => now(),
+            'updated_at'     => now(),
+        ]);
+    return redirect()->back()->with('PersonnalAdded', 'Informations sauvegardées avec succès');
+    }
+
+
+    public function analyse()
+    {
+        $this->CaisseAuthCheck();
+       
+        
+        return view('prise_enc/all_prestations_analyses');
+    }
+
+    public function addAnalyse()
+    {
+        $this->CaisseAuthCheck();
+       
+        
+        return view('prise_enc/add_analyse_form');
+    }
+
+    public function saveAnalyse(Request $request)
+    {
+        $this->CaisseAuthCheck();
+        // $user = Auth::user();
+       
+        $centre_id=Session::get('centre_id');
+      
+
+        $request->validate([
+           'libelle_analyse'=>'required|string',
+           'prix_analyse'=>'required|integer',
+           'prix_analyse_assure'=>'required|integer',
+           'centre_id'      => 'required|integer|in:' . Session::get('centre_id'),
+          
+        ]);
+    //    dd($request->all());
+        DB::table('tbl_type_analyse')->insert([
+            'libelle_analyse' => $request->input('libelle_analyse'),
+            'prix_analyse' => $request->input('prix_analyse'),
+            'prix_analyse_assure' => $request->input('prix_analyse_assure'),
+            'centre_id'      => $centre_id,
+            'created_at'     => now(),
+            'updated_at'     => now(),
+        ]);
+    return redirect()->back()->with('PersonnalAdded', 'Informations sauvegardées avec succès');
+    }
+
+    public function editAnalyse($id)
+    {
+        $this->CaisseAuthCheck();
+        $centre_id=Session::get('centre_id');
+        $analyses = DB::table('tbl_type_analyse')
+                    ->where('id_type_analyse', $id)
+                    ->first();
+    
+        
+        return view('prise_enc/edit_analyse_form', compact('analyses','centre_id'));
+
+    }
+
+    public function updateAnalyse(Request $request, $id_type_analyse)
+    {
+        $this->CaisseAuthCheck();
+        $centre_id=Session::get('centre_id');
+       
+        $request->validate([
+            'libelle_analyse' => 'required|string',
+            'prix_analyse' => 'required|integer',
+            'prix_analyse_assure' => 'required|integer',
+            'centre_id' => 'required|integer|in:' . Session::get('centre_id'),
+        ]);
+        
+        $analyses = DB::table('tbl_type_analyse')
+                    ->where('id_type_analyse', $id_type_analyse)
+                    ->first();
+        
+        if ($analyses) {
+            $analyses->update($request->all());
+        } else {
+            // Gérer le cas où l'analyse n'est pas trouvée
+            return response()->json(['error' => 'Analyse non trouvée'], 404);
+        }
+        
+        
+        return redirect()->back()->with('PersonnalAdded', 'Mise à jour effectuée');
+
     }
 
     public function get_analyse(Request $request, $id)

@@ -574,7 +574,11 @@
 
             $.ajax({
                 type: "GET",
+<<<<<<< HEAD
+                url: "//delete-tabreactif/"+id,
+=======
                 url: "/delete-tabreactif/"+id,
+>>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
                 dataType: "json",
                 success: function (response) {
                      console.log(response);

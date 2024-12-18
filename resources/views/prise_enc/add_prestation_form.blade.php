@@ -19,24 +19,52 @@ Repertoire patient
                   <div class="card-header">
                     <h5 class="card-title">Ajouter une nouvelle prestation</h5>
                   </div>
+                  <div class="col-sm-12">
+                    <div class="d-flex gap-2 justify-content-end">
+                      <a href="{{url('all-prestations')}}" class="btn btn-success">
+                        Voir la liste
+                      </a>
+                      
+                    </div>
+                  </div>
                   <div class="card-body">
+                    
+                 <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            @if (session('PersonnalAdded'))
+                                Swal.fire({
+                                    title: 'Ajouté !',
+                                    text: "{{ session('PersonnalAdded') }}",
+                                    icon: 'success',
+                                    confirmButtonText: 'OK',
+                                    timer: 5000 
+                                    
+                                });
+                            @endif
+                        });
+            </script>
+                  
 
                     <!-- Row starts -->
                     <div class="row gx-3">
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
+                          <form action="{{route('add.prestation')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_role_id" value="{{ Session::get('user_role_id') }}">
+                            <input type="hidden" name="centre_id" value="{{ Session::get('centre_id') }}">
                           <label class="form-label" for="a1">Nom de la prestation</label>
-                          <input type="text" class="form-control" id="a1" placeholder="Enter Room Number">
+                          <input type="text" class="form-control" name="nom_prestation" id="a1" placeholder="Enter Room Number">
                         </div>
                       </div>
                       <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
                           <label class="form-label" for="a2">Coût de la prestation</label>
-                          <input type="email" class="form-control" id="a2" placeholder="Enter Floor Number">
-                        </div>
+                          <input type="number" class="form-control" name="prix_prestation" id="a2" placeholder="Enter Floor Number">
+                                                  </div>
                       </div>
                       
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
+                      {{-- <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <div class="mb-3">
                           <label class="form-label" for="a4">Service</label>
                           <select class="form-select" id="a4">
@@ -48,21 +76,21 @@ Repertoire patient
                             <option value="5">Paediatrician</option>
                           </select>
                         </div>
-                      </div>
+                      </div> --}}
                       
                       <div class="col-sm-12">
                         <div class="d-flex gap-2 justify-content-end">
                           <a href="available-rooms.html" class="btn btn-outline-secondary">
                             Annuler
                           </a>
-                          <a href="available-rooms.html" class="btn btn-primary">
+                          <button type="submit" class="btn btn-primary">
                             Valider les informations
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
                     <!-- Row ends -->
-
+                  </form>
                   </div>
                 </div>
               </div>
