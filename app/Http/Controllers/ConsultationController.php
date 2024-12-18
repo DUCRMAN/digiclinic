@@ -217,11 +217,14 @@ class ConsultationController extends Controller
     
 
         $all_details=DB::table('tbl_prise_en_charge')
-                ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                ->leftjoin('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                ->leftjoin('tbl_consultation','tbl_consultation.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')
+                  ->leftjoin('tbl_ordo_consultation','tbl_ordo_consultation.id_consultation','=','tbl_consultation.id_consultation')
                 ->where('tbl_prise_en_charge.patient_id',$patient_id)
-                ->select('tbl_prise_en_charge.*','tbl_patient.*')
+                ->select('tbl_prise_en_charge.*','tbl_patient.*','tbl_consultation.*','tbl_ordo_consultation.*')
                 ->orderBy('created_at','DESC')
                 ->get();
+
         
         return view('Consult.traitement_patient')->with(array(
                     'all_details'=>$all_details,                         
@@ -401,15 +404,42 @@ class ConsultationController extends Controller
                 ->where('id_consultation',$id_consultation)
                 ->update($data);
 
-            $datap['ordonnance']=$ordonnance;
+            
             $datap['etat_hospitalisation']=$etat_hospitalisation;
             DB::table('tbl_prise_en_charge')
                 ->where('id_prise_en_charge',$id_prise_en_charge)
                 ->update($datap);
 
-            Alert::success('Info', 'Prise en charge du patient '.$prenom_patient.' '.$nom_patient.' terminée. Le traitement est cloturé');
-               return Redirect::to ('/consultations');
 
+        
+        $today=date('YmdHis');
+        $num_ordo=$id_prise_en_charge.'-'.$id_consultation.'-'.$today;
+        $data=array();
+        $data['id_consultation']=$id_consultation;
+        $data['ordonnance_consultation']=$ordonnance;
+        $data['num_ordo']=$num_ordo;
+
+        $id_ordo=DB::table('tbl_ordo_consultation')->insertGetId($data);
+
+        $ordo_info=DB::table('tbl_ordo_consultation')
+                  ->leftjoin('tbl_consultation','tbl_consultation.id_consultation','=','tbl_ordo_consultation.id_consultation')
+                  ->leftjoin('tbl_prise_en_charge','tbl_prise_en_charge.id_prise_en_charge','=','tbl_consultation.id_prise_en_charge')
+                  ->leftjoin('tbl_patient','tbl_patient.patient_id','=','tbl_prise_en_charge.patient_id')
+                  ->select('tbl_ordo_consultation.*','tbl_consultation.*','tbl_prise_en_charge.*','tbl_patient.*')
+                  ->where('tbl_ordo_consultation.id_consultation',$id_ordo)
+                  ->first(); 
+
+
+        $message='L\'ordonnance a été généré avec succès';
+        Alert::success('Info', 'Prise en charge du patient '.$prenom_patient.' '.$nom_patient.' terminée. Le traitement est cloturé');
+          return Redirect::to('ordonnance/'.$id_ordo)->with(array(
+                    'message'=>$message,
+                    
+                    'ordo_info'=>$ordo_info,                       
+                                                   
+                ));   
+
+        
         }
             
        
@@ -418,7 +448,79 @@ class ConsultationController extends Controller
     }
 
 
+    public function get_ordo($ordo_id)
+    {
 
+
+
+    $ordo_info=DB::table('tbl_ordo_consultation')
+                  ->leftjoin('tbl_consultation','tbl_consultation.id_consultation','=','tbl_ordo_consultation.id_consultation')
+                  ->leftjoin('tbl_prise_en_charge','tbl_prise_en_charge.id_prise_en_charge','=','tbl_consultation.id_prise_en_charge')
+                  ->leftjoin('tbl_patient','tbl_patient.patient_id','=','tbl_prise_en_charge.patient_id')
+                  ->select('tbl_ordo_consultation.*','tbl_consultation.*','tbl_prise_en_charge.*','tbl_patient.*')
+                  ->where('id_ordo_traitement',$ordo_id)
+                  ->first(); 
+ 
+
+      return view ('Consult.ordonnance')
+                ->with(array(
+                   
+                    'ordo_info'=>$ordo_info,                       
+                                                    
+                ));
+
+      
+    }
+
+
+    public function make_ordonance (Request $request){
+
+        $id_consultation=$request->id_consultation;
+        $id_prise_en_charge=$request->id_prise_en_charge;
+        $ordonnance_consultation=$request->ordonnance_consultation;
+        $today=date('YmdHis');
+        $num_ordo=$id_prise_en_charge.'-'.$id_consultation.'-'.$today;
+        $data=array();
+        $data['id_consultation']=$id_consultation;
+        $data['ordonnance_consultation']=$ordonnance_consultation;
+        $data['num_ordo']=$num_ordo;
+
+        $id_ordo=DB::table('tbl_ordo_consultation')->insertGetId($data);
+
+        $ordo_info=DB::table('tbl_ordo_consultation')
+                  ->leftjoin('tbl_consultation','tbl_consultation.id_consultation','=','tbl_ordo_consultation.id_consultation')
+                  ->leftjoin('tbl_prise_en_charge','tbl_prise_en_charge.id_prise_en_charge','=','tbl_consultation.id_prise_en_charge')
+                  ->leftjoin('tbl_patient','tbl_patient.patient_id','=','tbl_prise_en_charge.patient_id')
+                  ->select('tbl_ordo_consultation.*','tbl_consultation.*','tbl_prise_en_charge.*','tbl_patient.*')
+                  ->where('tbl_ordo_consultation.id_consultation',$id_ordo)
+                  ->first(); 
+
+
+        $message='L\'ordonnance a été généré avec succès';
+          return Redirect::to('ordonnance/'.$id_ordo)->with(array(
+                    'message'=>$message,
+                    
+                    'ordo_info'=>$ordo_info,                       
+                                                   
+                ));    
+
+      }
+
+
+    public function update_constante (Request $request){
+    $id_consultation=$request->id_consultation;
+    $new_temp=$request->new_temp;
+    $data['new_temp']=$new_temp;
+
+    DB::table('tbl_consultation')
+                ->where('id_consultation',$id_consultation)
+                ->update($data);
+
+            Alert::success('Info', 'Constante modifié avec succès');
+               return Redirect::to ('/consultations');
+
+    }
+    
 
         
 

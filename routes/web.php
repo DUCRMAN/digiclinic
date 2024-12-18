@@ -53,6 +53,9 @@ Route::get('/caisse-hospitalisations', [PriseEnChargeController::class,('caisse_
 Route::get('/caisse-analyses', [PriseEnChargeController::class,('caisse_analyses')]);
 Route::get('get-analyse/{id}',[PriseEnChargeController::class, 'get_analyse']);
 Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
+Route::post('/make-ordonnance', [ConsultationController::class,('make_ordonance')]);
+Route::get('/ordonnance/{ordo_id}', [ConsultationController::class,('get_ordo')]);
+
 
 // Patient
 Route::resource('patient', PatientController::class);
@@ -92,13 +95,14 @@ Route::post('send-consult', [ConsultationController::class,('send_consult')]);
 Route::get('consultations', [ConsultationController::class,('consultation')]);
 Route::get('traitement-patient/{id_consultation}/{patient_id}', [ConsultationController::class,('traitement_patient')]);
 Route::post('save-traitement', [ConsultationController::class,('save_traitement')]);
+Route::post('modifier-constante', [ConsultationController::class,('update_constante')]);
 
 //Analyses
 Route::get('gestion-analyses', [ConsultationController::class,('gestion_analyses')]);
 Route::get('traitement-analyse/{id_analyse}/{patient_id}', [ConsultationController::class,('traitement_analyse')]);
 Route::get('get-reactif/{user_id}/{id_analyse}', [SalesController::class, 'get_reactif']);
 Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
-Route::get('delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
+Route::get('/2/delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
 Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
 
 

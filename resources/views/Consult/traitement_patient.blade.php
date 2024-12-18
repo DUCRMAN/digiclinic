@@ -15,9 +15,18 @@
                 <div class="card">
                   <div class="card-header">
                     <h5 class="card-title">Gestion de la prise en charge de <span style="color: green;"> {{$patient->prenom_patient}} {{$patient->nom_patient}}</span><br>
-                      <span class="badge bg-danger">{{$patient->maux}}</span> <span class="badge bg-primary">{{$patient->temp}} °C</span> <span class="badge bg-secondary">{{$patient->observation}}</span>
+                      <span class="badge bg-danger">{{$patient->maux}}</span> A l'arrivée : <span class="badge bg-primary">{{$patient->temp}} °C</span>  @if($patient->new_temp)Actuellement : <span class="badge bg-primary">{{$patient->new_temp}} °C</span>@endif <span class="badge bg-secondary">{{$patient->observation}}</span>
 
                     </h5>
+                   
+                    <button type="button" class="btn btn-light float-right" data-bs-toggle="modal"
+                      data-bs-target="#constance">Modifier constances</button>
+
+                    <button type="button" class="btn btn-light float-right" data-bs-toggle="modal"
+                      data-bs-target="#presc">Délivrer une ordonnance
+                    </button>
+                    
+
                   </div>
                   <div class="card-body">
                     <div class="custom-tabs-container">
@@ -196,6 +205,12 @@
                           <strong>{{$v_consult->observation}} </strong>
                         </p>
 
+                        @if($patient->new_temp)
+                        <p class="mb-3">
+                          <em>Température relevée : {{$patient->new_temp}} °C  </em>
+                        </p>
+                        @endif
+
                         <div class="d-flex gap-2">
                          
                          @if($v_consult->fichier_joint)
@@ -235,21 +250,27 @@
                               <div class="card-body">
                                 <div class="scroll350">
                                   <div class="activity-feed">
+                                    @if($v_detail->date_ordo)
                                     @foreach($all_details as $v_detail)
-
-             
                                     <div class="feed-item">
                                       
-                                      <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans() }}">{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans()}} <span class="badge bg-danger">{{$v_detail->maux}}</span></span> 
+                                      <span class="feed-date pb-1" data-bs-toggle="tooltip" data-bs-title="{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans() }}">{{\Carbon\Carbon::parse($v_detail->created_at)->diffForHumans()}} <span class="badge bg-danger">{{$v_detail->maux}}</span></span>
+
 
                                       <div class="mb-1">
-                                        <span class="text-primary">{!!$v_detail->ordonnance!!}</span>
-                                      </div>
-                                      
-                                      
+                                        <a href="{{URL::to('ordonnance/'.$v_detail->id_ordo_traitement)}}"><span class="text-primary">
+                                        {!!$v_detail->ordonnance_consultation!!}</span></a>
+                                      </div> 
                                      <?php  ?>
                                     </div>
                                     @endforeach
+                                    @endif
+                                    <!--  <h5 class="card-title">Ordonnance de fin de traitement</h5>
+                                    <div class="feed-item">
+                                      <div class="mb-1">
+                                        <a href="{{URL::to('ordonnance-final/'.$v_detail->id_prise_en_charge)}}"><span class="text-primary">{!!$v_detail->ordonnance!!}</span></a>
+                                      </div>
+                                    </div> -->
                                   </div>
                                 </div>
                               </div>
@@ -329,4 +350,96 @@
     });
     </script>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="presc" data-bs-backdrop="static" data-bs-keyboard="false"
+                      tabindex="-1" aria-labelledby="prescLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Prescrire une ordonnance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modall" aria-label="Annuler"></button>
+            </div>
+            <form action="{{ url('/make-ordonnance') }}" method="POST">
+                            {{csrf_field()}}
+            <div class="modal-body">
+            <h4>Veuillez renseignez votre ordonnance</h4>
+            <br>
+            <input type="hidden" name="id_consultation" value="{{$id_consultation}}">
+            <input type="hidden" name="id_prise_en_charge" value="{{$patient->id_prise_en_charge}}">
+
+            <div class="control-group hidden-phone">
+                <label class="control-label" for="textarea2">Contenu de l'ordonnance</label>
+                <br>
+
+                <textarea rows="10" cols="10" class="form-control" name="ordonnance_consultation"></textarea>
+               
+            </div>
+            </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Fermer
+                </button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                  Oui, confirmer
+                </button>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="constance" data-bs-backdrop="static" data-bs-keyboard="false"
+                      tabindex="-1" aria-labelledby="prescLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modifier les contantes du patient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modall" aria-label="Annuler"></button>
+            </div>
+            <form action="{{ url('/modifier-constante') }}" method="POST">
+                            {{csrf_field()}}
+            <div class="modal-body">
+            <h4>Veuillez renseignez les nouvelles constantes</h4>
+            <br>
+            <input type="hidden" name="id_consultation" value="{{$id_consultation}}">
+           
+
+            <div class="control-group hidden-phone">
+                <label class="control-label" for="textarea2">Nouvelle température</label>
+
+                <input type="number" value="36" class="form-control" name="new_temp">
+            </div>
+            </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Fermer
+                </button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                  Oui, confirmer
+                </button>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
+
+
+
+

@@ -612,7 +612,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "delete-tabreactif/"+id,
+                url: "//delete-tabreactif/"+id,
                 dataType: "json",
                 success: function (response) {
                     // console.log(response);
