@@ -8,14 +8,14 @@
     <title>@yield('title')| DigiClinic</title>
 
     <!-- Meta -->
-    <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta name="author" content="Bootstrap Gallery">
-    <link rel="canonical" href="https://www.bootstrap.gallery/">
-    <meta property="og:url" content="https://www.bootstrap.gallery">
-    <meta property="og:title" content="Admin Templates - Dashboard Templates | Bootstrap Gallery">
-    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta name="description" content="DigiClinic">
+    <meta name="author" content="Administration | Gestion de Cliniques">
+    <link rel="canonical" href="https://www.gnlfconsult.com/">
+    <meta property="og:url" content="https://www.gnlfconsult.com">
+    <meta property="og:title" content="Administration | Gestion de Cliniques">
+    <meta property="og:description" content="DigiClinic | Administration de Cliniques">
     <meta property="og:type" content="Website">
-    <meta property="og:site_name" content="Bootstrap Gallery">
+    <meta property="og:site_name" content="Administration | Gestion de Cliniques">
 
     <!-- SweetAlert DataTables.js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css">

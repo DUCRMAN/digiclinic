@@ -45,6 +45,7 @@ Route::get('dashboard', [AdminController::class, 'index']);
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
 //Prise en charge
 Route::get('/all-prestations', [PriseEnChargeController::class, 'prestation']);
+Route::get('/prestation-edit/{prestation_id}',[PriseEnChargeController::class,'editPrestation']);
 Route::get('/all-analyses', [PriseEnChargeController::class, 'analyse']);
 Route::get('/add-form', [PriseEnChargeController::class, 'addPrestation']);
 Route::get('/edit-analyse-form/{id_type_analyse}', [PriseEnChargeController::class, 'editAnalyse']);
@@ -61,6 +62,11 @@ Route::get('/caisse-hospitalisations', [PriseEnChargeController::class,('caisse_
 Route::get('/caisse-analyses', [PriseEnChargeController::class,('caisse_analyses')]);
 Route::get('get-analyse/{id}',[PriseEnChargeController::class, 'get_analyse']);
 Route::post('/save-analyse', [PriseEnChargeController::class,('save_analyse')]);
+Route::post('/save-step1', [PriseEnChargeController::class, 'saveStep1'])->name('save.step1');
+Route::get('/save-step2', [PriseEnChargeController::class, 'showStep2Form'])->name('show.step2');
+Route::post('/save-step2', [PriseEnChargeController::class, 'saveStep2'])->name('save.step2');
+Route::get('complements-information/{id_prise_en_charge}/{patient_id}',[PriseEnChargeController::class, 'patientEdit'])->name('edit.patient');
+Route::post('complements-information/{patient_id}', [PriseEnChargeController::class,'patientUpdate'])->name('update.patient');
 Route::post('/make-ordonnance', [ConsultationController::class,('make_ordonance')]);
 Route::get('/ordonnance/{ordo_id}', [ConsultationController::class,('get_ordo')]);
 
@@ -113,7 +119,8 @@ Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
 Route::get('/2/delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
 Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
 
-
+// Urgence
+Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [ConsultationController::class,('traitement_urgent_patient')]);
 
 
 

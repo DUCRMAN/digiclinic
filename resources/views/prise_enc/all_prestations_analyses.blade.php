@@ -31,7 +31,10 @@ Repertoire patient
                             <th>Type d'analyse</th>
                             <th>Coût de l'analyse</th>
                             <th>Coût de l'analyse assuré</th>
-                           <th>Actions</th>
+                            @if ($user_role_id ==11)
+                                
+                            <th>Actions</th>
+                            @endif
                           </tr>
                         </thead>
                         @php

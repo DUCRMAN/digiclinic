@@ -145,26 +145,19 @@ class PriseEnChargeController extends Controller
     }
     public function prestation()
     {
-        $this->CaisseAuthCheck();
-        $this->ChefAuthCheck();
-       
-        
         return view('prise_enc/all_prestations');
     }
 
     public function addPrestation()
     {
-        $this->CaisseAuthCheck();
-        $this->ChefAuthCheck();
-       
-        
         return view('prise_enc/add_prestation_form');
     }
+  
 
     public function savePrestation(Request $request)
     {
         $this->CaisseAuthCheck();
-        $this->ChefAuthCheck();
+         
         // $user = Auth::user();
         $user_role_id=Session::get('user_role_id');
         $centre_id=Session::get('centre_id');
@@ -190,20 +183,29 @@ class PriseEnChargeController extends Controller
     }
 
 
+    public function editPrestation($prestation_id)
+    {
+        $this->ChefAuthCheck();
+        $user_id =Session::get('user_id');
+        $all_prestation = DB::table('tbl_prestatiion')
+                            ->where('prestation_id', $prestation_id)
+                             ->first();
+                if(!$all_prestation){
+                    return redirect()->back()->with('error', 'Erreur lors de la récupération de la prestation');
+                }
+            return view('prise_enc/edit_prestation_form', compact('all_prestation'));
+    }
+
+
     public function analyse()
     {
-        $this->CaisseAuthCheck();
-        $this->ChefAuthCheck();
-       
-        
+    
         return view('prise_enc/all_prestations_analyses');
     }
 
     public function addAnalyse()
     {
-        $this->CaisseAuthCheck();
-        $this->ChefAuthCheck();
-       
+    
 
         return view('prise_enc/add_analyse_form');
     }
@@ -513,7 +515,16 @@ class PriseEnChargeController extends Controller
         Alert::success('Info', 'Données enregistrées avec succès.');
         return Redirect::to ('/prises-en-charges');
     }
-    
+    public function patientEdit($id_prise_en_charge, $patient_id)
+    {
+        $all_details = DB::table('tbl_prise_en_charge')
+                        ->join('tbl_patient','tbl_prise_en_charge.patient_id',"=",'tbl_patient.patient_id')
+                        ->where('tbl_patient.patient_id', $patient_id)
+                        ->where('id_prise_en_charge', $id_prise_en_charge)
+                        ->first();
+
+        return view('prise_enc.update_prise_enc', compact('all_details'));                
+    }
     public function patientUpdate(Request $request, $patient_id)
     {
         $this->UserAuthCheck(); 

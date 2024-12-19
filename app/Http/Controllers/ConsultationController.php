@@ -51,9 +51,6 @@ class ConsultationController extends Controller
         }
 
     }
-
-
-
     public function send_consult(Request $request)
     {
             $this->UserAuthCheck(); 

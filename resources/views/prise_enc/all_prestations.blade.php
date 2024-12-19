@@ -30,7 +30,9 @@ Repertoire patient
                             <th>N°.</th>
                             <th>Type de prestation</th>
                             <th>Coût de la prestation</th>
-                           <th>Actions</th>
+                            @if ($user_role_id == 11)
+                               <th>Actions</th>
+                            @endif
                           </tr>
                         </thead>
                         @php
@@ -54,7 +56,7 @@ Repertoire patient
                                   data-bs-target="#delRow">
                                   <i class="ri-delete-bin-line"></i>
                                 </button>
-                                <a href="edit-patient.html" class="btn btn-outline-success btn-sm"
+                                <a href="{{URL::to('edit-analyse-form/'.$all_prestation->prestation_id)}}" class="btn btn-outline-success btn-sm"
                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Modifier la prestation">
                                   <i class="ri-edit-box-line"></i>
                                 </a>

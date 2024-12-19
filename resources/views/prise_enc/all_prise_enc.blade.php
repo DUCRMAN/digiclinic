@@ -334,7 +334,7 @@
                                          
                                           <td>
                                               
-                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-urgent-patient'.'/'.$p_urgence->id_prise_en_charge.'/'.$p_urgence->patient_id)}}">
+                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('complements-information'.'/'.$p_urgence->id_prise_en_charge.'/'.$p_urgence->patient_id)}}">
                                               <i class="ri-file-edit-fill"></i></a>                    
                                               </td>
                                         <?php ?>
