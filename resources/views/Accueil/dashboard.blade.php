@@ -66,6 +66,24 @@ Admin
                               <p class="m-0"> Envoyés en consultation</p>
                             <?php  ?>
                             </div>
+                          <div class="d-flex align-items-center">
+                            <a href="{{route('patient.repertoire')}}">
+                            <div class="icon-box lg bg-lime rounded-2 me-3">
+                              <i class="ri-user-line fs-4"></i>
+                            </div>
+                            </a>
+                            <div class="d-flex flex-column">
+                            <?php
+                                $list_patient=DB::table('tbl_patient')
+                                          ->where('id_centre',$centre_id)
+                                          ->count();
+                            ?>
+                              <h2 class="m-0 lh-1">{{$list_patient}}</h2>
+
+
+                              <p class="m-0"> Repertoire de patients</p>
+                            <?php  ?>
+                            </div>
                           </div>
                         @elseif($user_role_id == 1)
                         <div class="d-flex align-items-center">

@@ -20,7 +20,7 @@
                       <span class="badge bg-danger">{{$patient->maux}}</span> A l'arrivée : <span class="badge bg-primary">{{$patient->temp}} °C</span>  @if($patient->new_temp)Actuellement : <span class="badge bg-primary">{{$patient->new_temp}} °C</span>@endif <span class="badge bg-secondary">{{$patient->observation}}</span>
 
                     </h5>
-                   
+                   @if($user_role_id !=0 && $user_role_id !=1 && $user_role_id !=10)
                     <button type="button" class="btn btn-light float-right" data-bs-toggle="modal"
                       data-bs-target="#constance">Modifier constances</button>
 
@@ -28,21 +28,22 @@
                       data-bs-target="#presc">Délivrer une ordonnance
                     </button>
                     
-
+                    @endif
                   </div>
                   <div class="card-body">
                     <div class="custom-tabs-container">
                       <ul class="nav nav-tabs justify-content-end" id="customTab5" role="tablist">
                       {{-- @if($patient->etat_hospitalisation == 0) --}}
+                      @if ($user_role_id !=0 && $user_role_id !=1 && $user_role_id !=10)
                         <li class="nav-item" role="presentation">
                           <a class="nav-link active" id="tab-oneAAAA" data-bs-toggle="tab" href="#oneAAAA" role="tab"
                             aria-controls="oneAAAA" aria-selected="true">
                             <span class="badge bg-primary">Prise en charge</span>
                           </a>
                         </li>
-                      {{-- @endif --}}
+                      @endif
                         <li class="nav-item" role="presentation">
-                          <a class="nav-link" id="tab-twoAAAA" data-bs-toggle="tab" href="#twoAAAA" role="tab"
+                          <a class="nav-link active" id="tab-twoAAAA" data-bs-toggle="tab" href="#twoAAAA" role="tab"
                             aria-controls="twoAAAA" aria-selected="false">
                             <span class="badge bg-primary">Dossier Médical</span>
                           </a>
@@ -55,13 +56,14 @@
                         </li> -->
                       </ul>
                       {{-- @if($patient->etat_hospitalisation == 0) --}}
+                      @if ($user_role_id != 0 && $user_role_id != 1 && $user_role_id != 10)
+
                       <div class="tab-content" id="customTabContent">
                         <div class="tab-pane fade show active" id="oneAAAA" role="tabpanel">
                         <div class="card-body">
                               <div class="collapse" id="collapse-from-validation">
                                 
                               </div>
-
                              <form onsubmit="confirm('Cliquez ok pour cloturer le traitement')" class="form-horizontal" method="post" action="{{url('/save-traitement')}}" enctype="multipart/form-data">
                                     {{csrf_field()}}
                            
@@ -165,8 +167,12 @@
                         </div>
            
                         </div>
-                        {{-- @endif --}}
+                        @endif
+                        @if($user_role_id ==0 || $user_role_id ==1 || $user_role_id ==10)
+                        <div class="tab-pane fade show" id="twoAAAA" role="tabpanel">
+                          @else
                         <div class="tab-pane fade" id="twoAAAA" role="tabpanel">
+                          @endif
                           <div class="row">
                           <div class="col-xl-6 col-sm-6">
                             <div class="card mb-3">
@@ -241,14 +247,7 @@
                   </div>
                   </div>
                   </div>
-
-
-                                      
-
-                                      
-
-                                      
-                                      @endforeach
+                            @endforeach
                                      <?php  ?>
                                     </div>
                                     @endforeach
@@ -341,19 +340,7 @@
   
 
 </script>
-
-
-              
-              
-              
-            
-              
-            
-              
-            
-           
-
-          
+     
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 @section('Datatable')
     <script>

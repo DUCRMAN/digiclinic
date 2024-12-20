@@ -212,7 +212,7 @@
                               <div class="card-body">
                                 <div class="table-outer">
                                   <div class="table-responsive">
-                                    <table class="table table-striped truncate m-0">
+                                    <table id="example3" class="table table-striped truncate m-0">
                                       <thead>
                                         <tr>
                                           <th></th>
@@ -363,7 +363,7 @@
                               <div class="card-body">
                                 <div class="table-outer">
                                   <div class="table-responsive">
-                                    <table class="table table-striped truncate m-0">
+                                    <table id="example4" class="table table-striped truncate m-0">
                                       <thead>
                                         <tr>
                                           <th>CHAMBRE</th>
@@ -456,6 +456,8 @@
       $(document).ready(function() {
       $("#example").DataTable();
       $("#example2").DataTable();
+      $("#example3").DataTable();
+      $("#example4").DataTable();
     });
       $("select").change(function(){
       if(confirm('Cliquez OK pour envoyer le patient vers le spécialiste')){
