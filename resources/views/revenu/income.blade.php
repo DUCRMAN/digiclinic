@@ -84,83 +84,84 @@
                         <tbody>
                           <tr>
                             <td><span class="badge bg-primary">Analyses</span></td>
-                            <td>$1339.00</td>
-                            <td>$2220.00</td>
-                            <td>$5755.00</td>
-                            <td>$1318.00</td>
-                            <td>$3320.00</td>
-                            <td>$3983.00</td>
-                            <td>$9229.00</td>
-                            <td>$5546.00</td>
-                            <td>$5660.00</td>
-                            <td>$1789.00</td>
-                            <td>$2329.00</td>
-                            <td>$7097.00</td>
-                            <td>$34300.00</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                           
                           </tr>
                           <tr>
                             <td><span class="badge bg-info">Consulations</span></td>
-                            <td>$1032.00</td>
-                            <td>$2084.00</td>
-                            <td>$3364.00</td>
-                            <td>$7130.00</td>
-                            <td>$2182.00</td>
-                            <td>$6961.00</td>
-                            <td>$1890.00</td>
-                            <td>$8422.00</td>
-                            <td>$4465.00</td>
-                            <td>$7634.00</td>
-                            <td>$5190.00</td>
-                            <td>$4532.00</td>
-                            <td>$58200.00</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
                           </tr>
                           <tr>
                             <td><span class="badge bg-danger">Pharmacie</span></td>
-                            <td>$2230.00</td>
-                            <td>$3036.00</td>
-                            <td>$4221.00</td>
-                            <td>$7656.00</td>
-                            <td>$2226.00</td>
-                            <td>$1166.00</td>
-                            <td>$6120.00</td>
-                            <td>$1709.00</td>
-                            <td>$9932.00</td>
-                            <td>$8776.00</td>
-                            <td>$6593.00</td>
-                            <td>$9991.00</td>
-                            <td>$83700.00</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
                           </tr>
                           <tr>
-                            <td><span class="badge bg-warning">Hospitalisation</span></td>
-                            <td>$4339.00</td>
-                            <td>$8739.00</td>
-                            <td>$5529.00</td>
-                            <td>$6138.00</td>
-                            <td>$2239.00</td>
-                            <td>$2933.00</td>
-                            <td>$3389.00</td>
-                            <td>$8739.00</td>
-                            <td>$7663.00</td>
-                            <td>$9236.00</td>
-                            <td>$9125.00</td>
-                            <td>$6631.00</td>
-                            <td>$74100.00</td>
+                            <td><span class="badge bg-success">Hospitalisations</span></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
                           </tr>
                           <tr>
-                            <td><span class="badge bg-success">Scanner</span></td>
-                            <td>$2980.00</td>
-                            <td>$3480.00</td>
-                            <td>$1980.00</td>
-                            <td>$2080.00</td>
-                            <td>$2480.00</td>
-                            <td>$7680.00</td>
-                            <td>$8480.00</td>
-                            <td>$6680.00</td>
-                            <td>$1080.00</td>
-                            <td>$3280.00</td>
-                            <td>$2080.00</td>
-                            <td>$1680.00</td>
-                            <td>$95900.00</td>
+                            <td><span class="badge bg-warning">Imagerie</span></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
                           </tr>
                         </tbody>
                       </table>
