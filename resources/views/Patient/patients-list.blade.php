@@ -20,17 +20,17 @@ Repertoire patient
                     <h5 class="card-title">Répertoire des patients</h5>
                     @if($user_role_id == 0)
                       
-                   <a href="add-patient.html" class="btn btn-primary ms-auto">Add Patient</a>
+                   <a href="{{URL::to('enregistrer-prise-en-charge')}}" class="btn btn-primary ms-auto">Enregistrer un nouveau patient</a>
                     @endif
                   </div>
                   <div class="card-body">
 
                     <!-- Table starts -->
                     <div class="table-responsive">
-                      <table id="basicExample" class="table truncate m-0 align-middle">
+                      <table id="example" class="table truncate m-0 align-middle">
                         <thead>
                           <tr>
-                            <th>No.</th>
+                            <th>N° du dossier.</th>
                             <th>Nom du Patient</th>
                             <th>Sexe</th>
                             <th>Né(e) le</th>
@@ -52,7 +52,7 @@ Repertoire patient
                         @foreach($all_patients as $data_patient)
                       
                           <tr>
-                            <td>#89990</td>
+                            <td>{{$data_patient ->dossier_numero}}</td>
                             <td>
                             @if($data_patient->sexe_patient == 'F')
                               <img src="{{asset('frontend/F.png')}}" class="img-shadow img-2x rounded-5 me-1"
@@ -82,7 +82,7 @@ Repertoire patient
                                   <i class="ri-delete-bin-line"></i>
                                 </button>
                                 <a href="#" class="btn btn-outline-success btn-sm"
-                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit Patient Details">
+                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Modifier les informations du patient">
                                   <i class="ri-edit-box-line"></i>
                                 </a>
                                 <a href="{{ route('patient.datas', $data_patient->patient_id) }}" class="btn btn-outline-info btn-sm"
@@ -90,12 +90,12 @@ Repertoire patient
                                   <i class="ri-eye-line"></i>
                                 </a>
                                  @elseif($user_role_id == 0)
-                                  <a href="edit-patient.html" class="btn btn-outline-success btn-sm"
-                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit Patient Details">
+                                  <a href="#" class="btn btn-outline-success btn-sm"
+                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Modifier les informations du patient">
                                   <i class="ri-edit-box-line"></i>
                                 </a>
-                                <a href="patient-dashboard.html" class="btn btn-outline-info btn-sm"
-                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View Dashboard">
+                                <a href="{{ route('patient.datas', $data_patient->patient_id) }}" class="btn btn-outline-info btn-sm"
+                                  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Accéder au dossier médical">
                                   <i class="ri-eye-line"></i>
                                 </a>
                                 @endif
@@ -140,5 +140,18 @@ Repertoire patient
 
           </div>
           <!-- App body ends -->
-
+          @section('Datatable')
+          <script>
+            $(document).ready(function() {
+            $("#example").DataTable();
+                      });
+            $("select").change(function(){
+            if(confirm('Cliquez OK pour envoyer le patient vers le spécialiste')){
+                {this.form.submit()} 
+            }
+            else $("select option:selected").prop("selected", false);
+          });
+          </script>
+          
+          @endsection
        @endsection

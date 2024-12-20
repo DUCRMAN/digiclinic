@@ -512,6 +512,12 @@
 
                 </ul>
               </li>
+              <li class="treeview">
+                <a href="{{URL::to('revenus-globaux')}}">
+                  <i class="ri-secure-payment-line"></i>
+                  <span class="menu-text">Revenus</span>
+                </a>
+              </li>
               @elseif($user_role_id == 2 || $user_role_id == 3  || $user_role_id == 7 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 8 )
 
               <li class="treeview">
@@ -1081,6 +1087,8 @@
 <script src="{{asset('frontend/vendor/apex/custom/department/employees.js')}}"> </script>
 <script src="{{asset('frontend/vendor/apex/custom/graphs/pie.js')}}"></script>
 <script src="{{asset('frontend/vendor/apex/custom/rooms/admissions.js')}}"></script>
+<script src="{{asset('frontend/vendor/apex/custom/income/income.js')}}"></script>
+
 
 
 

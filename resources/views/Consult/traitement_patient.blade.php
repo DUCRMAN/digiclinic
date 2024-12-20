@@ -43,7 +43,7 @@
                         </li>
                       @endif
                         <li class="nav-item" role="presentation">
-                          <a class="nav-link active" id="tab-twoAAAA" data-bs-toggle="tab" href="#twoAAAA" role="tab"
+                          <a class="nav-link" id="tab-twoAAAA" data-bs-toggle="tab" href="#twoAAAA" role="tab"
                             aria-controls="twoAAAA" aria-selected="false">
                             <span class="badge bg-primary">Dossier Médical</span>
                           </a>
@@ -159,7 +159,7 @@
 
                                 </div>
                                 <button class="btn btn-primary btn-pill mr-2" type="submit">Valider</button>
-                                <button class="btn btn-light btn-pill" type="submit">Cancel</button>
+                                <button class="btn btn-light btn-pill" type="submit">Annuler</button>
                               </form>
 
                             </div>

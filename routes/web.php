@@ -90,7 +90,8 @@ Route::get('allotted/room', [RoomController::class,('allotted')])->name('allotte
 
 Route::resource('services',ServiceController::class);
 
-
+//Revenus
+Route::get('revenus-globaux', [SalesController::class, ('income')]);
 
 // Entités
 Route::get('entities/index', [ServiceController::class,('entitieIndex')])->name('entities.index');

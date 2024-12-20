@@ -126,7 +126,7 @@ class PriseEnChargeController extends Controller
                 ->where('statut_analyse',0)
                 ->where('tbl_analyse.id_centre',$centre_id)
                 ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
-                ->orderBy('created_at','DESC')
+                ->orderBy('tbl_analyse.created_at','DESC')
                 ->get(); 
 
         $all_analyse_t=DB::table('tbl_analyse')

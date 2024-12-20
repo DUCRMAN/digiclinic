@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Mail;
-use Alert;
 use Carbon\Carbon;
 use App\Http\Requests;
 use GuzzleHttp\Client;
@@ -13,6 +12,7 @@ use App\libraries\Configuration;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Redirect; 
 use Illuminate\Support\Facades\Validator;
 Use App\libraries\Api\SfeInvoiceApi;
@@ -627,10 +627,6 @@ class SalesController extends Controller
         return Redirect::to('/faire-appro');
     }
 
-
-
-
-
      public function get_reactif(Request $request, $user_id, $id_analyse)
     {
         $this->LaboAuthCheck();
@@ -741,6 +737,11 @@ class SalesController extends Controller
             ]);
         }
                
+    }
+
+    public function income()
+    {
+        return view('revenu.income');
     }
 
 
