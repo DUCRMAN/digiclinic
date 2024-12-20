@@ -398,6 +398,10 @@ class ConsultationController extends Controller
                 ->update($datap);
 
 
+
+        if ($etat_hospitalisation == 1) {
+            // code...
+        
         
         $today=date('YmdHis');
         $num_ordo=$id_prise_en_charge.'-'.$id_consultation.'-'.$today;
@@ -417,14 +421,18 @@ class ConsultationController extends Controller
                   ->first(); 
 
 
-        $message='L\'ordonnance a été généré avec succès';
-        Alert::success('Info', 'Prise en charge du patient '.$prenom_patient.' '.$nom_patient.' terminée. Le traitement est cloturé');
-          return Redirect::to('ordonnance/'.$id_ordo)->with(array(
+                $message='L\'ordonnance a été généré avec succès';
+                Alert::success('Info', 'Prise en charge du patient '.$prenom_patient.' '.$nom_patient.' terminée. Le traitement est cloturé');
+                 return Redirect::to('ordonnance/'.$id_ordo)->with(array(
                     'message'=>$message,
                     
                     'ordo_info'=>$ordo_info,                       
                                                    
                 ));   
+        }
+
+                Alert::success('Info', 'Prise en charge du patient '.$prenom_patient.' '.$nom_patient.' terminée. Le traitement est cloturé');
+               return Redirect::to ('/consultations');
 
         
         }
