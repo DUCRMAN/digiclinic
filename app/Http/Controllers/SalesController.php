@@ -50,6 +50,9 @@ class SalesController extends Controller
    }
 
 
+
+
+
     public function index(Request $request)
         {   
             $this->PharmacieAuthCheck(); 
@@ -741,6 +744,13 @@ class SalesController extends Controller
             ]);
         }
                
+    }
+
+
+
+    public function stats()
+    {
+        
     }
 
 

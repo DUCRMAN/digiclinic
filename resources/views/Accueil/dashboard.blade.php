@@ -1,4 +1,8 @@
 @extends('layout')
+@section('gstatic')
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+@endsection
 @section('title')
 Admin
 @endsection
@@ -761,12 +765,47 @@ Admin
                 </div>
               </div>
             </div>
-            @endif
-{{--              
+                 
             @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 4 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 )
             @elseif($user_role_id == 9)
+            <div class="row">
+               <div class="col-xxl-6 col-sm-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h5 class="card-title">Ventes Mensuelles</h5>
+                  </div>
+                  <div class="card-body">
+                    <div id="lineChartbarMens"></div>
+                  </div>
+                </div>
+              </div>
 
-            @endif --}}
+              <div class="col-xxl-6 col-sm-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h5 class="card-title">Ratio des ventes</h5>
+                  </div>
+                  <div class="card-body">
+                    <div id="ratio_chart"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+              <div class="col-xxl-12 col-sm-12">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h5 class="card-title">Ventes annuelles</h5>
+                  </div>
+                  <div class="card-body">
+                    <div id="lineChatbarAn"></div>
+                  </div>
+                </div>
+              </div>
+
+
+            @endif
       </div>
             <!-- Row ends -->
             <!-- Row starts -->
@@ -1092,5 +1131,85 @@ Admin
     });
     </script>
     </script>
+
+
+    
+
 @endsection
+
+<script type="text/javascript">
+                             
+    var barMens = <?php echo $barMens; ?>;
+    console.log(barMens);
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+    var data = google.visualization.arrayToDataTable(barMens);
+
+    var options = {
+            colors: ['#9E6DE0'],
+            animation: {
+            duration: 1000,
+
+            startup: true //This is the new option
+            },        title: 'Ventes mensulles de la pharmacie ',
+
+                                      curveType: 'function',
+                                      legend: { position: 'bottom' }
+                                    };
+                                    var chart = new google.visualization.BarChart(document.getElementById('lineChartbarMens'));
+                                    chart.draw(data, options);
+                                  }
+      
+  </script> 
+
+
+  <script type="text/javascript">
+                             
+    var barAn = <?php echo $barAn; ?>;
+    console.log(barAn);
+    google.charts.load('current', {'packages':['corechart'],language:'en'});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+    var data = google.visualization.arrayToDataTable(barAn);
+    var options = {
+      
+            colors: ['#46C79E'],
+            animation: {
+             duration: 1000,
+            startup: true //This is the new option
+            },                
+            title: 'Ventes annuelles ',
+              curveType: 'function',
+                legend: { position: 'bottom' }
+                                    };
+                                    var chart = new google.visualization.ColumnChart(document.getElementById('lineChatbarAn'));
+                                    chart.draw(data, options);
+                                  }
+      
+  </script> 
+
+  <script type="text/javascript">
+      var ratio = "";
+      var ratio = <?php echo $ratio; ?>
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart()
+      {
+          var data = google.visualization.arrayToDataTable(ratio);
+          var options = {
+            is3D: true,
+               animation: {
+                  duration: 1000,
+                  startup: true //This is the new option
+              },
+              title : 'Ratio Ventes par rayons'
+          };
+          var chart = new google.visualization.PieChart(document.getElementById('ratio_chart'));
+          chart.draw(data, options);
+      }
+</script> 
+
 @endsection

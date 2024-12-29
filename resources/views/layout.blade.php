@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="{{asset('/frontend/vendor/overlay-scroll/OverlayScrollbars.min.css')}}">
     <link rel="stylesheet" href="{{asset('/frontend/vendor/dropzone/dropzone.min.css')}}">
     <link rel="stylesheet" href="{{asset('/frontend/vendor/quill/quill.core.css')}}">
+     @yield('gstatic')
   </head>
 
   <body>
@@ -1099,6 +1100,7 @@
 <script src="{{asset('frontend/vendor/dropzone/dropzone.min.js')}}"></script>
 <script src="{{asset('frontend/vendor/quill/quill.min.js')}}"></script>
 <script src="{{asset('frontend/vendor/quill/custom.js')}}"></script>
+<script src="{{asset('frontend/vendor/apex/custom/dashboard2/orders.js')}}"></script>
 
 
 <!-- DataTables.js -->
