@@ -13,7 +13,7 @@ Admin
             <!-- Row starts -->
             <div class="row gx-3">
               <div class="col-xxl-12 col-sm-12">
-                <div class="card mb-3 <?php if ($user_role_id == 0) {
+                <div class="card mb-3 <?php if ($user_role_id == 0 ) {
                   echo "bg-2"; }else{ echo "bg-3"; } ; ?> ">
                   <div class="card-body">
                     <div class="mh-230">
@@ -145,6 +145,52 @@ Admin
 
                               <p style="color:black;" class="m-0"> Analyses </p>
                             <?php  ?>
+                            </div>
+                          </div>
+                        @elseif($user_role_id == 13)
+                        <div class="d-flex align-items-center">
+                            <a href="{{URL::to('caisse-consultations')}}">
+                            <div class="icon-box lg bg-lime rounded-2 me-3">
+                              <i class="ri-stethoscope-line fs-4"></i>
+                            </div>
+                            </a>
+                            <div class="d-flex flex-column">
+                             <?php
+                                   $nbr_conslt_imp=DB::table('tbl_caisse_prise_en_charge')
+                                          ->where('frais_consultation',NULL)
+                                          ->where('id_centre',$centre_id)
+                                          ->count();
+                              ?>
+                              <h2 class="m-0 lh-1">{{$nbr_conslt_imp}}</h2>
+
+
+                              <p class="m-0"> Patients à hospitaliser</p>
+                            <?php  ?>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <a href="{{URL::to('caisse-hospitalisations')}}">
+                            <div class="icon-box lg bg-peach rounded-3 me-3">
+                              <i class="ri-walk-line fs-4"></i>
+                            </div>
+                            </a>
+                            <div class="d-flex flex-column">
+                            <?php
+                                $nbr_hosp_imp=DB::table('tbl_caisse_prise_en_charge')
+                                          ->where('frais_hospitalisation',NULL)
+                                          ->where('id_centre',$centre_id)
+                                          ->count();
+                            ?>
+                              <h2 class="m-0 lh-1">{{$nbr_hosp_imp}}</h2>
+
+
+                              <p class="m-0"> Patients hospitalisés </p>
+                            <?php  ?>
+                            </div>
+                          </div>
+
+
+                          
                             </div>
                           </div>
                          @elseif($user_role_id == 2 || $user_role_id == 3 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 7 || $user_role_id == 8 )
@@ -523,7 +569,7 @@ Admin
               </div>
               <!-- Row ends -->
 
-             @elseif($user_role_id ==0)
+             @elseif($user_role_id ==0 || $user_role_id == 13)
 
             <div class="row gx-3">
               <div class="col-xxl-6 col-sm-6">

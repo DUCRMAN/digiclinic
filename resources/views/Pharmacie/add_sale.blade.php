@@ -364,8 +364,8 @@ function myFunction() {
                 <input type="hidden" id="deleteing_id">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary delete_student">Yes Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary delete_student">Oui supprimer</button>
             </div>
         </div>
     </div>

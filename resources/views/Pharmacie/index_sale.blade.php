@@ -26,28 +26,28 @@
 				  <select class="form-control form-select" id="client_id" name="client_id" data-target="#service" data-source="get-detail/id">
 				  	 <?php 
 
-                     $all_clients=DB::table('tbl_guest')
+                     $all_clients=DB::table('tbl_patient')
                       ->where('id_centre',$centre_id) 
-                      ->orwhere('id_centre',0) 
-                     	->orderBy('guest_id','ASC')  
+                      ->orwhere('id_centre',1) 
+                     	->orderBy('patient_id','ASC')  
 		                	->get(); 
 
                            
 
                             foreach ($all_clients as $v_client){ ?>  
-							<option value="{{$v_client->guest_id}}">{{$v_client->guest_mobile_number}} {{$v_client->guest_first_name}} {{$v_client->guest_last_name}} </option>
+							<option value="{{$v_client->patient_id}}">{{$v_client->telephone}} {{$v_client->prenom_patient}} {{$v_client->nom_patient}} </option>
 					 <?php } ?>
 				  </select>
 				</div>
 			</div> 
       <button type="submit" class="btn btn-success btn-pill">
-            Poursuivre 
-      </button>      
+        Poursuivre 
+  </button>      
     </form>
-    <a class="btn btn-warning btn-pill" href="#" onClick="THEFUNCTION(this.selectedIndex);">Nouvelle Achat</a>
+    {{-- <a class="btn btn-warning btn-pill" href="#" onClick="THEFUNCTION(this.selectedIndex);">Nouvelle Achat</a> --}}
     </div>
      
-    <div class="card-body" style="display:none; "id="enlever">
+    {{-- <div class="card-body" style="display:none; "id="enlever">
         <form action="{{ url('/enregistrer-vente') }}" method="POST">
             {{csrf_field()}}
           <input type="hidden" name="centre_id" value="{{$centre_id}}">
@@ -77,7 +77,7 @@
           </button>
           </form>
           <a  class="btn btn-danger btn-pill" href="javascript:window.location.reload(history.go(-1))">Revenir à la sélection</a>
-          </div>
+          </div> --}}
       </div>
     </div>
  
