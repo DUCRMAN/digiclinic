@@ -14,21 +14,21 @@
      <div class="col-sm-12">
       <div class="card mb-3">
         <div class="card-header">
-        <h2>Le client</h2>
+        <h2>Le Patient</h2>
         
       </div>
       <div class="card-body" id="enleverE">
        	<form class="row" action="{{ url('/enregistrer-vente') }}" method="POST">
             {{csrf_field()}}
         <div class="col-md-10 mb-3">
-				<label class="control-label" for="selectError1"> Clients </label>
+				<label class="control-label" for="selectError1"> Patients  </label>
 				<div class="controls">
 				  <select class="form-control form-select" id="client_id" name="client_id" data-target="#service" data-source="get-detail/id">
 				  	 <?php 
 
                      $all_clients=DB::table('tbl_patient')
                       ->where('id_centre',$centre_id) 
-                      ->orwhere('id_centre',1) 
+                      // ->orwhere('id_centre',1)
                      	->orderBy('patient_id','ASC')  
 		                	->get(); 
 

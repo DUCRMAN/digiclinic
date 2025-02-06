@@ -7,144 +7,6 @@
 ?>
     <div class="app-body">
      <!-- Row starts -->
-      <div class="row gx-3">
-        <div class="col-sm-12">
-          <div class="card mb-3">
-          <div class="card-header">
-              <h5 class="card-title">Analyses - Enregistrer des analyses</h5>
-          </div>
-
-          <div class="card-body">
-              <form class="row" action="{{ url('/save-analyse') }}" method="POST">
-                  {{csrf_field()}}
-              <input type="hidden" name="centre_id" value="{{$centre_id}}">
-              <div class="row col-md-12 mb-3" id="enleverEE">
-              <label class="classItems" for="selectError1"> Clients </label>
-              <div class="controls col-10">
-              <select class="form-control form-select" id="patient_id" name="patient_id" data-target="#serv" data-source="get-detail/id">
-                   <?php 
-
-                      $all_patients=DB::table('tbl_patient')
-                        ->orderBy('patient_id','ASC')  
-                      ->get(); 
-                            foreach ($all_patients as $v_patient){ ?>  
-              <option value="{{$v_patient->patient_id}}">{{$v_patient->prenom_patient}} {{$v_patient->nom_patient}} -- {{$v_patient->nip}} -- {{$v_patient->telephone}}</option>
-            <?php } ?>
-                </select>
-              </div>
-            <div class="controls col-2">
-              <a class="btn btn-warning btn-pill" href="#" onClick="THEFUNCTION2(this.selectedIndex);">Nouveau Client</a>
-            </div>
-          </div> 
-
-
-        <div class="row" style="display:none;" id="enleverR">
-        <a  href="javascript:window.location.reload(history.go(-1))">Retour</a>
-               <div class="col-md-6">
-                  <label for="phone1">Télephone du client</label><br>
-                  <input type="tel" class="form-control" type="tel" placeholder="Contact Whatsapp/Appel" id="phone1" name="mobile_number" required="" />
-                  <input type="hidden" id='lnai' name="telephone">
-               </div>
-
-               <div class="col-md-3">
-               <label for="validationCustom01" class="form-label">Nom</label>
-                <input type="text" name="nom_patient" class="form-control" id="validationCustom01" value="Mark"/>
-                <div class="valid-feedback">Looks good!</div>
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustom02" class="form-label">Prénom</label>
-                <input type="text" name="prenom_patient" class="form-control" id="validationCustom02" value="Otto"/>
-                <div class="valid-feedback">Looks good!</div>
-              </div>
-          </div>
-
-          <div class="row g-2" id="enleverE">
-
-                    <div class="col-md-6">
-                      <div class="form-floating">
-                        <select class="link-select form-control" name="id_type_analyse" data-target="#service" data-source="get-analyse/id">
-
-                            <option style="font-weight: bold;"> Selectionner </option>                             
-                                <?php
-                                    $all_analyse = DB::table('tbl_type_analyse')
-                                        ->where('id_centre',$centre_id)     
-                                        ->get();
-
-                                  foreach ($all_analyse as $key => $v_sd){ ?>
-                  
-                                  <option value="{{$v_sd->id_type_analyse}}" style="font-weight: bold; color:green;">{{$v_sd->libelle_analyse}}</option>
-                                <?php }  ?>
-                                                                            
-                                </select>
-                        <label for="address">Type d'analyses</label>
-                      </div>
-                    </div>
-                    <!-- contrevenant -->
-
-
-                      <!-- contrevenant -->
-                    <div class="col-md-6">
-                      <div class="form-floating">
-                          <select class="link-select form-control" name="prix" id="service">
-
-                          </select>  
-                        <label for="address">Prix de l'analyse</label>
-                      </div>
-                    </div>
-                    <div class="col-md-12 align-items-center">
-                      <a  href="#" onClick="THEFUNCTION(this.selectedIndex);">Saisir manuellement le type et le prix de l'analyse</a>
-                    </div>       
-                  </div>
-                          <!-- contrevenant -->
-
-                    <div class="row g-2"style="display:none; "id="enlever">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                              <input type="text" class="form-control" name="analyse">
-                              <label for="address">Saisir l'analyse</label>
-                            </div>
-                        </div>
-                          <!-- contrevenant -->
-
-
-                            <!-- contrevenant -->
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="number" class="form-control" name="prix_manuel"> 
-                              <label for="address">Saisir le prix de l'analyse</label>
-                            </div>
-                        </div>
-
-                        <a  href="javascript:window.location.reload(history.go(-1))">Annuler</a>
-                    </div>
-
-                    <div class="col-md-12">
-                    <div class="form-floating">
-                    <select id="myDropdown" class=" drop form-select btn btn-outline-" name="specialiste">
-                        <option selected>Envoyer au</option>
-                       <optgroup label="Laboratoire">
-                       
-                      <?php 
-
-                        $all_specialiste=DB::table('user_roles')
-                        ->join('users','user_roles.user_role_id','=','users.user_role_id')
-                        ->join('personnel','users.email','=','personnel.email')
-                        ->where('is_consult',2)
-                        ->get(); 
-                        foreach ($all_specialiste as $v_specialist){ ?>  
-                        <option value="{{$v_specialist->user_id}}">{{$v_specialist->title}}.
-                        {{$v_specialist->prenom}}
-                        {{$v_specialist->nom}}</option>
-                      <?php } ?>
-                       </optgroup>
-                      </select>
-                     </div> 
-                   </div>
-                   </form> 
-                  </div> 
-                </div>
-              </div>
-             </div>
             
      <!-- Row starts -->
       <div class="row gx-3">
@@ -165,10 +27,7 @@
                   <a class="nav-link" id="tab-twoAAA" data-bs-toggle="tab" href="#twoAAA" role="tab"
                     aria-controls="twoAAA" aria-selected="false">Analyses traités</a>
                 </li>
-                <!-- <li class="nav-item" role="presentation">
-                  <a class="nav-link" id="tab-threeAAA" data-bs-toggle="tab" href="#threeAAA" role="tab"
-                    aria-controls="threeAAA" aria-selected="false">Tab Three</a>
-                </li> -->
+               
               </ul>
               <div class="tab-content" id="customTabContent">
                 <div class="tab-pane fade show active" id="oneAAA" role="tabpanel">
@@ -204,7 +63,7 @@
                                         <img style="width:30px; height:30px;" src="{{asset('frontend/M.png')}}" alt="sexe" class="rounded-circle img-3x">
                                         @endif
                                       </td>
-                                      <td>{{$v_analyse->prenom_patient}}{{$v_analyse->nom_patient}}</td>
+                                      <td>{{$v_analyse->prenom_patient}} {{$v_analyse->nom_patient}}</td>
                                       <td><h4><span class="badge bg-danger">{{$v_analyse->analyse}}{{$v_analyse->libelle_analyse}}</span></h4></td>
                                       <td>{{$v_analyse->telephone}}</td>
                                       <?php 
@@ -222,7 +81,9 @@
                                         @endforeach
                                       </td>
                                       <td>{{$v_analyse->created_at}}</td>    
-                                      <td></td>
+                                      <td>
+                                        <button class="btn btn-outline-success btn-sm add-analysis">Procéder au paiement</button>
+                                      </td>
                                     </tr>
                                   @endforeach
                                   </tbody>

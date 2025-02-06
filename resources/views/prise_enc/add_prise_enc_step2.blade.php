@@ -57,13 +57,13 @@
 
             		  <div class="col-md-4">
                       <label for="validationCustom01" class="form-label">Nom</label>
-                        <input type="text" name="nom_patient" class="form-control" id="validationCustom01" value="Mark"/>
-                        <div class="valid-feedback">Looks good!</div>
+                        <input type="text" name="nom_patient" class="form-control" id="validationCustom01" >
+                        <div class="valid-feedback">Données acceptées</div>
                       </div>
                       <div class="col-md-4">
                         <label for="validationCustom02" class="form-label">Prénom</label>
-                        <input type="text" name="prenom_patient" class="form-control" id="validationCustom02" value="Otto"/>
-                        <div class="valid-feedback">Looks good!</div>
+                        <input type="text" name="prenom_patient" class="form-control" id="validationCustom02">
+                        <div class="valid-feedback">Données acceptées</div>
                       </div>
                       <div class="col-md-4">
                         <label for="validationCustomUsername" class="form-label">Email</label>

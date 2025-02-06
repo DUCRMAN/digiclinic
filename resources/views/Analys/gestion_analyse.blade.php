@@ -72,13 +72,13 @@
                                                 {{$v_prisenc->prenom_patient}}
                                                 {{$v_prisenc->nom_patient}}
                                               </td>
-                                              <td><h4><span class="badge bg-danger">{{$v_prisenc->analyse}}{{$v_prisenc->libelle_analyse}}</span></h4></td>
+                                              <td><h4><span class="badge bg-danger">{{$v_prisenc->nom_prestation}}</span></h4></td>
                                               <td>{{$v_prisenc->telephone}}</td>
                                               <td>{{$v_prisenc->adresse}}</td>
                                                                                             
                                               <td>
                                               
-                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-analyse/'.$v_prisenc->id_analyse.'/'.$v_prisenc->patient_id)}}">
+                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-analyse/'.$v_prisenc->prestation_id.'/'.$v_prisenc->patient_id)}}">
                                               <i class="ri-file-edit-fill"></i></a>                    
                                               </td>
                                             </tr>
@@ -130,7 +130,7 @@
                                           </td>
                                           <td>{{$v_consult->nom_patient}}
                                           {{$v_consult->prenom_patient}}</td>
-                                          <td>{{$v_prisenc->analyse}}{{$v_prisenc->libelle_analyse}}</td>
+                                          <td>{{$v_prisenc->nom_prestation}}</td>
                                           <td>{{$v_prisenc->telephone}}</td>
                                           <td>
                                             {{$v_prisenc->created_at}}

@@ -147,17 +147,17 @@ class ConsultationController extends Controller
         $user_id=Session::get('user_id');
         
         $centre_id=Session::get('centre_id');
-        $all_analyse_nt=DB::table('tbl_analyse')       
-                ->leftjoin('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id') 
-                ->leftjoin('tbl_type_analyse','tbl_analyse.id_type_analyse','=','tbl_type_analyse.id_type_analyse')
+        $all_analyse_nt=DB::table('tbl_panier_analyse')       
+                ->leftjoin('tbl_patient','tbl_panier_analyse.patient_id','=','tbl_patient.patient_id') 
+                ->leftjoin('tbl_prestation','tbl_panier_analyse.prestation_id','=','tbl_prestation.prestation_id')
                
                 ->where([
-                      ['user_id',$user_id],
-                      ['tbl_analyse.id_centre',$centre_id],
+                    //   ['user_id',$user_id],
+                      ['tbl_panier_analyse.centre_id',$centre_id],
                   ]) 
-                 ->where('statut_analyse',0)
+                //  ->where('statut_analyse',0)
                
-                ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
+                ->select('tbl_panier_analyse.*','tbl_patient.*','tbl_prestation.*')
                 ->orderBy('created_at','DESC')
                 ->get(); 
        
@@ -171,7 +171,7 @@ class ConsultationController extends Controller
                       ['tbl_analyse.id_centre',$centre_id],
                   ]) 
                 ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
-                ->orderBy('created_at','DESC')
+                ->orderBy('tbl_analyse.created_at','DESC')
                 ->get(); 
 
         return view('Analys.gestion_analyse')->with(array(

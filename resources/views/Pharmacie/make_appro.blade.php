@@ -89,7 +89,7 @@ $user_role_id=Session::get('user_role_id');
               <label for="validationServer07">Stock</label>
               <input type="number" class="form-control border-success" id="validationServer07" name="stock" required>
               <div class="text-success small mt-1">
-                Looks good!
+                
               </div>
             </div>
 
@@ -97,7 +97,7 @@ $user_role_id=Session::get('user_role_id');
               <label for="validationServer07">Stock Défectueux</label>
               <input type="number" class="form-control border-danger" id="validationServer07" name="stock_defective" required>
               <div class="text-danger small mt-1">
-                Looks good!
+                
               </div>
             </div>
 
@@ -105,12 +105,12 @@ $user_role_id=Session::get('user_role_id');
               <label for="validationServer01">Commentaires</label>
               <input type="text" class="form-control border-success" id="validationServer01" placeholder="note facultative" name="comments">
               <div class="text-success small mt-1">
-                Looks good!
+                
               </div>
             </div>
 			<div class="form-actions">
 			  <button type="submit" class="btn btn-primary">Approvisionner</button>
-			  <button type="reset" class="btn">Cancel</button>
+			  <button type="reset" class="btn">Annuler</button>
 			</div>
 		  </fieldset>
 		</form>   

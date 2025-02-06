@@ -2,7 +2,7 @@
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8">
-		<title>Ordonnance</title>
+		<title>Résultat analyse</title>
 		<link rel="stylesheet" href="style.css">
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 
@@ -252,16 +252,14 @@
 			<table class="inventory">
 				<thead>
 					<tr>
-						<th><span style="font-size:30px;">Ordonnance Médicale</span></th>
+						<th><span style="font-size:30px;">Résultats d'analyse</span></th>
 						
 					</tr>
 				</thead>
 				<tbody>
 					
 					<tr>
-						<td style="font-size:20px;">
-							{!!$ordo_info->ordonnance_consultation!!}
-						</td>	
+						<td style="font-size:20px;">{!!$ordo_info->ordonnance_consultation!!}</td>	
 					</tr>
 					
 				</tbody>

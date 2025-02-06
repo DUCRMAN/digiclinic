@@ -49,7 +49,6 @@ class SalesController extends Controller
         }
    }
 
-
     public function index(Request $request)
         {   
             $this->PharmacieAuthCheck(); 
@@ -430,10 +429,45 @@ class SalesController extends Controller
 
 
     }
+    public function pay_analyse(Request $request)
+    {
+    
+        $centre_id = Session::get('centre_id');
 
+        if (!$centre_id) {
+            return response()->json(['error' => 'Aucun centre sélectionné.'], 400);
+        }
+    
+        if (!$request->has('prestation_id') || empty($request->prestation_id)) {
+            return response()->json(['error' => 'Aucune prestation sélectionnée !'], 400);
+        }
+    
+        try {
+            foreach ($request->prestation_id as $prestation) {
+                DB::table('tbl_panier_analyse')->insert([
+                    'patient_id' => $request->patient_id,
+                    'prestation_id' => $prestation,
+                    'montant' => $request->total,
+                    'centre_id' => $centre_id,
+                    'date_paiement' => now()
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur lors du paiement', 'message' => $e->getMessage()], 500);
+        }
+        
+    }
 
+    public function add_patient(Request $request)
+    {
+        $patient_id = DB::table('patients')->insertGetId([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'telephone' => $request->telephone
+        ]);
 
-
+        return response()->json(['id' => $patient_id, 'message' => 'Patient ajouté avec succès !']);
+    }
      public function make_facture($order_id)
     {
 
@@ -528,9 +562,6 @@ class SalesController extends Controller
                 ));         
 
     }
-
-
-
     public function etat_caisse(){
         $this->PharmacieAuthCheck();
         $user_id=Session::get('user_id');
@@ -742,6 +773,13 @@ class SalesController extends Controller
     public function income()
     {
         return view('revenu.income');
+    }
+
+
+
+    public function stats()
+    {
+        
     }
 
 

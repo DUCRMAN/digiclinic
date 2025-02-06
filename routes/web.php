@@ -120,6 +120,10 @@ Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
 Route::get('/2/delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
 Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
 
+Route::post('/payer-analyse', [SalesController::class, 'pay_analyse'])->name('pay_analyse');
+Route::post('/add_patient', [SalesController::class, 'add_patient'])->name('add_patient');
+
+
 // Urgence
 Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [ConsultationController::class,('traitement_urgent_patient')]);
 

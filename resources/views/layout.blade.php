@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('/frontend/fonts/remix/remixicon.css')}}">
     <link rel="stylesheet" href="{{asset('/frontend/css/main.min.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 
     <!-- *************
     ************ Vendor Css Files *************
@@ -37,6 +38,7 @@
     <link rel="stylesheet" href="{{asset('/frontend/vendor/overlay-scroll/OverlayScrollbars.min.css')}}">
     <link rel="stylesheet" href="{{asset('/frontend/vendor/dropzone/dropzone.min.css')}}">
     <link rel="stylesheet" href="{{asset('/frontend/vendor/quill/quill.core.css')}}">
+     @yield('gstatic')
   </head>
 
   <body>
@@ -85,10 +87,10 @@
 
         <!-- App brand starts -->
         <div class="app-brand ms-3">
-          <a href="index.html" class="d-lg-block d-none">
+          <a href="{{URL::to('/dashboard')}}" class="d-lg-block d-none">
             <img src="{{asset('/frontend/images/logo.png')}}" class="logo" alt="Digiclinic">
           </a>
-          <a href="index.html" class="d-lg-none d-md-block">
+          <a href="{{URL::to('/dashboard')}}" class="d-lg-none d-md-block">
             <img src="{{asset('/frontend/images/logo.png')}}" class="logo" alt="Digiclinic">
           </a>
         </div>
@@ -115,19 +117,19 @@
               </a>
               <div class="dropdown-menu dropdown-menu-end dropdown-mini">
                 <div class="country-container">
-                  <a href="index.html" class="py-2">
+                  <a href="{{URL::to('/dashboard')}}" class="py-2">
                     <img src="assets/images/flags/1x1/us.svg" alt="Admin Panel">
                   </a>
-                  <a href="index.html" class="py-2">
+                  <a href="{{URL::to('/dashboard')}}" class="py-2">
                     <img src="assets/images/flags/1x1/in.svg" alt="Admin Panels">
                   </a>
-                  <a href="index.html" class="py-2">
+                  <a href="{{URL::to('/dashboard')}}" class="py-2">
                     <img src="assets/images/flags/1x1/br.svg" alt="Admin Dashboards">
                   </a>
-                  <a href="index.html" class="py-2">
+                  <a href="{{URL::to('/dashboard')}}" class="py-2">
                     <img src="assets/images/flags/1x1/tr.svg" alt="Admin Templatess">
                   </a>
-                  <a href="index.html" class="py-2">
+                  <a href="{{URL::to('/dashboard')}}" class="py-2">
                     <img src="assets/images/flags/1x1/gb.svg" alt="Google Admin">
                   </a>
                 </div>
@@ -467,6 +469,7 @@
                   <i class="ri-home-6-line"></i>
                   <span class="menu-text">Mon tableau de bord</span>
                 </a>
+                
               </li>
               <li class="treeview">
                 <a href="#!">
@@ -474,36 +477,47 @@
                   <span class="menu-text">{{Session::get('role')}} </span>
                 </a>
                 <ul class="treeview-menu">
+                  
                   <li>
-                    <a href="{{URL::to('all-prestations')}}">Liste des prestations</a>
+                    <a href="#!">
+                      Analyses
+                      <i class="ri-arrow-right-s-line"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li>
+                        <a href="{{ URL::to('all-analyses') }}">Soumettre une analyse</a>
+                      </li>
+                      <li>
+                        <a href="{{URL::to('caisse-analyses')}}">Demandes reçues</a>
+                      </li>
+                      
+                    </ul>
                   </li>
+                 
+                </ul>
+                <ul class="treeview-menu">
                   <li>
-                    <a href="{{URL::to('caisse-consultations')}}">Caisses consultations</a>
+                    <a href="{{URL::to('all-prestations')}}">Prestations</a>
                   </li>
-                  <li>
-                    <a href="{{URL::to('caisse-hospitalisations')}}">Caisses hospitalisations</a>
-                  </li>
-                  <li>
-                    <a href="{{ URL::to('caisse-analyses') }}">Caisses Analyses</a>
+                 
+                  
+                <li>
+                  <a href="{{URL::to('/les-ventes')}}">Pharmacie</a>
                 </li>
-                  <li>
-                    <a href="{{ URL::to('all-analyses') }}">Liste des Analyses</a>
-                </li>
-
                 </ul>
               </li>
-
+              
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-dossier-line"></i>
-                  <span class="menu-text">Pharmacie</span>
+                  <span class="menu-text">Stock Pharmacie</span>
                 </a>
                 <ul class="treeview-menu">
-                  <li>
+                  {{-- <li>
                     <a href="{{URL::to('/les-ventes')}}">Ventes à Caisse</a>
-                  </li>
+                  </li> --}}
                   <li>
-                    <a href="{{URL::to('all-category')}}">Produits en Pharmacie</a>
+                    <a href="{{URL::to('all-category')}}">Etat du stock</a>
                   </li>
 
                   <li>
@@ -512,12 +526,12 @@
 
                 </ul>
               </li>
-              <li class="treeview">
+              {{-- <li class="treeview">
                 <a href="{{URL::to('revenus-globaux')}}">
                   <i class="ri-secure-payment-line"></i>
                   <span class="menu-text">Revenus</span>
                 </a>
-              </li>
+              </li> --}}
               @elseif($user_role_id == 2 || $user_role_id == 3  || $user_role_id == 7 || $user_role_id == 5 || $user_role_id == 6 || $user_role_id == 8 )
 
               <li class="treeview">
@@ -1003,7 +1017,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
                 <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="index.html">Home</a>
+                <a href="{{URL::to('/dashboard')}}">Acceuil</a>
               </li>
               <li class="breadcrumb-item text-primary" aria-current="page"><a href="{{URL::to('/dashboard')}}">
                 Tableau de bord</a>
@@ -1131,10 +1145,22 @@
 <script src="{{asset('frontend/vendor/dropzone/dropzone.min.js')}}"></script>
 <script src="{{asset('frontend/vendor/quill/quill.min.js')}}"></script>
 <script src="{{asset('frontend/vendor/quill/custom.js')}}"></script>
+<script src="{{asset('frontend/vendor/apex/custom/dashboard2/orders.js')}}"></script>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+</script>
 
 
 <!-- DataTables.js -->
 <link href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.min.css" rel="stylesheet">
+
 @yield('Datatable')
 @yield('DataTable2')
 <script src="https://cdn.datatables.net/2.1.5/js/dataTables.min.js"></script>

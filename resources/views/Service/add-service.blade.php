@@ -38,7 +38,7 @@ $user_id=Session::get('user_id');
 
                         @if (!session()->has('ServiceCreated'))
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
-                          <form action="{{route('entities.store')}}" method="POST">
+                          <form action="{{route('services.store')}}" method="POST">
                               @csrf
                         <div class="mb-3">
                           <label class="form-label" for="specialite">Spécialité <span

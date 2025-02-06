@@ -356,19 +356,6 @@
     </script>
 @endsection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="modal fade" id="presc" data-bs-backdrop="static" data-bs-keyboard="false"
                       tabindex="-1" aria-labelledby="prescLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -388,11 +375,10 @@
             <div class="control-group hidden-phone">
                 <label class="control-label" for="textarea2">Contenu de l'ordonnance</label>
                 <br>
-
-                <textarea rows="10" cols="10" class="form-control" name="ordonnance_consultation"></textarea>
-               
+                <div id="editor" style="height: 200px;"></div>
+                <input type="hidden" name="ordonnance_consultation" id="ordonnance_consultation">
             </div>
-            </div>
+          </div>
              <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   Fermer
@@ -443,6 +429,20 @@
         </div>
     </div>
 </div>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+   // Mettre à jour le champ caché lors de la saisie
+   quill.on('text-change', function() {
+        document.getElementById('ordonnance_consultation').value = quill.root.innerHTML;
+    });
+</script>
 @endsection
 
 

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Rules\Password;
 use App\Models\User;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect; 
-use Session;
-use DB;
 class AdminController extends Controller
 {
     /**
@@ -45,13 +45,69 @@ class AdminController extends Controller
 
     public function index()
     {   
+
+
          $email=Session::get('email');
          $acces=DB::table('users')
                 ->where('email',$email)
                 ->first();
+
+        $ratio_rayon = DB::table('tbl_order_details') 
+               ->join('tbl_products','tbl_order_details.product_id','=','tbl_products.product_id')
+               ->join('tbl_srayon','tbl_products.srayon_id','=','tbl_srayon.srayon_id')
+               ->select(
+                        DB::raw('srayon_name as srayon_name'),
+                        DB::raw('sum(tbl_order_details.product_price) as number'),
+
+                      )
+                       ->groupBy('srayon_name')   
+                       ->get();
+  
+       $ratio[] = ['Rayons','Répartions des Ventes par rayons'];
+        foreach ($ratio_rayon as $index => $values) {
+             $ratio[++$index] = [$values->srayon_name, (int)$values->number];
+        }
+
+
+
+        $barMens = DB::table('tbl_order_details') 
+               ->join('tbl_products','tbl_order_details.product_id','=','tbl_products.product_id')
+               ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
+               ->select(
+                        DB::raw('tbl_order_details.product_price as product_price'),
+                        DB::raw('sum(tbl_order_details.product_price) as number'),
+                        DB::raw("created_at as month")
+                      )  
+                       ->orderBy(DB::raw("month(created_at)"))
+                       ->groupBy(DB::raw("month(created_at)"))
+                       ->get();
+  
+       $result2[] = ['Mois','Ventes du mois'];
+        foreach ($barMens as $key => $valu) {
+             $result2[++$key] = [\Carbon\Carbon::parse($valu->month)->formatLocalized('%b'), (int)$valu->number];
+        }
+        
+        $barAn = DB::table('tbl_order_details') 
+               ->join('tbl_products','tbl_order_details.product_id','=','tbl_products.product_id')
+               ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
+               ->select(
+                        DB::raw('tbl_order_details.product_price as product_price'),
+                        DB::raw('sum(tbl_order_details.product_price) as number'),
+                        DB::raw("year(created_at) as year")
+                      )
+                       
+                       ->orderBy(DB::raw("year(created_at)"))
+                       ->groupBy(DB::raw("year(created_at)"))
+                       ->get();
+  
+        $result3[] = ['Années','Ventes annuelles'];
+        foreach ($barAn as $key => $value) {
+            $result3[++$key] = [$value->year, (int)$value->number];
+        }
+        
         $this->UserAuthCheck(); 
         Session::put('user_role_id',$acces->user_role_id); 
-        return view ('Accueil.dashboard');
+        return view ('Accueil.dashboard')->with(array('barMens' => json_encode($result2),'barAn' => json_encode($result3), 'ratio' => json_encode($ratio)));
     }
 
     /**
