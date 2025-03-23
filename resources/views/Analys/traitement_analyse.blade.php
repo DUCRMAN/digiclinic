@@ -10,6 +10,8 @@
  			->where('id_analyse',$id_analyse)
  			->groupby('tbl_reactif_used.reactif_id')
  			->get();
+
+
 ?>
 
 <!-- App body starts -->
@@ -163,17 +165,10 @@
                         <h2> Sélection des réactifs pour :  <span class="btn btn-info"> {{$patient->libelle_analyse}}</span>  </h2>
                         
                       </div>
-
-
-      
-
 					         <div class="card-body">
-
-					             
 									<form id="AddStudentForm">
 										<ul id="save_msgList"></ul>
 									  
-										
 									<div class="col-md-12 mb-3">
 									<label class="control-label" for="selectError1">Réactif </label>
 									<div class="controls">
@@ -181,8 +176,8 @@
 									  	 <?php 
 
 					                     $all_products=DB::table('tbl_reactif')
-							               
-							                ->get(); 
+                                                  ->where('id_centre', $centre_id)
+							              			                ->get(); 
 
 					                            foreach ($all_products as $v_product){ ?>  
 												<option value="{{$v_product->reactif_id}}">[{{$v_product->reactif_nom}}] ... {{$v_product->description}} </option>
@@ -190,35 +185,18 @@
 									  </select>
 									</div>
 								  	</div>
-					         					
-
-
-					           
 					             <input name="user_id" id="user_id" type="hidden" value="{{$user_id}}">
 					             <input name="centre_id" id="centre_id" type="hidden" value="{{$centre_id}}">
 
-					             <input name="id_analyse" id="id_analys" type="hidden" value="{{$patient->id_analyse}}">
+					             <input name="id_analyse" id="id_analys" type="hidden" value="{{$id_analyse}}">
 					            
-					          
 
 					            <div class="col-md-12 mb-3">
 					              <label for="validationServer07">Quantité</label>
 					              <input id="input-qty" type="number" class="form-control border-success" id="validationServer07" name="qty" required>
 					              <div class="text-success small mt-1">
-					                					              </div>
-					            </div>
-
-
-					            <!-- <div class="col-md-12 mb-3">
-					              <label for="validationServer07">Note</label>
-					              <input id="input-qty" type="number" class="form-control border-success" id="validationServer07" name="qty" required>
-					              <div class="text-success small mt-1">
-					                Looks good!
-					              </div>
-					            </div>
-					 -->
-
-												
+					                </div>
+					            </div>												
 								<div class="form-actions">
 								   <button type="button" class="btn btn-primary add_student">Ajouter</button>
 								  <button type="reset" class="btn">Annuler</button>
@@ -574,11 +552,9 @@
 
             $.ajax({
                 type: "GET",
-<<<<<<< HEAD
-                url: "//delete-tabreactif/"+id,
-=======
-                url: "/delete-tabreactif/"+id,
->>>>>>> a20cb13e712ba736ca9b457715a6161f2b9ee998
+
+                url: "/2/delete-tabreactif/"+id,
+
                 dataType: "json",
                 success: function (response) {
                      console.log(response);

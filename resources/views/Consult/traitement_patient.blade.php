@@ -114,7 +114,7 @@
                                           ->where('users.user_id','!=',$user_id)
                                           ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
-                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
+                                          <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}} :
                                           {{$v_specialist->prenom}}
                                           {{$v_specialist->nom}}</option>
                                         <?php } ?>
@@ -126,13 +126,14 @@
                                            $all_specialiste=DB::table('user_roles')
                                                 ->join('users','user_roles.user_role_id','=','users.user_role_id')
                                                 ->join('personnel','users.email','=','personnel.email')
-                                                ->where('is_consult',3)
+                                                ->where('user_roles.user_role_id',1)
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                           foreach ($all_specialiste as $v_specialist){ ?>  
                                           <option value="{{$v_specialist->user_id}}">{{$v_specialist->designation}}
-                                          {{$v_specialist->prenom}}
-                                          {{$v_specialist->nom}}</option>
+                                          {{-- {{$v_specialist->prenom}}
+                                          {{$v_specialist->nom}} --}}
+                                        </option>
                                         <?php } ?>
                                          </optgroup>
 

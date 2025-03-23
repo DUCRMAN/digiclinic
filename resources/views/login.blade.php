@@ -87,7 +87,7 @@
 
           <div class="auth-box">
             <a href="#" class="auth-logo mb-4">
-              <img src="{{asset('frontend/images/logo-dark.svg')}}" alt="Bootstrap Gallery">
+              <img src="{{asset('frontend/images/logo.png')}}" alt="Bootstrap Gallery">
             </a>
 
             <h4 class="mb-4">Connexion</h4>
@@ -113,7 +113,7 @@
 
             <div class="mb-3 d-grid gap-2">
               <button type="submit" class="btn btn-primary">Se connecter</button>
-              <a href="{{URL::to('register')}}" class="btn btn-secondary">Not registered? Signup</a> 
+              {{-- <a href="{{URL::to('register')}}" class="btn btn-secondary">Not registered? Signup</a>  --}}
             </div>
 
           </div>

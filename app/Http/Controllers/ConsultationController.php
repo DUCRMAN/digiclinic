@@ -39,10 +39,11 @@ class ConsultationController extends Controller
 
     }
 
+   
     public function SpecialisteAuthCheck()
    {
     $user_role_id=Session::get('user_role_id');
-    if ($user_role_id != 1) {
+    if ($user_role_id == 4 || $user_role_id == 1) {
         return;
         }
         else 
@@ -85,8 +86,42 @@ class ConsultationController extends Controller
                 
 
     }
+    public function send_demande_ext(Request $request)
+    {
+            $this->UserAuthCheck(); 
+            $this->AccueilAuthCheck();
+            $user_id=$request->specialiste;
+            $id_demande=$request->id_demande;  
+            $get_user_role=DB::table('users')
+                            ->join('personnel','users.email','=','personnel.email')
+                            ->select('users.*','personnel.*')
+                            ->where('user_id',$user_id)
+                            ->first();
 
+            $user_role_id=$get_user_role->user_role_id;
+            $qualification=$get_user_role->qualification;
+            $prenom=$get_user_role->prenom;
+            $nom=$get_user_role->nom;
 
+            // $data = [
+            //     'id_demande'=> $id_demande, 
+            //     'user_id'=> $user_id,
+            //     'user_role_id'=> $user_role_id, ];
+            
+            // DB::table('tbl_demande_ext')->insertGetId($data);
+
+            $datad = [
+                    'last_demande_user_id'=> $user_id 
+                ]; 
+            DB::table('tbl_demande_ext')
+                ->where('id_demande',$id_demande)
+                ->update($datad);
+   
+            Alert::success('Info', 'Demande transmise à la '.$qualification.' de '.$prenom.' '.$nom);
+               return Redirect::to ('/demande-externe');
+                
+
+    }
 
     public function consultation()
     {
@@ -144,24 +179,26 @@ class ConsultationController extends Controller
     public function gestion_analyses()
     {
         $this->SpecialisteAuthCheck();
+        
+        
         $user_id=Session::get('user_id');
         
         $centre_id=Session::get('centre_id');
-        $all_analyse_nt=DB::table('tbl_panier_analyse')       
-                ->leftjoin('tbl_patient','tbl_panier_analyse.patient_id','=','tbl_patient.patient_id') 
-                ->leftjoin('tbl_prestation','tbl_panier_analyse.prestation_id','=','tbl_prestation.prestation_id')
+        $all_analyse_nt=DB::table('tbl_analyse')       
+                ->leftjoin('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id') 
+                ->leftjoin('tbl_type_analyse','tbl_analyse.id_type_analyse','=','tbl_type_analyse.id_type_analyse')
                
                 ->where([
-                    //   ['user_id',$user_id],
-                      ['tbl_panier_analyse.centre_id',$centre_id],
+                      ['user_id',$user_id],
+                      ['tbl_analyse.id_centre',$centre_id],
                   ]) 
-                //  ->where('statut_analyse',0)
+                 ->where('statut_analyse',0)
                
-                ->select('tbl_panier_analyse.*','tbl_patient.*','tbl_prestation.*')
-                ->orderBy('created_at','DESC')
+                ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
+                ->orderBy('tbl_analyse.created_at', 'DESC')
+
                 ->get(); 
        
-
         $all_analyse_t=DB::table('tbl_analyse')       
                 ->join('tbl_patient','tbl_analyse.patient_id','=','tbl_patient.patient_id')
                 ->join('tbl_type_analyse','tbl_analyse.id_type_analyse','=','tbl_type_analyse.id_type_analyse')
@@ -171,12 +208,26 @@ class ConsultationController extends Controller
                       ['tbl_analyse.id_centre',$centre_id],
                   ]) 
                 ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
-                ->orderBy('tbl_analyse.created_at','DESC')
+                
+                ->orderBy('tbl_analyse.created_at', 'DESC')
+
                 ->get(); 
+        $all_demand_p=DB::table('tbl_analyse_payed')
+                ->join('tbl_patient','tbl_analyse_payed.patient_id','=','tbl_patient.patient_id')
+                ->join('tbl_prestation','tbl_analyse_payed.prestation_id','=','tbl_prestation.prestation_id')
+                ->where('tbl_analyse_payed.centre_id',$centre_id)
+                ->select(
+                    'tbl_analyse_payed.*',
+                    'tbl_patient.*',
+                    'tbl_prestation.*'
+                    )
+                ->get();  
 
         return view('Analys.gestion_analyse')->with(array(
                     'all_analyse_nt'=>$all_analyse_nt,             
-                    'all_analyse_t'=>$all_analyse_t,                  
+                    // 'all_analyse_nt'=>$all_analyse_np,             
+                    'all_analyse_t'=>$all_analyse_t,   
+                    'all_demand_p'=>$all_demand_p,
                 ));;
     }
 
@@ -509,10 +560,4 @@ class ConsultationController extends Controller
                return Redirect::to ('/consultations');
 
     }
-    
-
-        
-
-
-
 }

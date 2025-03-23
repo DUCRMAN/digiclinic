@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\AdminController;
@@ -9,7 +10,9 @@ use App\Http\Controllers\SrayonController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\ConsultationController;
@@ -46,7 +49,7 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
 //Prise en charge
 Route::get('/all-prestations', [PriseEnChargeController::class, 'prestation']);
 Route::get('/prestation-edit/{prestation_id}',[PriseEnChargeController::class,'editPrestation']);
-Route::get('/all-analyses', [PriseEnChargeController::class, 'analyse']);
+Route::get('/all-analyses/{patient_id}/{id_type_analyse}/{services_id}', [PriseEnChargeController::class, 'analyse']);
 Route::get('/add-form', [PriseEnChargeController::class, 'addPrestation']);
 Route::get('/edit-analyse-form/{id_type_analyse}', [PriseEnChargeController::class, 'editAnalyse']);
 Route::post('/update-analyse-form/{id_type_analyse}', [PriseEnChargeController::class, 'updateAnalyse']);
@@ -119,10 +122,35 @@ Route::get('get-reactif/{user_id}/{id_analyse}', [SalesController::class, 'get_r
 Route::post('/store-tabreactif',[SalesController::class, 'store_tabreactif']);
 Route::get('/2/delete-tabreactif/{id}',[SalesController::class, 'delete_tabreactif']);
 Route::post('/save-analyse-traitement', [ConsultationController::class,('save_analyse_traitement')]);
-
 Route::post('/payer-analyse', [SalesController::class, 'pay_analyse'])->name('pay_analyse');
 Route::post('/add_patient', [SalesController::class, 'add_patient'])->name('add_patient');
+Route::get('/ticket/{panier_analyse_id}', [SalesController::class, 'generateTicket'])->name('ticket.generate');
+Route::post('/generate-pdf/{patient_id}/{payed_analyse_id}/{services_id}', [SalesController::class, 'generateTicket'])->name('generate_pdf');
+Route::get('/verifier-recu/{filename}', function ($filename) {
+    $filePath = public_path('storage/pdfs/' . $filename);
+    
+    if (file_exists($filePath)) {
+        return response()->file($filePath);
+    } else {
+        return response()->json(['message' => 'Reçu non trouvé.'], 404);
+    }
+})->name('verifier-recu');
 
+Route::get('/test-qrcode', function () {
+    return response(QrCode::format('svg')->size(200)->color(100, 200, 100)->generate('https://www.irokotour.com'))
+        ->header('Content-Type', 'image/svg+xml');
+});
+Route::get('/demande-externe', [PriseEnChargeController::class,('demande_ext')]);
+Route::get('/enregistrer-demande-externe', [PriseEnChargeController::class,('record_demande_ext')]);
+Route::post('/save-demande-externe', [PriseEnChargeController::class,('save_demande_ext')])->name('save.demandeExt');
+Route::post('send-demande-ext', [ConsultationController::class,('send_demande_ext')]);
+Route::get('gestion-demande-ext', [PriseEnChargeController::class,('caisse_demande_ext')]);
+Route::get('/verify-receipt/{receipt_id}', [SalesController::class, ('verifyReceipt')]);
+
+// Resultats analyses
+Route::get('/edit-resultat/{patient_id}/{id_demande}', [ResultatController :: class,('edit')])->name('edit_resultat');
+Route::post('/save-resultat/{patient_id}/{prestation_id}', [ResultatController ::class, ('save')])->name('save_resultat');
+Route::get('/generate-pdf/{id_demande}', [ResultatController::class, ('generatePDF')])->name('generate_pdf');
 
 // Urgence
 Route::get('traitement-urgent-patient/{id_prise_en_charge}/{patient_id}', [ConsultationController::class,('traitement_urgent_patient')]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+// use PDF;
 use Mail;
 use Carbon\Carbon;
 use App\Http\Requests;
@@ -10,15 +11,19 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\libraries\Configuration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Redirect; 
-use Illuminate\Support\Facades\Validator;
 Use App\libraries\Api\SfeInvoiceApi;
+use Barryvdh\DomPDF\Facade\Pdf;
 Use App\libraries\Api\SfeInfoApi;
 Use App\libraries\Model\InvoiceTypeEnum;
 Use App\libraries\Model\TaxGroupTypeEnum;
+use Illuminate\Support\Facades\Redirect; 
+use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 
 class SalesController extends Controller
@@ -110,10 +115,6 @@ class SalesController extends Controller
       
         return response()->json(array($data));
     }
-
-    
-
-
     public function get_panier(Request $request, $guest_id)
     {
         $this->PharmacieAuthCheck();
@@ -139,9 +140,7 @@ class SalesController extends Controller
         ]);
 
     }
-
-
-    public function store_tabpanier(Request $request)
+        public function store_tabpanier(Request $request)
     {
         $this->PharmacieAuthCheck();
         $validator = Validator::make($request->all(), [
@@ -197,8 +196,6 @@ class SalesController extends Controller
         }
 
     }
-
-
     public function delete_tabpanier($id)
     {
         $this->PharmacieAuthCheck();
@@ -208,7 +205,6 @@ class SalesController extends Controller
 
        if($delete)
         {
-           
             return response()->json([
                 'status'=>200,
                 'message'=>'Suppression effectuée avec succès.'
@@ -223,9 +219,6 @@ class SalesController extends Controller
         }
                
     }
-
-
-
      public function make_caisse (Request $request)
     {   
         $this->PharmacieAuthCheck();
@@ -294,8 +287,6 @@ class SalesController extends Controller
                     ->decrement('stock', $v_content->qty);
 
           }
-
-
         DB::table('tbl_panier')
              ->where('user_id',$user_id)
              ->where('guest_id',$guest_id)
@@ -403,15 +394,11 @@ class SalesController extends Controller
                    ->where('order_id',$order_id)
                    ->first(); 
 
-        
-    
-
             $code = $facture_info->qr_code;
     
             $qrcode_1 = new Generator;
             $dataQr = $qrcode_1->size(100)
                               ->generate($code);
-
 
           $message='Paiement effectué à la caisse. Facture généré avec succès';
           return Redirect::to('make-facture/'.$order_id)->with(array(
@@ -429,34 +416,42 @@ class SalesController extends Controller
 
 
     }
-    public function pay_analyse(Request $request)
-    {
+    // public function pay_analyse(Request $request)
+    // {
     
-        $centre_id = Session::get('centre_id');
+    //     $centre_id = Session::get('centre_id');
 
-        if (!$centre_id) {
-            return response()->json(['error' => 'Aucun centre sélectionné.'], 400);
-        }
+    //     if (!$centre_id) {
+    //         return response()->json(['error' => 'Aucun centre sélectionné.'], 400);
+    //     }
+
+    //     $validatedData = $request->validate([
+    //         'patient_id' => 'required|integer',
+    //         'id_demande' => 'required|integer',
+    //         'prestation_id' => 'required|array',
+    //         'total' => 'required|numeric',
+    //     ]);
+    // // dd($validatedData);
+      
+    //     // Enregistrer dans tbl_analyse_payed
+    //     DB::table('tbl_analyse_payed')->insert([
+    //         'patient_id' => $validatedData['patient_id'],
+    //         'id_demande' => $validatedData['id_demande'],
+    //         'prestations' => json_encode($validatedData['prestation_id']), // Stocker sous forme de JSON
+    //         'montant_total' => $validatedData['total'],
+    //         'centre_id' => $centre_id,
+    //         'date_paiement' => now(),
+    //         'updated_at' => now()
+    //     ]);
     
-        if (!$request->has('prestation_id') || empty($request->prestation_id)) {
-            return response()->json(['error' => 'Aucune prestation sélectionnée !'], 400);
-        }
-    
-        try {
-            foreach ($request->prestation_id as $prestation) {
-                DB::table('tbl_panier_analyse')->insert([
-                    'patient_id' => $request->patient_id,
-                    'prestation_id' => $prestation,
-                    'montant' => $request->total,
-                    'centre_id' => $centre_id,
-                    'date_paiement' => now()
-                ]);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erreur lors du paiement', 'message' => $e->getMessage()], 500);
-        }
+    //     // return response()->json(['message' => 'Paiement enregistré avec succès !'], 200);
+    //     return response()->json([
+    //         'message' => 'Paiement enregistré avec succès !',
+    //         'patient_id' => $validatedData['patient_id'],
+    //         'total' => $validatedData['total']
+    //     ], 200);
         
-    }
+    // }
 
     public function add_patient(Request $request)
     {
@@ -770,17 +765,225 @@ class SalesController extends Controller
                
     }
 
-    public function income()
+    public function generateTicket($patient_id, $payed_analyse_id)
     {
-        return view('revenu.income');
-    }
+        
+        $paiement = DB::table('tbl_analyse_payed')
+                        ->join('tbl_patient', 'tbl_patient.patient_id', '=', 'tbl_analyse_payed.patient_id')
+                        ->join('tbl_prestation', 'tbl_prestation.prestation_id', '=', 'tbl_analyse_payed.prestation_id')
+                        ->where('tbl_analyse_payed.patient_id', $patient_id) // Correction du nom de l'ID
+                        ->select('tbl_patient.*', 'tbl_prestation.*','tbl_analyse_payed.*') // Sélectionner les données des deux tables
+                        ->get();
+           
+        // dd($paiement);
+        // dd($paiement->first()->patient_id);
 
+        $qrCode = base64_encode(QrCode::format('svg')->size(200)->color(100, 200, 100)->generate(route('verif.ticket', ['panier_analyse_id' => $paiement->first()->panier_analyse_id])));
+$qrCode = str_replace('svg', 'png', $qrCode);
 
-
-    public function stats()
-    {
+        
+        if (!$paiement) {
+            return back()->with('error', 'Aucune donnée trouvée.');
+        }
+        
+        $pdf = PDF::loadView('ticket.recu', compact('paiement','qrCode'));
+        return $pdf->stream();
         
     }
 
+    public function genererRecu($payed_analyse_id, $patient_id)
+    {
+        // Récupération du paiement
+        $paiement = DB::table('tbl_analyse_payed')
+                        ->where('payed_analyse_id', $payed_analyse_id)
+                        ->first();
+    
+        if (!$paiement) {
+            abort(404, "Paiement non trouvé.");
+        }
+    
+        // Décoder le JSON contenant les ID des analyses
+        $prestation_ids = json_decode($paiement->prestations, true); // Convertit en tableau
+    
+        // Vérifier que le décodage s'est bien passé
+        if (!is_array($prestation_ids)) {
+            $prestation_ids = [];
+        }
+    
+        // Récupérer les prestations associées aux ID
+        $prestations = DB::table('tbl_prestation')
+                            ->whereIn('prestation_id', $prestation_ids)
+                            ->get();
+    
+        // Récupérer les infos du patient
+        $patient = DB::table('tbl_patient')
+                        ->where('patient_id', $patient_id)
+                        ->first();
+    
+        // Vérifier que le patient existe
+        if (!$patient) {
+            abort(404, "Patient non trouvé.");
+        }
+    
+        // Génération du QR Code
+        $qr_code = QrCode::size(150)->generate(URL::to('verifier_paiement', ['id' => $paiement->payed_analyse_id,]));
+    
+        // Préparer les données pour la vue
+        $data = [
+            'patient' => $patient,
+            'montant' => $paiement->montant_total,
+            'date_paiement' => \Carbon\Carbon::parse($paiement->date_paiement)->format('d/m/Y H:i'),
+            'qr_code' => $qr_code,
+            'prestations' => $prestations, // Envoyer les prestations à la vue
+        ];
+        // dd($data);
+        // Générer le PDF
+        $pdf = Pdf::loadView('ticket.recu', $data);
 
+        return $pdf->download('Reçu_Paiement_' . $paiement->payed_analyse_id . '.pdf');
+    }
+
+
+public function generatePDF($patient_id, $payed_analyse_id)
+{
+    // Récupérer les données de la demande
+    $validate_analyse = DB::table('tbl_demande_ext')
+        ->leftJoin('tbl_type_analyse', 'tbl_demande_ext.id_type_analyse', '=', 'tbl_type_analyse.id_type_analyse')
+        ->leftJoin('tbl_patient', 'tbl_demande_ext.patient_id', '=', 'tbl_patient.patient_id')
+        ->leftJoin('services', 'tbl_demande_ext.services_id', '=', 'services.services_id')
+        ->where('tbl_demande_ext.patient_id', $patient_id)
+        ->where('tbl_demande_ext.id_demande', $payed_analyse_id)
+        ->select(
+            'tbl_demande_ext.*',
+            'services.service as nom_service',
+            'tbl_patient.*',
+            DB::raw('TIMESTAMPDIFF(YEAR, tbl_patient.datenais, CURDATE()) as age')
+        )
+        ->first();
+
+    // Vérifier si la demande existe
+    if (!$validate_analyse) {
+        return redirect()->back()->with('error', 'Aucune demande trouvée pour les critères spécifiés.');
+    }
+
+    // Générer le PDF
+    $pdf = PDF::loadView('ticket.receipt', ['validate_analyse' => $validate_analyse]);
+
+    // Retourner le PDF pour affichage dans le navigateur
+    return $pdf->stream('receipt.pdf'); // Utilisez `stream()` pour afficher le PDF dans le navigateur
+}
+
+public function pay_analyse(Request $request)
+{
+    $centre_id = Session::get('centre_id');
+
+    if (!$centre_id) {
+        return response()->json(['error' => 'Aucun centre sélectionné.'], 400);
+    }
+
+    // Valider les données
+    $validatedData = $request->validate([
+        'patient_id' => 'required|integer',
+        'id_demande' => 'required|integer',
+        'prestation_id' => 'required|array', // Valider que c'est un tableau
+        'prestation_id.*' => 'integer', // Valider que chaque élément du tableau est un entier
+        'total' => 'required|numeric',
+        'services_id' => 'required|integer',
+    ]);
+
+    // Récupérer les informations du patient
+    $patient = DB::table('tbl_patient')
+        ->where('patient_id', $validatedData['patient_id'])
+        ->first();
+
+
+    if (!$patient) {
+        return response()->json(['error' => 'Patient non trouvé.'], 404);
+    }
+    $prestations = DB::table('tbl_prestation')
+                        ->whereIn('prestation_id', 
+                            $validatedData['prestation_id'])
+                        ->get();
+
+    // Enregistrer chaque prestation dans tbl_analyse_payed
+    foreach ($validatedData['prestation_id'] as $prestation_id) {
+        DB::table('tbl_analyse_payed')->insert([
+            'patient_id' => $validatedData['patient_id'],
+            'id_demande' => $validatedData['id_demande'],
+            'prestation_id' => $prestation_id, // Stocker une seule prestation par ligne
+            'montant_total' => $validatedData['total'],
+            'centre_id' => $centre_id,
+            'date_paiement' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    // Mettre à jour tbl_demande_ext avec un tableau encodé en JSON
+    DB::table('tbl_demande_ext')
+        ->where('id_demande', $validatedData['id_demande'])
+        ->update([
+            'is_payed' => 1, // Mettre à jour is_payed à 1
+            'prestation_id' => json_encode($validatedData['prestation_id']), // Encoder en JSON
+            'updated_at' => now(),
+        ]);
+
+    // Générer un identifiant unique pour le reçu
+    $receipt_id = uniqid('RECEIPT_');
+
+    // Générer le code QR
+    $qrData = json_encode([
+        'receipt_id' => $receipt_id,
+        'patient_id' => $validatedData['patient_id'],
+        'total' => $validatedData['total'],
+        'date' => now()->format('Y-m-d H:i:s'),
+    ]);
+    $qrCode = QrCode::size(200)->generate($qrData);
+
+    // Générer le PDF
+    $pdf = PDF::loadView('ticket.receipt', [
+        'patient' => $patient, // Passer les informations du patient à la vue
+        'prestations' => $prestations,
+        'montant' => $validatedData['total'],
+        'qrCode' => $qrCode,
+        'receipt_id' => $receipt_id,
+    ]);
+
+    // Sauvegarder le PDF dans un dossier accessible publiquement
+    $pdfPath = storage_path('app/public/receipts/' . $receipt_id . '.pdf');
+    $pdf->save($pdfPath);
+
+    // Vérifier si le fichier a été créé
+    if (!file_exists($pdfPath)) {
+        return response()->json(['error' => 'Le fichier PDF n\'a pas pu être créé.'], 500);
+    }
+
+    // Générer l'URL publique du PDF
+    $pdfUrl = asset('storage/receipts/' . $receipt_id . '.pdf');
+
+    return response()->json([
+        'message' => 'Paiement enregistré avec succès !',
+        'pdf_url' => $pdfUrl,
+        'patient_id' => $validatedData['patient_id'],
+        'total' => $validatedData['total'],
+    ], 200);
+}
+
+
+public function verifyReceipt($receipt_id)
+{
+    $receipt = DB::table('tbl_analyse_payed')
+                    ->where('receipt_id', $receipt_id)
+                    ->first();
+
+    if ($receipt) {
+        return response()->json([
+            'message' => 'Reçu trouvé.',
+            'receipt' => $receipt,
+        ], 200);
+    } else {
+        return response()->json([
+            'error' => 'Reçu non trouvé.',
+        ], 404);
+    }
+}
 }

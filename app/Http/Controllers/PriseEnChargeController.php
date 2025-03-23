@@ -14,7 +14,6 @@ use Illuminate\Validation\ValidationException;
 
 class PriseEnChargeController extends Controller
 {
-
     public function UserAuthCheck()
    {
     $user_id=Session::get('user_id');
@@ -25,9 +24,7 @@ class PriseEnChargeController extends Controller
         {
             return Redirect::to('/')->send();
         }
-
     }
-
 
     public function CaisseAuthCheck()
    {
@@ -39,7 +36,6 @@ class PriseEnChargeController extends Controller
         {
             return Redirect::to('/')->send();
         }
-
     }
     public function ChefAuthCheck()
    {
@@ -51,22 +47,19 @@ class PriseEnChargeController extends Controller
         {
             return Redirect::to('/')->send();
         }
-
     }
 
     public function AccueilAuthCheck()
    {
     $user_role_id=Session::get('user_role_id');
-    if ($user_role_id == 0) {
+    if ($user_role_id == 0 || $user_role_id == 1) {
         return;
         }
         else 
         {
             return Redirect::to('/')->send();
         }
-
     }
-
     public function index()
     {
         $this->UserAuthCheck();
@@ -105,8 +98,6 @@ class PriseEnChargeController extends Controller
                     ->orderBy('pcreated_at')
                     ->get();
 
-
-
         return view('prise_enc.all_prise_enc')->with(array(
                     'all_prisenc'=>$all_prisenc,             
                     'all_consult'=>$all_consult,             
@@ -114,8 +105,6 @@ class PriseEnChargeController extends Controller
                     'all_patient_u'=>$all_patient_u,             
                 ));
     }
-
-
     public function caisse_analyses()
     {
        $this->CaisseAuthCheck();
@@ -136,10 +125,18 @@ class PriseEnChargeController extends Controller
                 ->where('tbl_analyse.id_centre',$centre_id)
                 ->select('tbl_analyse.*','tbl_patient.*','tbl_type_analyse.*')
                 ->get();
+        $all_demand_p=DB::table('tbl_demande_ext')
+                ->join('tbl_patient','tbl_demande_ext.patient_id','=','tbl_patient.patient_id')
+                ->where('is_payed',1)
+                ->join('services','tbl_demande_ext.services_id','=','services.services_id')
+                ->where('tbl_demande_ext.centre_id',$centre_id)
+                ->select('tbl_demande_ext.*','services.service as nom_service','tbl_patient.*')
+                ->get();         
 
        return view('prise_enc.all_analyses')->with(array(
                     'all_analyse_nt'=>$all_analyse_nt,             
-                    'all_analyse_t'=>$all_analyse_t,                         
+                    'all_analyse_t'=>$all_analyse_t,   
+                    'all_demand_p'=>$all_demand_p,
                 ));
           
     }
@@ -182,7 +179,6 @@ class PriseEnChargeController extends Controller
     return redirect()->back()->with('PersonnalAdded', 'Informations sauvegardées avec succès');
     }
 
-
     public function editPrestation($prestation_id)
     {
         $this->ChefAuthCheck();
@@ -196,17 +192,33 @@ class PriseEnChargeController extends Controller
             return view('prise_enc/edit_prestation_form', compact('all_prestation'));
     }
 
-
-    public function analyse()
+    public function analyse($patient_id, $id_demande, $services_id)
     {
+        $this->CaisseAuthCheck();
+        $user_id =Session::get('user_id');
+        
+        $validate_analyse = DB::table('tbl_demande_ext')
+                                ->leftJoin('tbl_type_analyse', 'tbl_demande_ext.id_type_analyse', '=', 'tbl_type_analyse.id_type_analyse')
+                                ->leftJoin('tbl_patient', 'tbl_demande_ext.patient_id', '=', 'tbl_patient.patient_id')
+                                ->leftJoin('services','tbl_demande_ext.services_id', '=', 'services.services_id')
+                                ->where('tbl_demande_ext.services_id', $services_id)
+                                ->where('tbl_demande_ext.patient_id', $patient_id)
+                                ->where('tbl_demande_ext.id_demande', $id_demande)
+                                ->select(
+                                    'tbl_demande_ext.*','services.service as nom_service', 'tbl_patient.*',
+                                    DB::raw('TIMESTAMPDIFF(YEAR, tbl_patient.datenais, CURDATE()) as age')
+                                        )
+                                ->first();
     
-        return view('prise_enc/all_prestations_analyses');
+    // dd($validate_analyse);
+    
+        return view('Analys/all_prestations_analyses')->with(array(
+
+            'validate_analyse' => $validate_analyse));
     }
 
     public function addAnalyse()
     {
-    
-
         return view('prise_enc/add_analyse_form');
     }
 
@@ -269,10 +281,8 @@ class PriseEnChargeController extends Controller
         if ($analyses) {
             $analyses->update($request->all());
         } else {
-            // Gérer le cas où l'analyse n'est pas trouvée
             return response()->json(['error' => 'Analyse non trouvée'], 404);
         }
-        
         
         return redirect()->back()->with('PersonnalAdded', 'Mise à jour effectuée');
 
@@ -306,7 +316,6 @@ class PriseEnChargeController extends Controller
               if ($get_patient){
                   return back()->withInput()->with('error', 'Echec de validation : Veuillez rechercher le patient car il existe déjà sous le numéro renseigné');
               }
-
         $patient_id = DB::table('tbl_patient')->insertGetId($data);
         }else{
         $patient_id=$request->patient_id;
@@ -324,14 +333,10 @@ class PriseEnChargeController extends Controller
         }
         DB::table('tbl_analyse')->insertGetId($datap);
 
-        
         Alert::success('Info', 'Analyse enregistré dans le système.');
            return Redirect::to ('/caisse-analyses');
 
-        
     }
-
-    
 
     public function record_prisenc()
     {
@@ -339,12 +344,18 @@ class PriseEnChargeController extends Controller
         $this->AccueilAuthCheck();
         return view('prise_enc.add_prise_enc');
     }
+    public function record_demande_ext()
+    {
+        $this->UserAuthCheck();
+        $this->AccueilAuthCheck();
+        return view('Analys.add_analyse_ext');
+    }
 
     
     public function save_prisenc(Request $request)
     {
-    $this->UserAuthCheck(); 
-    $this->AccueilAuthCheck();
+        $this->UserAuthCheck(); 
+        $this->AccueilAuthCheck();
             
             $tel=$request->telephone;
 
@@ -388,9 +399,8 @@ class PriseEnChargeController extends Controller
             
             Alert::success('Info', 'Nouveau patient enregistré dans les prises en charges.');
                return Redirect::to ('/prises-en-charges');
-                
-
     }
+   
     public function saveStep1(Request $request)
     {
         $this->UserAuthCheck(); 
@@ -413,8 +423,8 @@ class PriseEnChargeController extends Controller
             return back()->with('error', 'Erreur : Impossible de récupérer le centre de l’utilisateur.');
         }
     
-       
-    // Extraire les trois premières lettres du deuxième mot du centre
+    //    Génération N° du dossier des patients
+    // Extraire les trois premières lettres du deuxième mot du centre 
     $centreWords = explode(' ', $userCentre->nom_centre); // Séparer les mots du nom du centre
     $centreAbbreviation = isset($centreWords[1]) 
         ? strtoupper(substr($centreWords[1], 0, 3)) 
@@ -553,7 +563,9 @@ $patientExists = DB::table('tbl_patient')
 ->where('patient_id', $patient_id)
 ->exists();
 
-$consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $patient_id)->exists();
+$consultationExists = DB::table('tbl_prise_en_charge')
+                        ->where('patient_id', $patient_id)
+                        ->exists();
 // dd($patientExists, $consultationExists);
        
             DB::transaction(function () use ($validatedData, $patient_id) {
@@ -590,11 +602,8 @@ $consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $pat
             Alert::success('Info', 'Les Informations mises à jours avec succès');
         return Redirect::to ('/prises-en-charges');
 
-        
-
     }
-
-
+    
     public function caisse_conslt()
     {
         $this->UserAuthCheck();
@@ -621,6 +630,44 @@ $consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $pat
         return view('prise_enc.caisse_consultation')->with(array(
                     'all_consultp'=>$all_consultp,             
                     'all_consulti'=>$all_consulti,             
+                ));;
+    }
+    public function caisse_demande_ext()
+    {
+        $this->UserAuthCheck();
+        $this->CaisseAuthCheck();
+        $centre_id=Session::get('centre_id');
+        $all_demand_np=DB::table('tbl_demande_ext')
+                ->join('tbl_patient','tbl_demande_ext.patient_id','=','tbl_patient.patient_id')
+                ->where('last_demande_user_id',2)
+                ->where('is_payed',0)
+                ->join('services','tbl_demande_ext.services_id','=','services.services_id')
+                ->where('tbl_demande_ext.centre_id',$centre_id)
+                ->select('tbl_demande_ext.*','services.service as nom_service','tbl_patient.*')
+                ->get(); 
+
+        $all_demand_p=DB::table('tbl_demande_ext')
+                ->join('tbl_patient','tbl_demande_ext.patient_id','=','tbl_patient.patient_id')
+                ->where('is_payed',1)
+                ->join('services','tbl_demande_ext.services_id','=','services.services_id')
+                ->where('tbl_demande_ext.centre_id',$centre_id)
+                ->select('tbl_demande_ext.*','services.service as nom_service','tbl_patient.*')
+                ->get(); 
+      
+        $all_consultp=DB::table('tbl_caisse_prise_en_charge')
+                ->join('tbl_prise_en_charge','tbl_caisse_prise_en_charge.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')
+                ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                ->where('frais_consultation','!=',NULL)
+                ->where('tbl_caisse_prise_en_charge.id_centre',$centre_id)
+                ->select('tbl_prise_en_charge.*','tbl_patient.*')
+                ->get();
+
+
+
+        return view('Analys.caisse_analyse')->with(array(
+                    'all_consultp'=>$all_consultp,
+                    'all_demand_p' =>$all_demand_p,             
+                    'all_demand_np'=>$all_demand_np,
                 ));;
     }
 
@@ -699,7 +746,7 @@ $consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $pat
     $data['is_vip']=$request->is_vip; 
     $nbre_lits=$request->nbre_lit;
 //   dd($data);
-  dd($data);
+  
     $chambre_id = DB::table('tbl_chambre')->insertGetId($data);
 
     for ($i=0; $i < $nbre_lits ; $i++) { 
@@ -735,5 +782,132 @@ $consultationExists = DB::table('tbl_prise_en_charge')->where('patient_id', $pat
                return Redirect::to ('/dashboard');
     }
 
+    public function save_demande_ext(Request $request)
+    {
+    $this->UserAuthCheck(); 
+    $this->AccueilAuthCheck();
+    $user_role_id=Session::get('user_role_id');
+    $user_id=Session::get('user_id');
+    $userCentre = DB::table('users')
+                 ->join('tbl_centre', 'users.id_centre', '=', 'tbl_centre.id_centre') 
+                 ->where('users.user_id', $user_id)
+                 ->select('users.user_id', 'users.id_centre', 'users.user_role_id', 'tbl_centre.nom_centre') 
+                 ->first();
+
+    // if (!$userCentre) {
+    //         return back()->with('error', 'Erreur : Impossible de récupérer le centre de l’utilisateur.');
+    //             }
+    $centreWords = explode(' ', $userCentre->nom_centre); // Séparer les mots du nom du centre
+    $centreAbbreviation = isset($centreWords[1]) 
+        ? strtoupper(substr($centreWords[1], 0, 3)) 
+        : strtoupper(substr($centreWords[0], 0, 3)); 
+
+    $dateTime = Carbon::now('Africa/Lagos')->format('Y/m/d/Hi'); 
+    $numeroDossier = $centreAbbreviation . '/' . str_replace('/', '/', $dateTime);
+            $tel=$request->telephone;
+
+            if ($tel) {
+            $data = [
+            'dossier_numero'=>$numeroDossier,    
+            'telephone'=>$request->telephone, 
+            'nom_patient'=>$request->nom_patient,
+            'prenom_patient'=>$request->prenom_patient,
+            'sexe_patient' =>$request->sexe_patient,
+            'nip'=>$request->nip, 
+            // 'centre_id'->centre_id,
+            
+            'nationalite'=>$request->nationalite,
+            'datenais'=>$request->datenais ]; 
+// dd($data);
+
+                $get_patient=DB::table('tbl_patient')->where('telephone',$tel)->first();
+
+                  if ($get_patient){
+                      return back()->withInput()->with('error', 'Echec de validation : Veuillez rechercher le patient car il existe déjà sous le numéro renseigné');
+                  }
+            $patient_id = DB::table('tbl_patient')->insertGetId($data);
+            }else{
+            $patient_id=$request->patient_id;
+            }
+            $datap = [
+            'user_role_id' =>$user_role_id, 
+            'patient_id' => $patient_id, 
+            'user_id'=>$user_id,
+            'last_demande_user_id'=>$user_role_id,
+            'centre_id'=>$request->centre_id,
+            'services_id'=>$request->services_id 
+            ];
+            
+            // dd($datap);
+             
+            $id_demande = DB::table('tbl_demande_ext')->insertGetId($datap);
+
+            $datac = [
+           'id_demande'=> $id_demande,
+           'centre_id'=> $request->centre_id,
+           'services_id'=> $request->services_id,
+           'patient_id'=> $patient_id, ];
+            
+            // dd($datac);
+
+
+            $id_demande = DB::table('tbl_analyse_payed')->insertGetId($datac);
+            
+            
+            Alert::success('Info', 'Nouveau patient enregistré pour demandes externes.');
+               return redirect()->back();
+                
+
+    }
+    public function demande_ext()
+    {
+        $this->UserAuthCheck();
+        $this->AccueilAuthCheck();
+        // $this->CaisseAuthCheck();
+        $centre_id=Session::get('centre_id');
+        $new_demand=DB::table('tbl_demande_ext')
+                ->join('tbl_patient','tbl_demande_ext.patient_id','=','tbl_patient.patient_id')
+                ->join('users','tbl_demande_ext.user_id','=','users.user_id')
+                ->join('tbl_centre','tbl_demande_ext.centre_id','=','tbl_centre.id_centre')
+                ->join('services','tbl_demande_ext.services_id','=','services.services_id')
+                ->where('tbl_demande_ext.last_demande_user_id',0)
+                ->where('tbl_demande_ext.centre_id',$centre_id)
+                ->select('tbl_demande_ext.*','services.service as nom_service','tbl_patient.*')
+                // ->orderBy('etat_consultation','DESC')
+                ->get(); 
+
+        $all_demand=DB::table('tbl_demande_ext')
+                ->join('tbl_patient','tbl_demande_ext.patient_id','=','tbl_patient.patient_id')
+                ->where('last_demande_user_id',2)
+                ->join('services','tbl_demande_ext.services_id','=','services.services_id')
+                ->where('tbl_demande_ext.centre_id',$centre_id)
+                ->select('tbl_demande_ext.*','services.service as nom_service','tbl_patient.*')
+                ->get();
+
+        $all_patient_h=DB::table('tbl_consultation')
+                  ->join('tbl_lits','tbl_consultation.id_lit','=','tbl_lits.id_lit')
+                  ->join('tbl_chambre','tbl_lits.id_chambre','=','tbl_chambre.id_chambre')
+                  ->join('tbl_prise_en_charge','tbl_consultation.id_prise_en_charge','=','tbl_prise_en_charge.id_prise_en_charge')              
+                  ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                  ->where('is_hospitalisation',1)
+                  ->where('tbl_prise_en_charge.id_centre',$centre_id)
+                  ->select('tbl_prise_en_charge.*','tbl_patient.*','tbl_consultation.*','tbl_chambre.*','tbl_lits.*')
+                  ->groupBy('tbl_prise_en_charge.patient_id')
+                  ->orderBy('etat_consultation','DESC')
+                  ->get();
+
+        $all_patient_u = DB::table('tbl_prise_en_charge')
+                   ->join('tbl_patient','tbl_prise_en_charge.patient_id','=','tbl_patient.patient_id')
+                    ->where('nom_patient', '')
+                    ->orderBy('pcreated_at')
+                    ->get();
+
+        return view('Analys.all_demande_ext')->with(array(
+                    'new_demand'=>$new_demand,             
+                    'all_demand'=>$all_demand,             
+                    'all_patient_h'=>$all_patient_h,             
+                    'all_patient_u'=>$all_patient_u,             
+                ));
+    }
 
 }

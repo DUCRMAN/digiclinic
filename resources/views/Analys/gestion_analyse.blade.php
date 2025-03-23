@@ -23,7 +23,11 @@
                       <ul class="nav nav-tabs justify-content-center" id="customTab4" role="tablist">
                         <li class="nav-item" role="presentation">
                           <a class="nav-link active" id="tab-oneAAA" data-bs-toggle="tab" href="#oneAAA" role="tab"
-                            aria-controls="oneAAA" aria-selected="true">Analyses en attente</a>
+                            aria-controls="oneAAA" aria-selected="true">Analyses interne en attente</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link" id="tab-threeAAA" data-bs-toggle="tab" href="#threeAAA" role="tab"
+                            aria-controls="oneAAA" aria-selected="true">Analyses externe en attente</a>
                         </li>
                        
                         <li class="nav-item" role="presentation">
@@ -72,13 +76,13 @@
                                                 {{$v_prisenc->prenom_patient}}
                                                 {{$v_prisenc->nom_patient}}
                                               </td>
-                                              <td><h4><span class="badge bg-danger">{{$v_prisenc->nom_prestation}}</span></h4></td>
+                                              <td><h4><span class="badge bg-danger">{{$v_prisenc->libelle_analyse}}</span></h4></td>
                                               <td>{{$v_prisenc->telephone}}</td>
                                               <td>{{$v_prisenc->adresse}}</td>
                                                                                             
                                               <td>
                                               
-                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-analyse/'.$v_prisenc->prestation_id.'/'.$v_prisenc->patient_id)}}">
+                                              <a title="Dossier medial du patient" class="btn btn-outline-success" href="{{URL::to('traitement-analyse/'.$v_prisenc->id_type_analyse.'/'.$v_prisenc->patient_id)}}">
                                               <i class="ri-file-edit-fill"></i></a>                    
                                               </td>
                                             </tr>
@@ -93,13 +97,6 @@
                           </div>
                           <!-- Row ends -->
                         </div>
-
-
-
-
-                       
-
-
                         <div class="tab-pane fade" id="twoAAA" role="tabpanel">
                           <!-- Row starts -->
                           <div class="row gx-3">
@@ -111,7 +108,7 @@
                               <div class="card-body">
                                 <div class="table-outer">
                                   <div class="table-responsive">
-                                    <table class="table table-striped truncate m-0">
+                                    <table class="table table-striped truncate m-0" id="example2">
                                       <thead>
                                         <tr>
                                           <th></th>
@@ -119,7 +116,7 @@
                                           <th>Analyse</th>
                                           <th>Contact</th>
                                           <th>Date</th>
-                                          <th></th>
+                                          <th>Action</th>
                                           
                                         </tr>
                                       </thead>
@@ -130,7 +127,7 @@
                                           </td>
                                           <td>{{$v_consult->nom_patient}}
                                           {{$v_consult->prenom_patient}}</td>
-                                          <td>{{$v_prisenc->nom_prestation}}</td>
+                                          <td>{{$v_prisenc->libelle_analyse}}</td>
                                           <td>{{$v_prisenc->telephone}}</td>
                                           <td>
                                             {{$v_prisenc->created_at}}
@@ -154,25 +151,69 @@
                           </div>
                           <!-- Row ends -->
                         </div>
+                        <div class="tab-pane fade" id="threeAAA" role="tabpanel">
+                          <!-- Row starts -->
+                          <div class="row gx-3">
+                          <div class="col-sm-12">
+                            <div class="card mb-3">
+                              <div class="card-header">
+                                <h5 class="card-title">Analyses traités</h5>
+                              </div>
+                              <div class="card-body">
+                                <div class="table-outer">
+                                  <div class="table-responsive">
+                                    <table class="table truncate align-middle" id="example3">
+                                      <thead>
+                                        <tr>
+                                          <th width="30px">&nbsp;</th>
+                                          <th width="60px">Patient</th>
+                                          <th width="100px">Analyse </th>
+                                          <th width="100px">Statut </th>
+                                          <th width="100px">nip/numero</th>
+                                          <th width="100px">Actions</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        @foreach($all_demand_p as $d_analyse) 
+                                        <tr>
+                                          <td>
+                                            @if($d_analyse->sexe_patient == 'F')
+                                            <img style="width:30px; height:30px;" src="{{asset('frontend/F.png')}}" alt="sexe')}}" class="rounded-circle img-3x">
+                                            @else
+                                            <img style="width:30px; height:30px;" src="{{asset('frontend/M.png')}}" alt="sexe" class="rounded-circle img-3x">
+                                            @endif
+                                          </td>
+                                          <td>
+                                            {{$d_analyse->prenom_patient}}
+                                            {{$d_analyse->nom_patient}}
+                                          </td>
+                                          <td>
+                                           <h4><span class="badge bg-danger"> {{$d_analyse->nom_prestation}}</span></h4>
+                                          <td>
+                                            2
+                                          <td>{{$d_analyse->telephone}}</td>
+                                         <td>
+                                            <a title="Reçu de paiement" class="btn btn-outline-success" href="{{ URL::to('edit-resultat/'.$d_analyse->patient_id.'/'.$d_analyse->id_demande)}}"                                                    >
+                                              <i class="ri-file-edit-fill"></i></a>                    
+                                         </td>
+                                        </tr>
+                                      @endforeach
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          <!-- Row ends -->
+                        </div>
                         
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-
-
-
-
-              
-              
-              
-            
-              
-            
-              
-            
             </div>
             <!-- Row ends -->
 
@@ -186,6 +227,12 @@
     <script>
       $(document).ready(function() {
       $("#example").DataTable();
+    });
+      $(document).ready(function() {
+      $("#example2").DataTable();
+    });
+      $(document).ready(function() {
+      $("#example3").DataTable();
     });
       $("select").change(function(){
       if(confirm('Cliquez OK pour envoyer le patient vers le spécialiste')){

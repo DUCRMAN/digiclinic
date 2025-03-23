@@ -22,6 +22,7 @@
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.23.0/slimselect.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
     <link rel="shortcut icon" href="{{asset('/frontend/images/favicon.svg')}}">
@@ -33,6 +34,7 @@
     <!-- *************
     ************ Vendor Css Files *************
   ************ -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Scrollbar CSS -->
     <link rel="stylesheet" href="{{asset('/frontend/vendor/overlay-scroll/OverlayScrollbars.min.css')}}">
@@ -461,6 +463,11 @@
                     <a href="{{URL::to('prises-en-charges')}}">Prises en charges</a>
                   </li>
                 </ul>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="{{URL::to('demande-externe')}}">Analyses Externes</a>
+                  </li>
+                </ul>
               </li>
 
               @elseif($user_role_id == 1)
@@ -485,10 +492,10 @@
                     </a>
                     <ul class="treeview-menu">
                       <li>
-                        <a href="{{ URL::to('all-analyses') }}">Soumettre une analyse</a>
+                        <a href="{{URL::to('gestion-demande-ext')}}">Gestion des analyses</a>
                       </li>
                       <li>
-                        <a href="{{URL::to('caisse-analyses')}}">Demandes reçues</a>
+                        <a href="{{ URL::to('all-analyses') }}">Soumettre une analyse</a>
                       </li>
                       
                     </ul>
@@ -555,7 +562,7 @@
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{{URL::to('consultations')}}">Consultations</a>
+                    <a href="{{URL::to('gestion-analyses')}}">Analyses</a>
                     {{-- <a href="{{URL::to('gestion-analyses')}}">Analyses Générales</a>
                     <a href="{{URL::to('consultations')}}">Analyses internes</a> --}}
                   </li>
@@ -1209,6 +1216,12 @@ edit1.addEventListener('keyup', () => {
         texte1.innerHTML = edit1.innerHTML
 })
 </script>
+<script>
+  $(document).ready(function() {
+      console.log("jQuery est bien chargé !");
+  });
+</script>
+
 
 </body>
 

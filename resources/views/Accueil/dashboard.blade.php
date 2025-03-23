@@ -140,7 +140,7 @@ Admin
                             </a>
                             <div class="d-flex flex-column">
                             <?php
-                                $nbr_analyses=DB::table('tbl_panier_analyse')
+                                $nbr_analyses=DB::table('tbl_analyse_payed')
                                           ->where('centre_id',$centre_id)
                                           ->count();
                             ?>
@@ -1120,12 +1120,12 @@ Admin
           <select class="form-control" name="service">
             @php
                 $all_services = DB::table('services')
-                              ->where('id_centre',$centre_id)
+                              ->where('centre_id',$centre_id)
                               ->get();
             @endphp
             <option value="">------</option>
                 @foreach($all_services as $serv_room)
-            <option value="{{ $serv_room->id }}"> {{ $serv_room->service }}</option>
+            <option value="{{ $serv_room->services_id }}"> {{ $serv_room->service }}</option>
                  @endforeach
           </select>
           <div class="text-success small mt-1">

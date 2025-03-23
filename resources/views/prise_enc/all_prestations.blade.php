@@ -27,7 +27,8 @@ Repertoire patient
                       <table id="example" class="table truncate m-0 align-middle">
                         <thead>
                           <tr>
-                            <th>N°.</th>
+                            {{-- <th>N°.</th> --}}
+                            <th>Référence</th>
                             <th>Type de prestation</th>
                             <th>Coût de la prestation</th>
                             @if ($user_role_id == 11)
@@ -37,17 +38,20 @@ Repertoire patient
                         </thead>
                         @php
                              $centre_id=Session::get('centre_id');
-                             $prestation=DB::table('tbl_prestation')->get();
+                             $prestation=DB::table('tbl_prestation')
+                                            ->where('centre_id', $centre_id)
+                                            ->get();
                         @endphp
                         <tbody>
                           @foreach ($prestation as $all_prestation)
                               
                          
                           <tr>
-                            <td>{{$all_prestation->prestation_id}} °)</td>
+                            {{-- <td>{{$all_prestation->prestation_id}} °)</td> --}}
+                            <td>{{$all_prestation->reference}}</td>
                          
                             <td>{{$all_prestation->nom_prestation}}</td>
-                            <td>{{$all_prestation->prix_prestation}}  FCFA</td>
+                            <td>{{$all_prestation->tarif}}  FCFA</td>
                             @if ($user_role_id == 11)
                                 
                             <td>

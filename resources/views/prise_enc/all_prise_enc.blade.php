@@ -133,7 +133,7 @@
                                                 $all_specialiste=DB::table('user_roles')
                                                 ->join('users','user_roles.user_role_id','=','users.user_role_id')
                                                 ->join('personnel','users.email','=','personnel.email')
-                                                ->where('is_consult',3)
+                                                ->where('designation',"Caisse")
                                                 ->where('personnel.id_centre',$centre_id)
                                                 ->get(); 
                                                 foreach ($all_specialiste as $v_specialist){ ?>  
